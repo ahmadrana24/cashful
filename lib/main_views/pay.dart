@@ -77,7 +77,7 @@ class _PayScreenState extends State<PayScreen> {
                         //mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                              margin: EdgeInsets.only(left: 50),
+                              margin: EdgeInsets.only(left: 64),
                               child: Image(
                                   image:
                                       AssetImage('assets/images/stdbank.png'))),

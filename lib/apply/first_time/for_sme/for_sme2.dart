@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'for_rest2.dart';
+import 'for_sme3.dart';
 
-class ApplyForRest1 extends StatefulWidget {
-  const ApplyForRest1({ Key? key }) : super(key: key);
+class ApplyForSME2 extends StatefulWidget {
+  const ApplyForSME2({Key? key}) : super(key: key);
 
   @override
-  _ApplyForRest1State createState() => _ApplyForRest1State();
+  _ApplyForSME1State createState() => _ApplyForSME1State();
 }
 
-class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
+class _ApplyForSME1State extends State<ApplyForSME2> {
+  int _value = 0;
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -49,7 +50,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                 children: [
                   Container(
                       margin: EdgeInsets.only(right: 20),
-                      child: Text('What is your main source of income?',
+                      child: Text('How much has been invested into your business to date?',
                           style: myFont)),
                   SizedBox(
                     height: 10,
@@ -69,7 +70,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                       width: 10,
                     ),
                     Text(
-                      'Salary',
+                      'R0 - R2499',
                       style: myFont,
                     )
                   ]),
@@ -86,7 +87,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Savings', style: myFont)
+                    Text('R2500 - R4999', style: myFont)
                   ]),
                   Row(children: [
                     Radio(
@@ -103,7 +104,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                       width: 10,
                     ),
                     Text(
-                      'Inheritance',
+                      'R5000 - R7499',
                       style: myFont,
                     )
                   ]),
@@ -122,56 +123,70 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                       width: 10,
                     ),
                     Text(
-                      'Investments',
+                      'R7500 - R9999',
                       style: myFont,
                     )
+                  ]),
+                  Row(children: [
+                    Radio(
+                      activeColor: Colors.black,
+                      value: 5,
+                      groupValue: _value,
+                      onChanged: (value) {
+                        setState(() {
+                          _value = (value) as int;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('R10000 and above', style: myFont)
                   ]),
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 40),
                       child: Text(
-                          'How much is your monthly income?',
+                          'How much does your business make per month?',
                           style: myFont)),
                   SizedBox(width: 4),
                   SizedBox(
                     width: 250,
                   ),
-                  Container(width: 270, margin: EdgeInsets.only(right: 18),
-                    child: TextField(
-                      textAlign: TextAlign.left,
-                      decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(5),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          )),
-                    ),
+                  TextField(
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(5),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        )),
                   ),
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 10),
                       child: Text(
-                          "How much are your monthly expenses?",
+                          "What are your business's monthly expenses?",
                           style: myFont)),
                   SizedBox(width: 4),
-                  
-                  Container(width: 270, margin: EdgeInsets.only(right: 20),
-                    child: TextField(
-                      textAlign: TextAlign.left,
-                      decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(5),
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          )),
-                    ),
+                  SizedBox(
+                    width: 250,
+                  ),
+                  TextField(
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(5),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        )),
                   ),
                   SizedBox(height: 30),
                   
                 ],
               ),
             ),
-            Container(alignment: Alignment.center, child: Text('2/5'))
+            Container(alignment: Alignment.center, child: Text('3/5'))
           ],
         ),
       ),
@@ -183,7 +198,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
             color: Colors.black,
           ),
           onPressed: () {Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ApplyForRest2()));}),
+                  MaterialPageRoute(builder: (context) => ApplyForSME3()));}),
     );
   }
 }

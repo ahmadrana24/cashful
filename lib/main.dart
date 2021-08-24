@@ -5,7 +5,6 @@ import 'package:flutter_application_1/main_views/login.dart';
 import 'package:flutter_application_1/registration/get_started.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'main_views/home_screen.dart';
 
 void main() async {
@@ -19,13 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      //initialRoute: '/home',
       title: 'Cashful',
-      home: HomeScreen(),
+      home: MyHomePage(),
 
       routes: {
-        '/home': (context) => DefaultHomePage()
-      },
+        '/home': (context) => DefaultHomePage(),
+        },
     );
   }
 }

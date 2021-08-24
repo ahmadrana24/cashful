@@ -4,6 +4,8 @@ import 'package:flutter_application_1/apply/first_time/apply_splash.dart';
 import 'package:flutter_application_1/main_views/help.dart';
 import 'package:flutter_application_1/main_views/pay.dart';
 
+import 'status.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -12,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
- 
     // style
     var cardTextStyle = TextStyle(
         fontFamily: 'Poppins',
@@ -86,7 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StatusScreen()));
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[

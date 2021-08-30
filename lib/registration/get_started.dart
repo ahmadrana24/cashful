@@ -91,10 +91,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             border: UnderlineInputBorder(),
                           ),
                         ),
-                        ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.camera),
-                            label: Text('Upload'))
                       ],
                     ),
                   )),

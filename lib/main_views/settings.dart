@@ -52,7 +52,8 @@ class SettingsPage extends StatelessWidget {
                         Text('First name'),
                         SizedBox(width: 40),
                         Text('Lorem', style: boldFont)
-                      ]),Divider(color: Colors.black),
+                      ]),
+                  Divider(color: Colors.black),
                   SizedBox(
                     height: 10,
                   ),
@@ -63,7 +64,8 @@ class SettingsPage extends StatelessWidget {
                       SizedBox(width: 40),
                       Text('Ipsum', style: boldFont)
                     ],
-                  ),Divider(color: Colors.black),
+                  ),
+                  Divider(color: Colors.black),
                   SizedBox(
                     height: 10,
                   ),
@@ -74,7 +76,8 @@ class SettingsPage extends StatelessWidget {
                       SizedBox(width: 40),
                       Icon(Icons.arrow_forward, size: 18, color: Colors.black)
                     ],
-                  ), Divider(color: Colors.black),
+                  ),
+                  Divider(color: Colors.black),
                   SizedBox(
                     height: 10,
                   ),
@@ -87,14 +90,20 @@ class SettingsPage extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Colors.black,
                         size: 19.0,
-                        semanticLabel:
-                            'EFT Transfer',
                       ),
                     ],
-                  ),Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
                   ),
+                  Divider(color: Colors.black),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Text('Logout',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  )
                 ],
               ),
             )

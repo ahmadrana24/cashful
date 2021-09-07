@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'for_rest4.dart';
-
 
 class ApplyForRest3 extends StatefulWidget {
   const ApplyForRest3({Key? key}) : super(key: key);
@@ -11,8 +11,11 @@ class ApplyForRest3 extends StatefulWidget {
 }
 
 class _ApplyForRest3State extends State<ApplyForRest3> {
-  int _value = 0;
-  int _value2 = 0;
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+  String education = '';
+  String monthlySavings = '';
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -60,11 +63,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value,
+                      value: 'Postgraduate',
+                      groupValue: education,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          education = value as String;
                         });
                       },
                     ),
@@ -79,11 +82,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value,
+                        value: 'Undergraduate',
+                        groupValue: education,
                         onChanged: (value) {
                           setState(() {
-                            _value = (value) as int;
+                            education = value as String;
                           });
                         }),
                     SizedBox(
@@ -94,11 +97,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 3,
-                      groupValue: _value,
+                      value: 'Matric',
+                      groupValue: education,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          education = value as String;
                         });
                       },
                     ),
@@ -113,11 +116,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 4,
-                      groupValue: _value,
+                      value: 'Elementary',
+                      groupValue: education,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          education = value as String;
                         });
                       },
                     ),
@@ -140,11 +143,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value2,
+                      value: 'R1 - R99',
+                      groupValue: monthlySavings,
                       onChanged: (value) {
                         setState(() {
-                          _value2 = (value) as int;
+                          monthlySavings = value as String;
                         });
                       },
                     ),
@@ -159,11 +162,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value2,
+                        value: 'R100 - R249',
+                        groupValue: monthlySavings,
                         onChanged: (value) {
                           setState(() {
-                            _value2 = (value) as int;
+                            monthlySavings = value as String;
                           });
                         }),
                     SizedBox(
@@ -174,11 +177,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 3,
-                        groupValue: _value2,
+                        value: 'R250 - R499',
+                        groupValue: monthlySavings,
                         onChanged: (value) {
                           setState(() {
-                            _value2 = (value) as int;
+                            monthlySavings = value as String;
                           });
                         }),
                     SizedBox(
@@ -189,11 +192,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 4,
-                        groupValue: _value2,
+                        value: 'R500 and above',
+                        groupValue: monthlySavings,
                         onChanged: (value) {
                           setState(() {
-                            _value2 = (value) as int;
+                            monthlySavings = value as String;
                           });
                         }),
                     SizedBox(
@@ -204,11 +207,11 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 5,
-                        groupValue: _value2,
+                        value: 'Not yet',
+                        groupValue: monthlySavings,
                         onChanged: (value) {
                           setState(() {
-                            _value2 = (value) as int;
+                            monthlySavings = value as String;
                           });
                         }),
                     SizedBox(
@@ -231,7 +234,15 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {
+          onPressed: () async {
+            await collectionReference
+                .doc(collectionReference.doc('Applicant particulars').id)
+                .update({
+              'map4': {
+                'Highest level of education': education,
+                'Monthly savings': monthlySavings,
+              }
+            });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForRest4()));
           }),

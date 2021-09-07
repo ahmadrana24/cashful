@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'for_sme2.dart';
@@ -10,7 +11,12 @@ class ApplyForSME1 extends StatefulWidget {
 }
 
 class _ApplyForSME1State extends State<ApplyForSME1> {
-  int _value = 0;
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+  final TextEditingController businessOffering = TextEditingController();
+  final TextEditingController durationOfOperation = TextEditingController();
+  String financingValue = '';
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -58,6 +64,7 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                     width: 250,
                   ),
                   TextField(
+                    controller: businessOffering,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -77,6 +84,7 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                     width: 250,
                   ),
                   TextField(
+                    controller: durationOfOperation,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -96,11 +104,11 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value,
+                      value: 'Personal savings',
+                      groupValue: financingValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          financingValue = value as String;
                         });
                       },
                     ),
@@ -115,26 +123,26 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value,
+                        value: 'Group savings/stokvel',
+                        groupValue: financingValue,
                         onChanged: (value) {
                           setState(() {
-                            _value = (value) as int;
+                            financingValue = value as String;
                           });
                         }),
                     SizedBox(
                       width: 10,
                     ),
-                    Text('Group savings / stokvel', style: myFont)
+                    Text('Group savings/stokvel', style: myFont)
                   ]),
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 3,
-                      groupValue: _value,
+                      value: 'Friends/family',
+                      groupValue: financingValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          financingValue = value as String;
                         });
                       },
                     ),
@@ -149,11 +157,11 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 4,
-                      groupValue: _value,
+                      value: 'Bank loan',
+                      groupValue: financingValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          financingValue = value as String;
                         });
                       },
                     ),
@@ -168,11 +176,11 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 5,
-                      groupValue: _value,
+                      value: 'Other',
+                      groupValue: financingValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          financingValue = value as String;
                         });
                       },
                     ),
@@ -195,7 +203,15 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {
+          onPressed: () async {
+            await collectionReference
+                .doc(collectionReference.doc('Applicant particulars').id)
+                .update({
+                  'map a': {
+              'Business offering': businessOffering.text,
+              'Length of operation': durationOfOperation.text,
+              'Source of financing': financingValue,}
+            });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForSME2()));
           }),

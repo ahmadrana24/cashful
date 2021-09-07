@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'home_screen.dart';
-import 'messages.dart';
-import 'settings.dart';
-
 class StatusScreen extends StatefulWidget {
   const StatusScreen({Key? key}) : super(key: key);
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'for_rest3.dart';
 
@@ -9,7 +10,11 @@ class ApplyForRest2 extends StatefulWidget {
 }
 
 class _ApplyForRest3State extends State<ApplyForRest2> {
-  int _value2 = 0;
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+  String stokvelValue = '';
+  final TextEditingController stokvelContribution = TextEditingController();
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -58,11 +63,11 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 3,
-                      groupValue: _value2,
+                      value: 'Yes',
+                      groupValue: stokvelValue,
                       onChanged: (value) {
                         setState(() {
-                          _value2 = (value) as int;
+                          stokvelValue = value as String;
                         });
                       },
                     ),
@@ -77,11 +82,11 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 4,
-                        groupValue: _value2,
+                        value: 'No',
+                        groupValue: stokvelValue,
                         onChanged: (value) {
                           setState(() {
-                            _value2 = (value) as int;
+                            stokvelValue = value as String;
                           });
                         }),
                     SizedBox(
@@ -99,6 +104,7 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
                     width: 250,
                   ),
                   TextField(
+                    controller: stokvelContribution,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -122,7 +128,15 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {
+          onPressed: () async {
+            await collectionReference
+                .doc(collectionReference.doc('Applicant particulars').id)
+                .update({
+              'map3': {
+                'Stokvel participation': stokvelValue,
+                'Stokvel contribution': stokvelContribution.text,
+              }
+            });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForRest3()));
           }),

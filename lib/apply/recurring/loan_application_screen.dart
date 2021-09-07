@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main_views/default_home.dart';
 
-class ApplyForRest4 extends StatefulWidget {
-  const ApplyForRest4({Key? key}) : super(key: key);
+class LoanApplicationScreen extends StatefulWidget {
+  const LoanApplicationScreen({Key? key}) : super(key: key);
 
   @override
-  _ApplyForRest4State createState() => _ApplyForRest4State();
+  LoanApplicationScreenState createState() => LoanApplicationScreenState();
 }
 
-class _ApplyForRest4State extends State<ApplyForRest4> {
+class LoanApplicationScreenState extends State<LoanApplicationScreen> {
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
 
@@ -199,42 +199,37 @@ class _ApplyForRest4State extends State<ApplyForRest4> {
                                 ),
                                 actions: [
                                   Container(
-                                      alignment: Alignment.center,
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Color.fromRGBO(
-                                                        1, 67, 55, 1)),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20))),
-                                          ),
-                                          child: Text('Finish'),
-                                          onPressed: () async {
-                                            await collectionReference
-                                                .doc(collectionReference
-                                                    .doc(
-                                                        'Loan application')
-                                                    .id)
-                                                .set({
-                                              
-                                                'Loan type': loanType,
-                                                'Loan details':
-                                                    loanDetails.text,
-                                                'Amount requested':
-                                                    loanAmount.text,
-                                              }
-                                            );
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        DefaultHomePage()));
-                                          }))
+                                    alignment: Alignment.center,
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color.fromRGBO(1, 67, 55, 1)),
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20))),
+                                        ),
+                                        child: Text('Finish'),
+                                        onPressed: () async {
+                                          await collectionReference
+                                              .doc(collectionReference
+                                                  .doc('Loan application')
+                                                  .id)
+                                              .set({
+                                            'Loan type': loanType,
+                                            'Loan details': loanDetails.text,
+                                            'Amount requested': loanAmount.text,
+                                          });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      DefaultHomePage()));
+                                        }),
+                                  )
                                 ]);
                             return dialog;
                           })),

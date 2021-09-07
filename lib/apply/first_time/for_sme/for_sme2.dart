@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'for_sme3.dart';
@@ -10,6 +11,12 @@ class ApplyForSME2 extends StatefulWidget {
 }
 
 class _ApplyForSME1State extends State<ApplyForSME2> {
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+  String investmentToDate = '';
+  final TextEditingController monthlyBusinessRevenue = TextEditingController();
+  final TextEditingController monthlyBusinessExpenses = TextEditingController();
+
   int _value = 0;
   var myFont = (TextStyle(
       color: Colors.black,
@@ -50,7 +57,8 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                 children: [
                   Container(
                       margin: EdgeInsets.only(right: 20),
-                      child: Text('How much has been invested into your business to date?',
+                      child: Text(
+                          'How much has been invested into your business to date?',
                           style: myFont)),
                   SizedBox(
                     height: 10,
@@ -58,11 +66,11 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value,
+                      value: 'R0 - R2499',
+                      groupValue: investmentToDate,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          investmentToDate = value as String;
                         });
                       },
                     ),
@@ -77,11 +85,11 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value,
+                        value: 'R2500 - R4999',
+                        groupValue: investmentToDate,
                         onChanged: (value) {
                           setState(() {
-                            _value = (value) as int;
+                            investmentToDate = value as String;
                           });
                         }),
                     SizedBox(
@@ -92,11 +100,11 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 3,
-                      groupValue: _value,
+                      value: 'R5000 - R7499',
+                      groupValue: investmentToDate,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          investmentToDate = value as String;
                         });
                       },
                     ),
@@ -111,11 +119,11 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 4,
+                      value: 'R7500 - R9999',
                       groupValue: _value,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          investmentToDate = value as String;
                         });
                       },
                     ),
@@ -130,11 +138,11 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 5,
-                      groupValue: _value,
+                      value: 'R10000 and above',
+                      groupValue: investmentToDate,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          investmentToDate = value as String;
                         });
                       },
                     ),
@@ -146,14 +154,14 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 40),
-                      child: Text(
-                          'How much does your business make per month?',
+                      child: Text('How much does your business make per month?',
                           style: myFont)),
                   SizedBox(width: 4),
                   SizedBox(
                     width: 250,
                   ),
                   TextField(
+                    controller: monthlyBusinessRevenue,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -165,14 +173,14 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 10),
-                      child: Text(
-                          "What are your business's monthly expenses?",
+                      child: Text("What are your business's monthly expenses?",
                           style: myFont)),
                   SizedBox(width: 4),
                   SizedBox(
                     width: 250,
                   ),
                   TextField(
+                    controller: monthlyBusinessExpenses,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -182,7 +190,6 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                         )),
                   ),
                   SizedBox(height: 30),
-                  
                 ],
               ),
             ),
@@ -197,8 +204,19 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ApplyForSME3()));}),
+          onPressed: () async {
+            await collectionReference
+                .doc(collectionReference.doc('Applicant particulars').id)
+                .update({
+              'map b': {
+                'Investment to date': investmentToDate,
+                'Business revenue p/m': monthlyBusinessRevenue.text,
+                'Business expenses p/m': monthlyBusinessExpenses.text,
+              }
+            });
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ApplyForSME3()));
+          }),
     );
   }
 }

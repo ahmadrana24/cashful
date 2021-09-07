@@ -1,15 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'for_rest2.dart';
 
 class ApplyForRest1 extends StatefulWidget {
-  const ApplyForRest1({ Key? key }) : super(key: key);
+  const ApplyForRest1({Key? key}) : super(key: key);
 
   @override
   _ApplyForRest1State createState() => _ApplyForRest1State();
 }
 
-class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
+class _ApplyForRest1State extends State<ApplyForRest1> {
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+  String incomeSourceValue = '';
+  final TextEditingController monthlyIncome = TextEditingController();
+  final TextEditingController monthlyExpenses = TextEditingController();
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -57,11 +64,11 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value,
+                      value: 'Salary',
+                      groupValue: incomeSourceValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          incomeSourceValue = value as String;
                         });
                       },
                     ),
@@ -76,11 +83,11 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value,
+                        value: 'Savings',
+                        groupValue: incomeSourceValue,
                         onChanged: (value) {
                           setState(() {
-                            _value = (value) as int;
+                            incomeSourceValue = value as String;
                           });
                         }),
                     SizedBox(
@@ -92,10 +99,10 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                     Radio(
                       activeColor: Colors.black,
                       value: 3,
-                      groupValue: _value,
+                      groupValue: 'Inheritance',
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          incomeSourceValue = value as String;
                         });
                       },
                     ),
@@ -110,11 +117,11 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 4,
-                      groupValue: _value,
+                      value: 'Investments',
+                      groupValue: incomeSourceValue,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          incomeSourceValue = value as String;
                         });
                       },
                     ),
@@ -129,15 +136,17 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 40),
-                      child: Text(
-                          'How much is your monthly income?',
+                      child: Text('How much is your monthly income?',
                           style: myFont)),
                   SizedBox(width: 4),
                   SizedBox(
                     width: 250,
                   ),
-                  Container(width: 270, margin: EdgeInsets.only(right: 18),
+                  Container(
+                    width: 270,
+                    margin: EdgeInsets.only(right: 18),
                     child: TextField(
+                      controller: monthlyIncome,
                       textAlign: TextAlign.left,
                       decoration: InputDecoration(
                           isDense: true,
@@ -150,13 +159,14 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                   SizedBox(height: 20),
                   Container(
                       margin: EdgeInsets.only(right: 10),
-                      child: Text(
-                          "How much are your monthly expenses?",
+                      child: Text("How much are your monthly expenses?",
                           style: myFont)),
                   SizedBox(width: 4),
-                  
-                  Container(width: 270, margin: EdgeInsets.only(right: 20),
+                  Container(
+                    width: 270,
+                    margin: EdgeInsets.only(right: 20),
                     child: TextField(
+                      controller: monthlyExpenses,
                       textAlign: TextAlign.left,
                       decoration: InputDecoration(
                           isDense: true,
@@ -167,7 +177,6 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
                     ),
                   ),
                   SizedBox(height: 30),
-                  
                 ],
               ),
             ),
@@ -182,8 +191,19 @@ class _ApplyForRest1State extends State<ApplyForRest1> { int _value = 0;
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ApplyForRest2()));}),
+          onPressed: () async {
+            await collectionReference
+                .doc(collectionReference.doc('Applicant particulars').id)
+                .update({
+              'map2': {
+                'Income source': incomeSourceValue,
+                'Monthly income': monthlyIncome.text,
+                'Monthly expenses': monthlyExpenses.text
+              }
+            });
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ApplyForRest2()));
+          }),
     );
   }
 }

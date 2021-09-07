@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/apply/first_time/for_rest/for_rest1.dart';
@@ -12,17 +13,22 @@ class ApplyScreen1 extends StatefulWidget {
 }
 
 class _ApplyScreen1State extends State<ApplyScreen1> {
-  int _value = 0;
-  int _value2 = 0;
-  int _value3 = 0;
+  String creditScoreValue = '';
+  String smallBusinessOwnerValue = '';
+  String employmentStatusValue = '';
+  final TextEditingController creditScoreAmount = TextEditingController();
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+
+  bool _isVisible = false;
+  bool _isVisible2 = false;
+  bool _forBusiness = true;
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-  bool _isVisible = true;
-  bool _isVisible2 = true;
-  bool _forBusiness = true;
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +68,12 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                       child: Row(children: [
                         Radio(
                           activeColor: Colors.black,
-                          value: 1,
-                          groupValue: _value,
+                          value: 'Yes',
+                          groupValue: creditScoreValue,
                           onChanged: (value) {
                             setState(() {
-                              _value = (value) as int;
+                              creditScoreValue = value as String;
+                              _isVisible = !_isVisible;
                             });
                           },
                         ),
@@ -84,11 +91,11 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                       child: Row(children: [
                         Radio(
                             activeColor: Colors.black,
-                            value: 2,
-                            groupValue: _value,
+                            value: 'No',
+                            groupValue: creditScoreValue,
                             onChanged: (value) {
                               setState(() {
-                                _value = (value) as int;
+                                creditScoreValue = value as String;
                                 _isVisible = !_isVisible;
                               });
                             }),
@@ -111,6 +118,7 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                       child: Visibility(
                         visible: _isVisible,
                         child: TextField(
+                          controller: creditScoreAmount,
                           textAlign: TextAlign.left,
                           decoration: InputDecoration(
                               isDense: true,
@@ -134,12 +142,13 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                       child: Row(children: [
                         Radio(
                           activeColor: Colors.black,
-                          value: 3,
-                          groupValue: _value2,
+                          value: 'Yes',
+                          groupValue: smallBusinessOwnerValue,
                           onChanged: (value) {
                             setState(() {
-                              _value2 = (value) as int;
+                              smallBusinessOwnerValue = value as String;
                               _forBusiness = _forBusiness;
+                              _isVisible2 = _isVisible2;
                             });
                           },
                         ),
@@ -157,13 +166,13 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                       child: Row(children: [
                         Radio(
                             activeColor: Colors.black,
-                            value: 4,
-                            groupValue: _value2,
+                            value: 'No',
+                            groupValue: smallBusinessOwnerValue,
                             onChanged: (value) {
                               setState(() {
-                                _value2 = (value) as int;
+                                smallBusinessOwnerValue = value as String;
                                 _forBusiness = !_forBusiness;
-                              _isVisible2 = !_isVisible2;
+                                _isVisible2 = !_isVisible2;
                               });
                             }),
                         SizedBox(
@@ -189,11 +198,11 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                         child: Row(children: [
                           Radio(
                             activeColor: Colors.black,
-                            value: 2,
-                            groupValue: _value3,
+                            value: 'Unemployed',
+                            groupValue: employmentStatusValue,
                             onChanged: (value) {
                               setState(() {
-                                _value3 = (value) as int;
+                                employmentStatusValue = value as String;
                               });
                             },
                           ),
@@ -214,11 +223,11 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                         child: Row(children: [
                           Radio(
                             activeColor: Colors.black,
-                            value: 3,
-                            groupValue: _value3,
+                            value: 'Employed',
+                            groupValue: employmentStatusValue,
                             onChanged: (value) {
                               setState(() {
-                                _value3 = (value) as int;
+                                employmentStatusValue = value as String;
                               });
                             },
                           ),
@@ -239,11 +248,12 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                         child: Row(children: [
                           Radio(
                             activeColor: Colors.black,
-                            value: 4,
-                            groupValue: _value3,
+                            value: 'Freelancer',
+                            groupValue: employmentStatusValue,
                             onChanged: (value) {
                               setState(() {
-                                _value3 = (value) as int;
+                                employmentStatusValue = value as String;
+                                _isVisible = _isVisible;
                               });
                             },
                           ),
@@ -264,11 +274,11 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                         child: Row(children: [
                           Radio(
                             activeColor: Colors.black,
-                            value: 1,
-                            groupValue: _value3,
+                            value: 'Student',
+                            groupValue: employmentStatusValue,
                             onChanged: (value) {
                               setState(() {
-                                _value3 = (value) as int;
+                                employmentStatusValue = value as String;
                               });
                             },
                           ),
@@ -296,7 +306,20 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
             Icons.arrow_forward,
             color: Colors.black,
           ),
-          onPressed: () {
+          onPressed: () async {
+            await collectionReference.doc(collectionReference.doc('Applicant particulars').id).set({
+              'map1': { 'Is credit score present?': creditScoreValue,
+              'Credit score value': creditScoreAmount.text,
+              'Is small business owner?': smallBusinessOwnerValue,
+              'Employment status': employmentStatusValue,
+              }
+            });
+            // await collectionReference.add({
+            //   'Is credit score present?': creditScoreValue,
+            //   'Credit score value': creditScoreAmount.text,
+            //   'Is small business owner?': smallBusinessOwnerValue,
+            //   'Employment status': employmentStatusValue,
+            // });
             if (_forBusiness) {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ApplyForSME1()));

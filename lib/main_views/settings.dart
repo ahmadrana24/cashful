@@ -7,6 +7,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
 
+
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 30,
@@ -90,20 +91,14 @@ class SettingsPage extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Colors.black,
                         size: 19.0,
+                        semanticLabel: 'EFT Transfer',
                       ),
                     ],
                   ),
                   Divider(color: Colors.black),
                   SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text('Logout',
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  )
                 ],
               ),
             )

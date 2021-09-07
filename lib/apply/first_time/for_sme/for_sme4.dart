@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main_views/default_home.dart';
 
 class ApplyForSME4 extends StatefulWidget {
   const ApplyForSME4({Key? key}) : super(key: key);
@@ -8,7 +10,13 @@ class ApplyForSME4 extends StatefulWidget {
 }
 
 class _ApplyForSME3State extends State<ApplyForSME4> {
-  int _value = 0;
+  final CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
+
+  String loanType = '';
+  final TextEditingController loanDetails = TextEditingController();
+  final TextEditingController loanAmount = TextEditingController();
+
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
@@ -57,11 +65,11 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 1,
-                      groupValue: _value,
+                      value: 'Personal',
+                      groupValue: loanType,
                       onChanged: (value) {
                         setState(() {
-                          _value = (value) as int;
+                          loanType = value as String;
                         });
                       },
                     ),
@@ -76,11 +84,11 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                   Row(children: [
                     Radio(
                         activeColor: Colors.black,
-                        value: 2,
-                        groupValue: _value,
+                        value: 'Business',
+                        groupValue: loanType,
                         onChanged: (value) {
                           setState(() {
-                            _value = (value) as int;
+                            loanType = value as String;
                           });
                         }),
                     SizedBox(
@@ -99,6 +107,7 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                     width: 250,
                   ),
                   TextField(
+                    controller: loanDetails,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -114,6 +123,7 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                           style: myFont)),
                   SizedBox(height: 10),
                   TextField(
+                    controller: loanAmount,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: true,
@@ -150,12 +160,15 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                           context: context,
                           builder: (BuildContext context) {
                             AlertDialog dialog = AlertDialog(
-                              shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                                content:
-                                Container(height: 200, width: 200,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                content: Container(
+                                  height: 200,
+                                  width: 200,
                                   child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -185,7 +198,8 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                       ]),
                                 ),
                                 actions: [
-                                  Container(alignment: Alignment.center,
+                                  Container(
+                                    alignment: Alignment.center,
                                     child: ElevatedButton(
                                         style: ButtonStyle(
                                           backgroundColor:
@@ -195,12 +209,25 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                                   RoundedRectangleBorder>(
                                               RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(20))),
+                                                      BorderRadius.circular(
+                                                          20))),
                                         ),
                                         child: Text('Finish'),
-                                        onPressed: () {
-                                          Navigator.of(context).popUntil((route) => route.isFirst);
-
+                                        onPressed: () async {
+                                          await collectionReference
+                                              .doc(collectionReference
+                                                  .doc('Loan application')
+                                                  .id)
+                                              .set({
+                                            'Loan type': loanType,
+                                            'Loan details': loanDetails.text,
+                                            'Amount requested': loanAmount.text,
+                                          });
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      DefaultHomePage()));
                                         }),
                                   )
                                 ]);

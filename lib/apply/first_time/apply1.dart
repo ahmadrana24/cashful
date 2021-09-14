@@ -96,7 +96,7 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                             onChanged: (value) {
                               setState(() {
                                 creditScoreValue = value as String;
-                                _isVisible = !_isVisible;
+                                _isVisible = _isVisible;
                               });
                             }),
                         SizedBox(

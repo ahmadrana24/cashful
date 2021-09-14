@@ -15,6 +15,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
   final TextEditingController gender = TextEditingController();
   final TextEditingController id = TextEditingController();
   final TextEditingController address = TextEditingController();
+  final TextEditingController mobileNumber = TextEditingController();
+  
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
 
@@ -88,6 +90,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             border: UnderlineInputBorder(),
                           ),
                         ),
+                        TextField(
+                          controller: mobileNumber,
+                          decoration: InputDecoration(
+                            labelText: 'Mobile number',
+                            border: UnderlineInputBorder(),
+                          ),
+                        ),
                       ],
                     ),
                   )),
@@ -101,14 +110,18 @@ class _GetStartedPageState extends State<GetStartedPage> {
               color: Colors.black,
             ),
             onPressed: () async {
-              await collectionReference.add({
+              await collectionReference
+                  .doc(collectionReference.doc('Personal details').id)
+                  .set({
                 'First name': firstName.text,
                 'Last name': lastName.text,
                 'Gender': gender.text,
                 'Date of birth': dateOfBirth.text,
                 'ID': id.text,
                 'Address': address.text,
+                'Mobile number': mobileNumber.text
               });
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => VerificationPage()),

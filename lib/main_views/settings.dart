@@ -1,13 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main_views/account_method.dart';
+import 'package:flutter_application_1/main_views/bank_account_method.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
 
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-
-
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc('Personal details')
+        .snapshots();
+    
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 30,
@@ -25,84 +37,143 @@ class SettingsPage extends StatelessWidget {
                 height: 1),
           ),
         ),
-        body: Container(
-          color: Color.fromRGBO(246, 246, 246, 1),
-          child: Column(children: [
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-                padding: EdgeInsets.only(left: 30, right: 30),
-                decoration: BoxDecoration(),
-                child: Text('Account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Inter'))),
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color.fromRGBO(246, 246, 246, 1),
+            child: Column(children: [
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  decoration: BoxDecoration(),
+                  child: Text('Account',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Inter'))),
+              Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('First name'),
+                          SizedBox(width: 40),
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: db,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasError)
+                                return Text('Something went wrong');
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return CircularProgressIndicator();
+        
+                              dynamic data = snapshot.data!.data();
+                              return Text(data['First name'], style: boldFont);
+                            },
+                          ),
+                        ]),
+                    Divider(color: Colors.black),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('First name'),
+                        Text('Last name'),
                         SizedBox(width: 40),
-                        Text('Lorem', style: boldFont)
-                      ]),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Last name'),
-                      SizedBox(width: 40),
-                      Text('Ipsum', style: boldFont)
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Change password'),
-                      SizedBox(width: 40),
-                      Icon(Icons.arrow_forward, size: 18, color: Colors.black)
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Payment method'),
-                      SizedBox(width: 40),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black,
-                        size: 19.0,
-                        semanticLabel: 'EFT Transfer',
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: db,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.hasError)
+                              return Text('Something went wrong');
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return CircularProgressIndicator();
+        
+                            dynamic data = snapshot.data!.data();
+                            return Text(data['Last name'], style: boldFont);
+                          },
+                        ),
+                      ],
+                    ),
+                    Divider(color: Colors.black),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Change password'),
+                          SizedBox(width: 40),
+                          Icon(Icons.arrow_forward, size: 18, color: Colors.black)
+                        ],
                       ),
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-            )
-          ]),
-        ));
+                    ),
+                    Divider(color: Colors.black),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AccountMethod()),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Accounts'),
+                          SizedBox(width: 40),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.black,
+                            size: 19.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.black),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromRGBO(1, 67, 55, 1)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20))),
+                        ),
+                        child: Text('Log out'),
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          setState(() {});
+        
+                          Navigator.of(context).pushReplacementNamed('/signIn');
+                        }),
+                    SizedBox(height: 15),
+                  ],
+                ),
+              )
+            ]),
+          ),
+        ),
+      );
   }
+
+
+  
 }

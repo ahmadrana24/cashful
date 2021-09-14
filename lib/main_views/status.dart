@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class StatusScreen extends StatefulWidget {
@@ -11,7 +12,14 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   Widget build(BuildContext context) {
     var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-  
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc('Outstanding loans')
+        .collection('Loan details')
+        .doc('NlwI7O7owxtyZtEZrN7O')
+        .snapshots();
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 30,
@@ -30,12 +38,12 @@ class _StatusScreenState extends State<StatusScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-            height: 400,
+      child: Container(
+          height: 450,
             width: 300,
             margin: EdgeInsets.all(40),
             decoration: BoxDecoration(
-                color: Colors.white54, borderRadius: BorderRadius.circular(40)),
+                color: Colors.white, borderRadius: BorderRadius.circular(40)),
             child: Column(children: [
               SizedBox(height: 30),
               Container(
@@ -64,19 +72,37 @@ class _StatusScreenState extends State<StatusScreen> {
                                   BorderRadius.all(Radius.elliptical(200, 200)),
                             ))),
                     Positioned(
-                        top: 92,
-                        left: 30,
-                        child: Text(
-                          'R784.00',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.699999988079071),
-                              fontFamily: 'Inter',
-                              fontSize: 35,
-                              letterSpacing: 0,
-                              fontWeight: FontWeight.normal,
-                              height: 1),
-                        )),
+                      top: 92,
+                      left: 30,
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(
+                            data['Amount due'],
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color:
+                                    Color.fromRGBO(0, 0, 0, 0.699999988079071),
+                                fontFamily: 'Inter',
+                                fontSize: 35,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.normal,
+                                height: 1),
+                          );
+                        },
+                      ),
+                      // Text(
+                      //   'R784.00',
+                      //
+                    ),
                     Positioned(
                         top: 65,
                         left: 36,
@@ -92,19 +118,34 @@ class _StatusScreenState extends State<StatusScreen> {
                               height: 1),
                         )),
                     Positioned(
-                        top: 144,
-                        left: 68,
-                        child: Text(
-                          'Apr 23',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.699999988079071),
-                              fontFamily: 'Inter',
-                              fontSize: 20,
-                              letterSpacing: 0,
-                              fontWeight: FontWeight.normal,
-                              height: 1),
-                        )),
+                      top: 144,
+                      left: 68,
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(
+                            data['Due date'],
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color:
+                                    Color.fromRGBO(0, 0, 0, 0.699999988079071),
+                                fontFamily: 'Inter',
+                                fontSize: 20,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.normal,
+                                height: 1),
+                          );
+                        },
+                      ),
+                    ),
                   ])),
               SizedBox(height: 30),
               Padding(
@@ -112,26 +153,57 @@ class _StatusScreenState extends State<StatusScreen> {
                 child: Row(children: [Text('Loan details', style: boldFont)]),
               ),
               SizedBox(height: 15),
+Column( 
+  children:[ 
               Padding(
-                padding: const EdgeInsets.only(right: 42),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Loan amount'),
-                      SizedBox(width: 82),
-                      Text('R700', style: boldFont)
-                    ]),
+                padding:  EdgeInsets.only(right: 24),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text('Loan amount'),
+                  SizedBox(width: 80),
+                  StreamBuilder<DocumentSnapshot>(
+                    stream: db,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.hasError)
+                        return Text('Something went wrong');
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return CircularProgressIndicator();
+
+                      dynamic data = snapshot.data!.data();
+                      return Text(
+                        data['Loan amount'],
+                        style: boldFont,
+                      );
+                    },
+                  ),
+                ]),
               ),
               SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30),
+                padding:  EdgeInsets.only(left: 30),
                 child: Row(
                   children: [
                     Text('Interest'),
                     SizedBox(width: 116),
-                    Text('12%', style: boldFont)
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: db,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError)
+                          return Text('Something went wrong');
+                        if (snapshot.connectionState == ConnectionState.waiting)
+                          return CircularProgressIndicator();
+
+                        dynamic data = snapshot.data!.data();
+                        return Text(
+                          data['Interest'],
+                          style: boldFont,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -139,15 +211,31 @@ class _StatusScreenState extends State<StatusScreen> {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30),
+                padding:  EdgeInsets.only(left: 30),
                 child: Row(
                   children: [
                     Text('Loan term'),
                     SizedBox(width: 100),
-                    Text('45 days', style: boldFont)
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: db,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError)
+                          return Text('Something went wrong');
+                        if (snapshot.connectionState == ConnectionState.waiting)
+                          return CircularProgressIndicator();
+
+                        dynamic data = snapshot.data!.data();
+                        return Text(
+                          data['Loan term'],
+                          style: boldFont,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
+]),
               SizedBox(
                 height: 10,
               ),

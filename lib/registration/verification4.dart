@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main_views/paymtn.dart';
-import 'package:flutter_application_1/main_views/paystdbank.dart';
+import 'package:flutter_application_1/registration/add_bank_account.dart';
 
 class VerificationPage4 extends StatefulWidget {
-  const VerificationPage4({Key? key}) : super(key: key);
+  const VerificationPage4(BuildContext context, {Key? key}) : super(key: key);
 
   @override
   _VerificationPage4State createState() => _VerificationPage4State();
@@ -41,8 +40,8 @@ class _VerificationPage4State extends State<VerificationPage4> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PayMtn()));
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => PayMtn()));
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
@@ -56,14 +55,16 @@ class _VerificationPage4State extends State<VerificationPage4> {
           SizedBox(height: 40),
           InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PayStdBank()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddBankAccountScreen()));
             },
             child: Row(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                      margin: EdgeInsets.only(left: 88),
+                      margin: EdgeInsets.only(left: 93),
                       child: Image(
                           image: AssetImage('assets/images/stdbank.png'))),
                   SizedBox(
@@ -80,22 +81,6 @@ class _VerificationPage4State extends State<VerificationPage4> {
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/home');
-            },
-            child: Text('Submit',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins')),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.white),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-            ),
-          ),
         ]),
       )),
     );

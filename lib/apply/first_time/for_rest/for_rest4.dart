@@ -215,20 +215,15 @@ class _ApplyForRest4State extends State<ApplyForRest4> {
                                           ),
                                           child: Text('Finish'),
                                           onPressed: () async {
-                                            await collectionReference
-                                                .doc(collectionReference
-                                                    .doc(
-                                                        'Loan application')
-                                                    .id)
-                                                .set({
-                                              
-                                                'Loan type': loanType,
-                                                'Loan details':
-                                                    loanDetails.text,
-                                                'Amount requested':
-                                                    loanAmount.text,
-                                              }
-                                            );
+                                           await collectionReference
+                                              .doc(collectionReference
+                                                  .doc('Loan applications')
+                                                  .id).collection('Loan details')
+                                              .add({
+                                            'Loan type': loanType,
+                                            'Loan details': loanDetails.text,
+                                            'Amount requested': loanAmount.text,
+                                          });
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

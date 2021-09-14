@@ -33,7 +33,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
-          'Sign in',
+          'Login',
           style: TextStyle(
               color: Color.fromRGBO(255, 255, 255, 1),
               fontFamily: 'Poppins',

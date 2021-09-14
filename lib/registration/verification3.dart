@@ -229,7 +229,7 @@ class _VerificationPageState extends State<VerificationPage3> {
             uploadFile();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VerificationPage4()),
+              MaterialPageRoute(builder: (context) => VerificationPage4(context)),
             );
           },
         ));

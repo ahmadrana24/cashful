@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main_views/bank_account_method.dart';
+import 'package:flutter_application_1/main_views/mtn_account_method.dart';
 import 'package:flutter_application_1/main_views/paymtn.dart';
-import 'package:flutter_application_1/main_views/paystdbank.dart';
 
-class PayScreen extends StatefulWidget {
+class AccountMethod extends StatefulWidget {
   
   @override
-  _PayScreenState createState() => _PayScreenState();
+  AccountMethodState createState() => AccountMethodState();
 }
 
-class _PayScreenState extends State<PayScreen> {
+class AccountMethodState extends State<AccountMethod> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 30,
         automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          iconSize: 20.0,
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/home');
+          },
+        ),
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
         toolbarHeight: 100,
         title: new Text(
-          'Pay',
+          'Accounts',
           style: TextStyle(
               color: Colors.white,
               fontFamily: 'Poppins',
@@ -51,7 +59,7 @@ class _PayScreenState extends State<PayScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PayMtn()));
+                              builder: (context) => MTNAccountMethod()));
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +79,7 @@ class _PayScreenState extends State<PayScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PayStdBank()));
+                              builder: (context) => BankAccountMethod()));
                     },
                     child: Row(
                         //mainAxisAlignment: MainAxisAlignment.center,

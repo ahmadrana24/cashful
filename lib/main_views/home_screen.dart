@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/apply/first_time/apply_splash.dart';
 import 'package:flutter_application_1/main_views/help.dart';
 import 'package:flutter_application_1/main_views/pay.dart';
+import 'package:flutter_application_1/main_views/test.dart';
 
 import 'status.dart';
 
@@ -66,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ApplySplash()));
+                                      // builder: (context) => LoanApplicationScreen()));
+                              // builder: (context) => ApplySplash()));
+                              builder: (context) => Test()));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,9 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PayScreen()));
+                                  context, MaterialPageRoute(builder: (context) => PayScreen()));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

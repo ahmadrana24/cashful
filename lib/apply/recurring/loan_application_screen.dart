@@ -12,7 +12,6 @@ class LoanApplicationScreen extends StatefulWidget {
 class LoanApplicationScreenState extends State<LoanApplicationScreen> {
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
-
   String loanType = '';
   final TextEditingController loanDetails = TextEditingController();
   final TextEditingController loanAmount = TextEditingController();
@@ -137,13 +136,10 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
             ),
             SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                    margin: EdgeInsets.only(right: 75), child: Text('5/5')),
-                Container(
-                  margin: EdgeInsets.only(right: 40),
-                  child: TextButton(
+                Column(
+                  children:[ TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             Color.fromRGBO(1, 67, 55, 1)),
@@ -214,15 +210,25 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                                         ),
                                         child: Text('Finish'),
                                         onPressed: () async {
-                                          await collectionReference
+                                         await collectionReference
                                               .doc(collectionReference
-                                                  .doc('Loan application')
+                                                  .doc('Loan applications')
                                                   .id)
-                                              .set({
+                                                  .collection('Loan details')
+                                              .add({
                                             'Loan type': loanType,
                                             'Loan details': loanDetails.text,
                                             'Amount requested': loanAmount.text,
                                           });
+                                          // await collectionReference
+                                          //     .doc('Loan application')
+                                          //     .collection('Application details')
+                                          //     .add({
+                                          //   'Loan type': loanType,
+                                          //   'Loan details': loanDetails.text,
+                                          //   'Amount requested': loanAmount.text,
+                                          // });
+
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -233,7 +239,7 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                                 ]);
                             return dialog;
                           })),
-                ),
+                   ] ),
               ],
             ),
           ],

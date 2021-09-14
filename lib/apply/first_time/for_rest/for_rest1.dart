@@ -98,8 +98,8 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
                   Row(children: [
                     Radio(
                       activeColor: Colors.black,
-                      value: 3,
-                      groupValue: 'Inheritance',
+                      value: 'Inheritance/Allowance',
+                      groupValue: incomeSourceValue,
                       onChanged: (value) {
                         setState(() {
                           incomeSourceValue = value as String;
@@ -110,7 +110,7 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
                       width: 10,
                     ),
                     Text(
-                      'Inheritance',
+                      'Inheritance/Allowance',
                       style: myFont,
                     )
                   ]),

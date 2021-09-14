@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main_views/account_method.dart';
 import 'package:flutter_application_1/main_views/default_home.dart';
 import 'package:flutter_application_1/main_views/login.dart';
 import 'package:flutter_application_1/registration/get_started.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'main_views/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +26,10 @@ class MyApp extends StatelessWidget {
 
       routes: {
         '/home': (context) => DefaultHomePage(),
-        },
+        '/signIn': (context) => MyLoginPage(),
+        '/settings': (context) => SettingsPage(),
+        '/accountMethod': (context) => AccountMethod(),
+      },
     );
   }
 }
@@ -34,6 +40,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  User? newuser = FirebaseAuth.instance.currentUser;
+  //marks user state as logged in..?
+
   final _auth = FirebaseAuth.instance;
   bool showProgress = false;
   late String email, password;
@@ -41,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
         toolbarHeight: 100,
         centerTitle: true,
@@ -61,18 +71,18 @@ class _MyHomePageState extends State<MyHomePage> {
           inAsyncCall: showProgress,
           child: Form(
             child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 20.0,
-              ),
-              Column(
-                children:  <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child:
-                      Container(
-                        child: Text('Email address',
-                        style: TextStyle(
+              children: <Widget>[
+                SizedBox(
+                  height: 20.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: Text(
+                          'Email address',
+                          style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins',
                             fontSize: 20,
@@ -83,106 +93,107 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                ],
-              ),
-                
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.left,
-                onChanged: (value) {
-                  email = value; //get the value entered by user.
-                },
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(32.0)))),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Column(
-                children:  <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child:
-                      Container(
-                        child: Text('Password',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              TextField(
-                obscureText: true,
-                textAlign: TextAlign.left,
-                onChanged: (value) {
-                  password = value; //get the value entered by user.
-                },
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(32.0)))),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Material(
-                elevation: 1,
-                color: Colors.green[5],
-                borderRadius: BorderRadius.circular(32.0),
-                child: MaterialButton(
-                  onPressed: () async {
-                  setState(() {
-                      showProgress = true;
-                    });
-                    try {
-                      final newuser =
-                          await _auth.createUserWithEmailAndPassword(
-                              email: email, password: password);
-                      if (newuser != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GetStartedPage()),
-                        );
-                        setState(() {
-                          showProgress = false;
-                        });
-                      }
-                    } catch (e) {}
+                  ],
+                ),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.left,
+                  onChanged: (value) {
+                    email = value; //get the value entered by user.
                   },
-                  minWidth: 200.0,
-                  height: 50.0,
-                  child: Text(
-                    "Register",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
+                  decoration: InputDecoration(
+                      border: UnderlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(32.0)))),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: Text(
+                          'Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TextField(
+                  obscureText: true,
+                  textAlign: TextAlign.left,
+                  onChanged: (value) {
+                    password = value; //get the value entered by user.
+                  },
+                  decoration: InputDecoration(
+                      border: UnderlineInputBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(32.0)))),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Material(
+                  elevation: 1,
+                  color: Colors.green[5],
+                  borderRadius: BorderRadius.circular(32.0),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      setState(() {
+                        showProgress = true;
+                      });
+                      try {
+                        final newuser =
+                            await _auth.createUserWithEmailAndPassword(
+                                email: email, password: password);
+                        if (newuser != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GetStartedPage()),
+                          );
+                          setState(() {
+                            showProgress = false;
+                          });
+                        }
+                      } catch (e) {}
+                    },
+                    minWidth: 200.0,
+                    height: 50.0,
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 20.0),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 15.0,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyLoginPage()),
-                  );
-                },
-                child: Text(
-                  "Already registered? Login now",
-                  style: TextStyle(
-                      color: Colors.grey[700], fontWeight: FontWeight.w900),
+                SizedBox(
+                  height: 15.0,
                 ),
-              )
-            ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyLoginPage()),
+                    );
+                  },
+                  child: Text(
+                    "Already registered? Login now",
+                    style: TextStyle(
+                        color: Colors.grey[700], fontWeight: FontWeight.w900),
+                  ),
+                )
+              ],
             ),
           ),
         ),

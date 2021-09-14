@@ -214,15 +214,16 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                         ),
                                         child: Text('Finish'),
                                         onPressed: () async {
-                                          await collectionReference
+                                         await collectionReference
                                               .doc(collectionReference
-                                                  .doc('Loan application')
-                                                  .id)
-                                              .set({
+                                                  .doc('Loan applications')
+                                                  .id).collection('Loan details')
+                                              .add({
                                             'Loan type': loanType,
                                             'Loan details': loanDetails.text,
                                             'Amount requested': loanAmount.text,
                                           });
+
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

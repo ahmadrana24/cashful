@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'default_home.dart';
 
 //void main() => runApp(MyApp());
 
@@ -10,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sign in',
+      title: 'Login',
       home: MyLoginPage(),
     );
     
@@ -30,11 +33,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
         toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
-          'Sign in',
+          'Log in',
           style: TextStyle(
               color: Color.fromRGBO(255, 255, 255, 1),
               fontFamily: 'Poppins',
@@ -129,6 +133,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   borderRadius: BorderRadius.circular(32.0),
                   child: MaterialButton(
                     onPressed: () async {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DefaultHomePage()),
+                    );
                       setState(() {
                         showProgress = true;
                       });
@@ -145,7 +153,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
                               timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.blueAccent,
+                              backgroundColor: Colors.grey,
                               textColor: Colors.white,
                               fontSize: 16.0);
                           setState(() {
@@ -162,8 +170,25 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
                     ),
                   ),
-                )
-              ],
+
+                  
+                ),
+              SizedBox(
+                  height: 15.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
+                  },
+                  child: Text(
+                    "Not registered? Sign up now",
+                    style: TextStyle(
+                        color: Colors.grey[700], fontWeight: FontWeight.w900),
+                  ),
+                )],
             ),
           ),
         ),

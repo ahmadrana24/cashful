@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main_views/bank_account_method.dart';
 import 'package:flutter_application_1/main_views/mtn_account_method.dart';
-import 'package:flutter_application_1/main_views/paymtn.dart';
 
 class AccountMethod extends StatefulWidget {
   

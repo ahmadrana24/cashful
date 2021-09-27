@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,6 +9,9 @@ class GetStartedPage extends StatefulWidget {
   _GetStartedPageState createState() => _GetStartedPageState();
 }
 
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
+
 class _GetStartedPageState extends State<GetStartedPage> {
   final TextEditingController firstName = TextEditingController();
   final TextEditingController lastName = TextEditingController();
@@ -16,9 +20,26 @@ class _GetStartedPageState extends State<GetStartedPage> {
   final TextEditingController id = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController mobileNumber = TextEditingController();
-  
+
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
+
+  void uploadPersonalDetails() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Personal details')
+        .set({
+      'First name': firstName.text,
+      'Last name': lastName.text,
+      'Gender': gender.text,
+      'Date of birth': dateOfBirth.text,
+      'ID': id.text,
+      'Address': address.text,
+      'Mobile number': mobileNumber.text
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,22 +131,37 @@ class _GetStartedPageState extends State<GetStartedPage> {
               color: Colors.black,
             ),
             onPressed: () async {
-              await collectionReference
-                  .doc(collectionReference.doc('Personal details').id)
-                  .set({
-                'First name': firstName.text,
-                'Last name': lastName.text,
-                'Gender': gender.text,
-                'Date of birth': dateOfBirth.text,
-                'ID': id.text,
-                'Address': address.text,
-                'Mobile number': mobileNumber.text
-              });
-
+              uploadPersonalDetails();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => VerificationPage()),
               );
+
+              // await collectionReference
+              //     .doc(collectionReference.doc(uid).id)
+              //     .set({
+              //   'First name': firstName.text,
+              //   'Last name': lastName.text,
+              //   'Gender': gender.text,
+              //   'Date of birth': dateOfBirth.text,
+              //   'ID': id.text,
+              //   'Address': address.text,
+              //   'Mobile number': mobileNumber.text
+              // });
+
+              //   await collectionReference
+              //       .doc(collectionReference.doc('Personal details').id)
+              //       .set({
+              //     'First name': firstName.text,
+              //     'Last name': lastName.text,
+              //     'Gender': gender.text,
+              //     'Date of birth': dateOfBirth.text,
+              //     'ID': id.text,
+              //     'Address': address.text,
+              //     'Mobile number': mobileNumber.text
+              //   });
+
+              
             },
           )),
     );

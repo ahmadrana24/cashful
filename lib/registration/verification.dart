@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +14,9 @@ class VerificationPage extends StatefulWidget {
   @override
   _VerificationPageState createState() => _VerificationPageState();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _VerificationPageState extends State<VerificationPage> {
   final imagePicker = ImagePicker();
@@ -54,8 +58,8 @@ class _VerificationPageState extends State<VerificationPage> {
     // for downloading
     url = await snapshot.ref.getDownloadURL();
     await FirebaseFirestore.instance
-        .collection('images')
-        .doc()
+        .collection('users')
+        .doc(uid).collection('Verification').doc('Identification')
         .set({'Image URL': url});
   }
 

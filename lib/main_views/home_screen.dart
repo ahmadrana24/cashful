@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/apply/first_time/apply_splash.dart';
+import 'package:flutter_application_1/apply/first_time/for_sme/for_sme4.dart';
+import 'package:flutter_application_1/apply/recurring/loan_application_screen.dart';
 import 'package:flutter_application_1/main_views/help.dart';
 import 'package:flutter_application_1/main_views/pay.dart';
 import 'package:flutter_application_1/main_views/test.dart';
@@ -48,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 20,
+                    height: 40,
                     margin: EdgeInsets.only(bottom: 1),
                   ),
                   Expanded(
@@ -66,9 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      // builder: (context) => LoanApplicationScreen()));
+                                      builder: (context) =>
+                                          LoanApplicationScreen()));
+                              // builder: (context) => ApplyForSME4()));
                               // builder: (context) => ApplySplash()));
-                              builder: (context) => Test()));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => PayScreen()));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PayScreen()));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

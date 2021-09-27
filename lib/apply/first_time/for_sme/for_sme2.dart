@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'for_sme3.dart';
@@ -10,6 +11,9 @@ class ApplyForSME2 extends StatefulWidget {
   _ApplyForSME1State createState() => _ApplyForSME1State();
 }
 
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
+
 class _ApplyForSME1State extends State<ApplyForSME2> {
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
@@ -17,12 +21,26 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
   final TextEditingController monthlyBusinessRevenue = TextEditingController();
   final TextEditingController monthlyBusinessExpenses = TextEditingController();
 
-  int _value = 0;
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map b': {
+        'Investment to date': investmentToDate,
+        'Business revenue p/m': monthlyBusinessRevenue.text,
+        'Business expenses p/m': monthlyBusinessExpenses.text,
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +138,7 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
                     Radio(
                       activeColor: Colors.black,
                       value: 'R7500 - R9999',
-                      groupValue: _value,
+                      groupValue: investmentToDate,
                       onChanged: (value) {
                         setState(() {
                           investmentToDate = value as String;
@@ -205,15 +223,16 @@ class _ApplyForSME1State extends State<ApplyForSME2> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-              'map b': {
-                'Investment to date': investmentToDate,
-                'Business revenue p/m': monthlyBusinessRevenue.text,
-                'Business expenses p/m': monthlyBusinessExpenses.text,
-              }
-            });
+            uploadBackgroundInfo();
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map b': {
+            //     'Investment to date': investmentToDate,
+            //     'Business revenue p/m': monthlyBusinessRevenue.text,
+            //     'Business expenses p/m': monthlyBusinessExpenses.text,
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForSME3()));
           }),

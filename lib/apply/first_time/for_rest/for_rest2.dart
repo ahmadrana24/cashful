@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'for_rest3.dart';
 
@@ -8,6 +9,9 @@ class ApplyForRest2 extends StatefulWidget {
   @override
   _ApplyForRest3State createState() => _ApplyForRest3State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForRest3State extends State<ApplyForRest2> {
   final CollectionReference collectionReference =
@@ -20,6 +24,20 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map2': {
+        'Stokvel participation': stokvelValue,
+        'Stokvel contribution': stokvelContribution.text,
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,14 +147,16 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-              'map3': {
-                'Stokvel participation': stokvelValue,
-                'Stokvel contribution': stokvelContribution.text,
-              }
-            });
+            uploadBackgroundInfo();
+
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map3': {
+            //     'Stokvel participation': stokvelValue,
+            //     'Stokvel contribution': stokvelContribution.text,
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForRest3()));
           }),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'for_sme4.dart';
@@ -9,6 +10,9 @@ class ApplyForSME3 extends StatefulWidget {
   @override
   _ApplyForSME3State createState() => _ApplyForSME3State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForSME3State extends State<ApplyForSME3> {
   final CollectionReference collectionReference =
@@ -24,6 +28,21 @@ class _ApplyForSME3State extends State<ApplyForSME3> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map c': {
+        'Savings p/m': monthlySavings,
+        'Stokvel participation?': stokvelValue,
+        'Stokvel contribution': stokvelContribution.text
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -308,15 +327,16 @@ class _ApplyForSME3State extends State<ApplyForSME3> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-              'map c': {
-                'Savings p/m': monthlySavings,
-                'Stokvel participation?': stokvelValue,
-                'Stokvel contribution': stokvelContribution.text
-              }
-            });
+            uploadBackgroundInfo();
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map c': {
+            //     'Savings p/m': monthlySavings,
+            //     'Stokvel participation?': stokvelValue,
+            //     'Stokvel contribution': stokvelContribution.text
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForSME4()));
           }),

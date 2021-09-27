@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'for_rest4.dart';
@@ -9,6 +10,9 @@ class ApplyForRest3 extends StatefulWidget {
   @override
   _ApplyForRest3State createState() => _ApplyForRest3State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForRest3State extends State<ApplyForRest3> {
   final CollectionReference collectionReference =
@@ -21,6 +25,20 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map3': {
+        'Highest level of education': education,
+        'Monthly savings': monthlySavings,
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,14 +253,15 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-              'map4': {
-                'Highest level of education': education,
-                'Monthly savings': monthlySavings,
-              }
-            });
+            uploadBackgroundInfo();
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map4': {
+            //     'Highest level of education': education,
+            //     'Monthly savings': monthlySavings,
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForRest4()));
           }),

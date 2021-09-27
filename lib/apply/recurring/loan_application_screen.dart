@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main_views/default_home.dart';
+import 'package:flutter_application_1/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/main_views/home_screen.dart';
 
 class LoanApplicationScreen extends StatefulWidget {
   const LoanApplicationScreen({Key? key}) : super(key: key);
@@ -8,6 +10,9 @@ class LoanApplicationScreen extends StatefulWidget {
   @override
   LoanApplicationScreenState createState() => LoanApplicationScreenState();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class LoanApplicationScreenState extends State<LoanApplicationScreen> {
   final CollectionReference collectionReference =
@@ -21,6 +26,22 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  String loanTermValue = '';
+
+  void uploadLoanApplication() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Loan requests')
+        .doc()
+        .set({
+      'Loan type': loanType,
+      'Loan details': loanDetails.text,
+      'Amount requested': loanAmount.text,
+      'Loan term': loanTermValue,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,16 +151,97 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                           borderSide: BorderSide(color: Colors.black),
                         )),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
+                  Container(
+                      margin: EdgeInsets.only(right: 120),
+                      child: Text('Please select a loan term', style: myFont)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(children: [
+                    Radio(
+                      activeColor: Colors.black,
+                      value: '7 days',
+                      groupValue: loanTermValue,
+                      onChanged: (value) {
+                        setState(() {
+                          loanTermValue = value as String;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '7 days',
+                      style: myFont,
+                    )
+                  ]),
+                  Row(children: [
+                    Radio(
+                        activeColor: Colors.black,
+                        value: '14 days',
+                        groupValue: loanTermValue,
+                        onChanged: (value) {
+                          setState(() {
+                            loanTermValue = value as String;
+                          });
+                        }),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('14 days', style: myFont)
+                  ]),
+                  Row(children: [
+                    Radio(
+                      activeColor: Colors.black,
+                      value: '21 days',
+                      groupValue: loanTermValue,
+                      onChanged: (value) {
+                        setState(() {
+                          loanTermValue = value as String;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '21 days',
+                      style: myFont,
+                    )
+                  ]),
+                  Row(children: [
+                    Radio(
+                      activeColor: Colors.black,
+                      value: '31 days',
+                      groupValue: loanTermValue,
+                      onChanged: (value) {
+                        setState(() {
+                          loanTermValue = value as String;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '31 days',
+                      style: myFont,
+                    )
+                  ]),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children:[ TextButton(
+                Column(children: [
+                  TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             Color.fromRGBO(1, 67, 55, 1)),
@@ -210,36 +312,29 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                                         ),
                                         child: Text('Finish'),
                                         onPressed: () async {
-                                         await collectionReference
-                                              .doc(collectionReference
-                                                  .doc('Loan applications')
-                                                  .id)
-                                                  .collection('Loan details')
-                                              .add({
-                                            'Loan type': loanType,
-                                            'Loan details': loanDetails.text,
-                                            'Amount requested': loanAmount.text,
-                                          });
-                                          // await collectionReference
-                                          //     .doc('Loan application')
-                                          //     .collection('Application details')
-                                          //     .add({
-                                          //   'Loan type': loanType,
-                                          //   'Loan details': loanDetails.text,
-                                          //   'Amount requested': loanAmount.text,
-                                          // });
+                                          uploadLoanApplication();
+                                          //  await collectionReference
+                                          //       .doc(collectionReference
+                                          //           .doc('Loan applications')
+                                          //           .id)
+                                          //           .collection('Loan details')
+                                          //       .add({
+                                          //     'Loan type': loanType,
+                                          //     'Loan details': loanDetails.text,
+                                          //     'Amount requested': loanAmount.text,
+                                          //   });
 
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (_) =>
-                                                      DefaultHomePage()));
+                                                      HomeWithBottomNavBar()));
                                         }),
                                   )
                                 ]);
                             return dialog;
                           })),
-                   ] ),
+                ]),
               ],
             ),
           ],

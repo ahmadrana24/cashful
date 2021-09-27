@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_application_1/main_views/home_with_bottom_navbar.dart';
+import 'main.dart';
+import 'main_views/home_screen.dart';
 
-void main() => runApp(MyApp());
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sign in',
-      home: MyLoginPage(),
-    );
-  }
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class MyLoginPage extends StatefulWidget {
-  @override
-  _MyLoginPageState createState() => _MyLoginPageState();
-}
-
-class _MyLoginPageState extends State<MyLoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
+  final _key = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
-  bool showProgress = false;
+
+  String errorMessage = '';
+  bool _obscureText = true;
   late String email, password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
         toolbarHeight: 100,
         centerTitle: true,
@@ -41,22 +36,26 @@ class _MyLoginPageState extends State<MyLoginPage> {
               letterSpacing: 1.2,
               fontWeight: FontWeight.bold,
               height: 1),
-      ),),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: ModalProgressHUD(
-          inAsyncCall: showProgress,
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 40.0,),Column(
-                children:  <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child:
-                      Container(
-                        child: Text('Email address',
-                        style: TextStyle(
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Form(
+            key: _key,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 40.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: Text(
+                          'Email address',
+                          style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Poppins',
                             fontSize: 20,
@@ -67,98 +66,131 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         ),
                       ),
                     ),
-                ],
-              ),
-              SizedBox(
-                height: 1.0,
-              ),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  email = value; // get value from TextField
-                },
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(32.0)))),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),Column(
-                children:  <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child:
-                      Container(
-                        child: Text('Password',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              TextField(
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  password = value; //get value from textField
-                },
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(32.0)))),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Material(
-                elevation: 1,
-                color: Colors.green[5],
-                borderRadius: BorderRadius.circular(32.0),
-                child: MaterialButton(
-                  onPressed: () async {
-                    setState(() {
-                      showProgress = true;
-                    });
-                  
-
-                    try {
-                      final newUser = await _auth.signInWithEmailAndPassword(
-                          email: email, password: password);
-
-                      print(newUser.toString());
-
-                      if (newUser != null) {
-                        Fluttertoast.showToast(
-                            msg: "Login Successful",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.blueAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                        setState(() {
-                          showProgress = false;
-                        });
-                      }
-                    } catch (e) {}
+                  ],
+                ),
+                SizedBox(
+                  height: 1.0,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.left,
+                  onChanged: (value) {
+                    email = value; // get value from TextField
                   },
-                  minWidth: 200.0,
-                  height: 45.0,
-                  child: Text(
-                    "Login",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
+                  decoration: InputDecoration(border: UnderlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        child: Text(
+                          'Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 20,
+                            letterSpacing: 1.2,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                TextFormField(
+                  obscureText: _obscureText,
+                  textAlign: TextAlign.left,
+                  onChanged: (value) {
+                    password = value; //get value from textField
+                  },
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        color: Colors.grey,
+                        icon: Icon(_obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                      border: UnderlineInputBorder()),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Center(
+                    child: Text(
+                      errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ),
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 20.0,
+                ),
+                Material(
+                  elevation: 1,
+                  color: Colors.green[5],
+                  borderRadius: BorderRadius.circular(32.0),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      if (_key.currentState!.validate()) {
+                        try {
+                          await _auth
+                              .signInWithEmailAndPassword(
+                                  email: email, password: password)
+                              .then((uid) => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeWithBottomNavBar()),
+                    
+                                  ));
+                          // errorMessage = '';
+                        } on FirebaseAuthException
+                        // catch (error)
+                        {
+                          // errorMessage = error.message!;
+                          errorMessage =
+                              'Email and/or password is invalid or does not exist';
+                        }
+                        setState(() {});
+                      }
+                    },
+                    minWidth: 200.0,
+                    height: 45.0,
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 20.0),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
+                  },
+                  child: Text(
+                    "Don't have an account? Register now",
+                    style: TextStyle(
+                        color: Colors.grey[700], fontWeight: FontWeight.w900),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

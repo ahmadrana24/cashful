@@ -4,13 +4,27 @@ import 'package:flutter_application_1/registration/verification4.dart';
 
 class AddBankAccountScreen extends StatefulWidget {
   const AddBankAccountScreen({Key? key}) : super(key: key);
-  
 
   @override
   _AddBankAccountScreenState createState() => _AddBankAccountScreenState();
 }
 
 class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
+  void uploadBankDetails() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Bank details')
+        .set({
+      'Bank name': bankName.text,
+      'Account holder': accountHolder.text,
+      'Account type': accountType.text,
+      'Branch code': branchCode.text,
+      'Account number': accountNumber.text,
+    });
+  }
+
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
   final TextEditingController bankName = TextEditingController();
@@ -18,9 +32,6 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
   final TextEditingController accountType = TextEditingController();
   final TextEditingController branchCode = TextEditingController();
   final TextEditingController accountNumber = TextEditingController();
-  
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +48,11 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
           icon: Icon(Icons.arrow_back_ios),
           iconSize: 20.0,
           onPressed: () {
-             Navigator.pop(
-                context,
-                MaterialPageRoute(builder: (context) => VerificationPage4(context)),
-              );
+            Navigator.pop(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => VerificationPage4(context)),
+            );
           },
         ),
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
@@ -123,23 +135,21 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                           borderRadius: BorderRadius.circular(20))),
                 ),
                 onPressed: () async {
-
-                  
-                  await collectionReference
-                      .doc(collectionReference.doc('Bank details').id)
-                      .set({
-                    'Bank name': bankName.text,
-                    'Account holder': accountHolder.text,
-                    'Account type': accountType.text,
-                    'Branch code': branchCode.text,
-                    'Account number': accountNumber.text,
-                  });
-                  Navigator.of(context).pushReplacementNamed('/home');
+                  uploadBankDetails();
+                  Navigator.pop(context);
+                  // await collectionReference
+                  //     .doc(collectionReference.doc('Bank details').id)
+                  //     .set({
+                  //   'Bank name': bankName.text,
+                  //   'Account holder': accountHolder.text,
+                  //   'Account type': accountType.text,
+                  //   'Branch code': branchCode.text,
+                  //   'Account number': accountNumber.text,
+                  // });
                 }),
           ],
         ),
       ),
-    )
-    );
+    ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'for_rest2.dart';
@@ -9,6 +10,9 @@ class ApplyForRest1 extends StatefulWidget {
   @override
   _ApplyForRest1State createState() => _ApplyForRest1State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForRest1State extends State<ApplyForRest1> {
   final CollectionReference collectionReference =
@@ -22,6 +26,21 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map1': {
+        'Income source': incomeSourceValue,
+        'Monthly income': monthlyIncome.text,
+        'Monthly expenses': monthlyExpenses.text
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,15 +211,16 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-              'map2': {
-                'Income source': incomeSourceValue,
-                'Monthly income': monthlyIncome.text,
-                'Monthly expenses': monthlyExpenses.text
-              }
-            });
+            uploadBackgroundInfo();
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map2': {
+            //     'Income source': incomeSourceValue,
+            //     'Monthly income': monthlyIncome.text,
+            //     'Monthly expenses': monthlyExpenses.text
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForRest2()));
           }),

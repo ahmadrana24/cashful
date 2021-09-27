@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/apply/first_time/for_rest/for_rest1.dart';
@@ -11,6 +12,9 @@ class ApplyScreen1 extends StatefulWidget {
   @override
   _ApplyScreen1State createState() => _ApplyScreen1State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyScreen1State extends State<ApplyScreen1> {
   String creditScoreValue = '';
@@ -29,6 +33,20 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .set({
+      'Is credit score present?': creditScoreValue,
+      'Credit score value': creditScoreAmount.text,
+      'Is small business owner?': smallBusinessOwnerValue,
+      'Employment status': employmentStatusValue,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -307,19 +325,15 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference.doc(collectionReference.doc('Applicant particulars').id).set({
-              'map1': { 'Is credit score present?': creditScoreValue,
-              'Credit score value': creditScoreAmount.text,
-              'Is small business owner?': smallBusinessOwnerValue,
-              'Employment status': employmentStatusValue,
-              }
-            });
-            // await collectionReference.add({
-            //   'Is credit score present?': creditScoreValue,
-            //   'Credit score value': creditScoreAmount.text,
-            //   'Is small business owner?': smallBusinessOwnerValue,
-            //   'Employment status': employmentStatusValue,
-            // });
+            uploadBackgroundInfo();
+            // await collectionReference.doc(collectionReference.doc('Applicant particulars').id).set({
+            //   // 'map1': {}
+            //   // 'Is credit score present?': creditScoreValue,
+            //   // 'Credit score value': creditScoreAmount.text,
+            //   // 'Is small business owner?': smallBusinessOwnerValue,
+            //   // 'Employment status': employmentStatusValue,
+            //   });
+
             if (_forBusiness) {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ApplyForSME1()));

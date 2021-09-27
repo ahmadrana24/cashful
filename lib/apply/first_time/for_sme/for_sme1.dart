@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'for_sme2.dart';
@@ -9,6 +10,9 @@ class ApplyForSME1 extends StatefulWidget {
   @override
   _ApplyForSME1State createState() => _ApplyForSME1State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForSME1State extends State<ApplyForSME1> {
   final CollectionReference collectionReference =
@@ -22,6 +26,21 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadBackgroundInfo() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Profile')
+        .doc('Background information')
+        .update({
+      'map a': {
+        'Business offering': businessOffering.text,
+        'Length of operation': durationOfOperation.text,
+        'Source of financing': financingValue,
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,14 +223,16 @@ class _ApplyForSME1State extends State<ApplyForSME1> {
             color: Colors.black,
           ),
           onPressed: () async {
-            await collectionReference
-                .doc(collectionReference.doc('Applicant particulars').id)
-                .update({
-                  'map a': {
-              'Business offering': businessOffering.text,
-              'Length of operation': durationOfOperation.text,
-              'Source of financing': financingValue,}
-            });
+            uploadBackgroundInfo();
+            // await collectionReference
+            //     .doc(collectionReference.doc('Applicant particulars').id)
+            //     .update({
+            //   'map a': {
+            //     'Business offering': businessOffering.text,
+            //     'Length of operation': durationOfOperation.text,
+            //     'Source of financing': financingValue,
+            //   }
+            // });
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ApplyForSME2()));
           }),

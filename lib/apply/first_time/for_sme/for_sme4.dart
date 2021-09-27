@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main_views/default_home.dart';
+import 'package:flutter_application_1/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/main_views/home_screen.dart';
 
 class ApplyForSME4 extends StatefulWidget {
   const ApplyForSME4({Key? key}) : super(key: key);
@@ -8,6 +10,9 @@ class ApplyForSME4 extends StatefulWidget {
   @override
   _ApplyForSME3State createState() => _ApplyForSME3State();
 }
+
+FirebaseAuth _auth = FirebaseAuth.instance;
+final uid = _auth.currentUser!.uid;
 
 class _ApplyForSME3State extends State<ApplyForSME4> {
   final CollectionReference collectionReference =
@@ -22,6 +27,19 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
+
+  void uploadLoanApplication() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Loan requests')
+        .doc()
+        .set({
+      'Loan type': loanType,
+      'Loan details': loanDetails.text,
+      'Amount requested': loanAmount.text,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,26 +232,25 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                         ),
                                         child: Text('Finish'),
                                         onPressed: () async {
-                                         await collectionReference
-                                              .doc(collectionReference
-                                                  .doc('Loan applications')
-                                                  .id).collection('Loan details')
-                                              .add({
-                                            'Loan type': loanType,
-                                            'Loan details': loanDetails.text,
-                                            'Amount requested': loanAmount.text,
-                                          });
+                                          uploadLoanApplication();
+                                          //  await collectionReference
+                                          //       .doc(collectionReference
+                                          //           .doc('Loan applications')
+                                          //           .id).collection('Loan details')
+                                          //       .add({
+                                          //     'Loan type': loanType,
+                                          //     'Loan details': loanDetails.text,
+                                          //     'Amount requested': loanAmount.text,
+                                          //   });
 
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      DefaultHomePage()));
+                                          Navigator.push(context,MaterialPageRoute(builder: (_) =>HomeWithBottomNavBar()));
                                         }),
                                   )
                                 ]);
                             return dialog;
-                          })),
+                          }
+                          )
+                          ),
                 ),
               ],
             ),

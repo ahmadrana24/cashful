@@ -149,15 +149,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               .signInWithEmailAndPassword(
                                   email: email, password: password)
                               .then((uid) => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeWithBottomNavBar()),
-                    
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            HomeWithBottomNavBar()),
                                   ));
-                          // errorMessage = '';
-                        } on FirebaseAuthException
-                        // catch (error)
-                        {
-                          // errorMessage = error.message!;
+                        } on FirebaseAuthException {
                           errorMessage =
                               'Email and/or password is invalid or does not exist';
                         }

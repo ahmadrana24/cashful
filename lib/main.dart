@@ -25,7 +25,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //initialRoute: '/home',
       title: 'Cashful',
-      home: MyHomePage(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data == null) {
+              return LoginScreen();
+            } else {
+              return MyHomePage();
+            }
+          } else {
+            return LoginScreen();
+          }
+        },
+      ),
+
       routes: {
         '/home': (context) => HomeWithBottomNavBar(),
         '/signIn': (context) => LoginScreen(),
@@ -214,11 +228,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             await _auth.createUserWithEmailAndPassword(
                                 email: email, password: password);
                             createUID();
-                             Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GetStartedPage()),
-                        );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GetStartedPage()),
+                            );
 
                             errorMessage = '';
                           } on FirebaseAuthException catch (error) {
@@ -226,7 +240,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           }
                         }
                         setState(() {});
-                       
                       },
                       minWidth: 200.0,
                       height: 50.0,

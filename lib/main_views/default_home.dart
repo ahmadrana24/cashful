@@ -14,7 +14,7 @@ class _DefaultHomePageState extends State<DefaultHomePage> {
   int currentIndex = 0;
   final screens = [
     HomeScreen(),
-    MessagesPage(),
+    MessagesScreen(),
     SettingsPage(),
   ];
 

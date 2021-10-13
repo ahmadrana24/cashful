@@ -13,14 +13,15 @@ class ApplyScreen1 extends StatefulWidget {
   _ApplyScreen1State createState() => _ApplyScreen1State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyScreen1State extends State<ApplyScreen1> {
   String creditScoreValue = '';
   String smallBusinessOwnerValue = '';
   String employmentStatusValue = '';
   final TextEditingController creditScoreAmount = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String uid;
+
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
 
@@ -46,6 +47,12 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
       'Is small business owner?': smallBusinessOwnerValue,
       'Employment status': employmentStatusValue,
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    uid = _auth.currentUser!.uid;
   }
 
   @override
@@ -91,7 +98,7 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                           onChanged: (value) {
                             setState(() {
                               creditScoreValue = value as String;
-                              _isVisible = !_isVisible;
+                              _isVisible = true;
                             });
                           },
                         ),
@@ -114,7 +121,7 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                             onChanged: (value) {
                               setState(() {
                                 creditScoreValue = value as String;
-                                _isVisible = _isVisible;
+                                _isVisible = false;
                               });
                             }),
                         SizedBox(
@@ -125,11 +132,13 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                     ),
                     SizedBox(height: 10),
                     Container(
-                        margin: EdgeInsets.only(right: 112),
-                        child: Visibility(
-                            visible: _isVisible,
-                            child: Text('What is your credit score?',
-                                style: myFont))),
+                      margin: EdgeInsets.only(right: 112),
+                      child: Visibility(
+                        visible: _isVisible,
+                        child:
+                            Text('What is your credit score?', style: myFont),
+                      ),
+                    ),
                     SizedBox(width: 4),
                     SizedBox(
                       width: 300,
@@ -139,11 +148,12 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                           controller: creditScoreAmount,
                           textAlign: TextAlign.left,
                           decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(5),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              )),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.all(5),
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -165,8 +175,8 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                           onChanged: (value) {
                             setState(() {
                               smallBusinessOwnerValue = value as String;
-                              _forBusiness = _forBusiness;
-                              _isVisible2 = _isVisible2;
+                              _forBusiness = true;
+                              _isVisible2 = false;
                             });
                           },
                         ),
@@ -189,8 +199,8 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
                             onChanged: (value) {
                               setState(() {
                                 smallBusinessOwnerValue = value as String;
-                                _forBusiness = !_forBusiness;
-                                _isVisible2 = !_isVisible2;
+                                _forBusiness = false;
+                                _isVisible2 = true;
                               });
                             }),
                         SizedBox(
@@ -326,13 +336,6 @@ class _ApplyScreen1State extends State<ApplyScreen1> {
           ),
           onPressed: () async {
             uploadBackgroundInfo();
-            // await collectionReference.doc(collectionReference.doc('Applicant particulars').id).set({
-            //   // 'map1': {}
-            //   // 'Is credit score present?': creditScoreValue,
-            //   // 'Credit score value': creditScoreAmount.text,
-            //   // 'Is small business owner?': smallBusinessOwnerValue,
-            //   // 'Employment status': employmentStatusValue,
-            //   });
 
             if (_forBusiness) {
               Navigator.push(context,

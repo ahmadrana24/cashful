@@ -1,12 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MessagesPage extends StatelessWidget {
-  const MessagesPage({Key? key}) : super(key: key);
+class MessagesScreen extends StatefulWidget {
+  @override
+  MessagesScreenState createState() => MessagesScreenState();
+}
 
+
+var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
+
+
+class MessagesScreenState extends State<MessagesScreen> {
+  String errorMessage = '';
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String uid;
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> db;
+
+   @override
+  void initState() {
+    super.initState();
+    uid = _auth.currentUser!.uid;
+    db = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Messages')
+        .doc('Message')
+        .snapshots();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 30,
@@ -25,73 +50,162 @@ class MessagesPage extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
+            child: Padding(
+          padding: const EdgeInsets.all(40.0),
           child: Container(
-            color: Color.fromRGBO(246, 246, 246, 1),
-            child: Column(children: [
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                margin: EdgeInsets.all(40),
-                decoration: BoxDecoration(
-                    color: Colors.white54,
-                    borderRadius: BorderRadius.circular(40)),
-                child: Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Column(
+            height: 300,
+            width: 300,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(40)),
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text('Status',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          )),
                       SizedBox(
-                        height: 40,
+                        width: 30,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Loan approved'),
-                            SizedBox(width: 40),
-                            Text('R700,00', style: boldFont)
-                          ]),
-                      Row(children: [Text('3 Apr 2020')]),
-                      Divider(color: Colors.black),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Loan paid'),
-                            SizedBox(width: 40),
-                            Text('R550,00', style: boldFont)
-                          ]),
-                      Row(children: [Text('27 Mar 2020')]),
-                      Divider(color: Colors.black),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Loan overdue'),
-                          SizedBox(width: 40),
-                          Text('R300', style: boldFont),
-                        ],
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('3 Apr 2020'),
-                            SizedBox(width: 40),
-                            Text('+10% penalty fee')
-                          ]),
-                      Divider(color: Colors.black),
-                      SizedBox(
-                        height: 40,
-                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(data['Status'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ));
+                        },
+                      )
                     ],
                   ),
-                ),
-              )
-            ]),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Loan amount'),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(data['Loan amount']);
+                        },
+                      )
+                    ],
+                  ),
+                  Divider(color: Colors.black),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Loan date'),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(data['Loan date']);
+                        },
+                      )
+                    ],
+                  ),
+                  Divider(color: Colors.black),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Interest'),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(data['Interest']);
+                        },
+                      )
+                    ],
+                  ),
+                  Divider(color: Colors.black),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Penalty'),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: db,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return Text('Something went wrong');
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+
+                          dynamic data = snapshot.data!.data();
+                          return Text(data['Penalty']);
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
           ),
-        ));
+        )));
   }
 }

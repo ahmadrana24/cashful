@@ -9,21 +9,29 @@ class StatusScreen extends StatefulWidget {
   _StatusScreenState createState() => _StatusScreenState();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
+var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
 
 class _StatusScreenState extends State<StatusScreen> {
+  String errorMessage = '';
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String uid;
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> db;
+
   @override
-  Widget build(BuildContext context) {
-    var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
-        .instance
+  void initState() {
+    super.initState();
+    uid = _auth.currentUser!.uid;
+    db = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('Loans approved')
         .doc('Outstanding loan')
         .snapshots();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 30,
@@ -221,7 +229,8 @@ class _StatusScreenState extends State<StatusScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Loan term'),
                       SizedBox(width: 100),
@@ -245,8 +254,8 @@ class _StatusScreenState extends State<StatusScreen> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Loan date'),
                       SizedBox(width: 116),

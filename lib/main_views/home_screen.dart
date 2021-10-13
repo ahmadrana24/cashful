@@ -71,9 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          LoanApplicationScreen()));
+                                          // LoanApplicationScreen()));
                               // builder: (context) => ApplyForSME4()));
-                              // builder: (context) => ApplySplash()));
+                               ApplySplash()));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

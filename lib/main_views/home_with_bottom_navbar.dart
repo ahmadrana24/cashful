@@ -14,7 +14,7 @@ class HomeWithBottomNavBarState extends State<HomeWithBottomNavBar> {
   int currentIndex = 0;
   final screens = [
     HomeScreen(),
-    MessagesPage(),
+    MessagesScreen(),
     SettingsPage(),
   ];
 

@@ -1,54 +1,59 @@
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Test extends StatefulWidget {
-  @override
-  _TestState createState() => _TestState();
-}
+// class MessagesScreen extends StatefulWidget {
+//   @override
+//   MessagesScreenState createState() => MessagesScreenState();
+// }
 
-class _TestState extends State<Test> {
-  // final db = FirebaseFirestore.instance.collection('users').snapshots();
-  final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
-      .instance
-      .collection('users')
-      .doc('Outstanding loans')
-      .collection('Loan details')
-      .doc('NlwI7O7owxtyZtEZrN7O')
-      .snapshots();
+// FirebaseAuth _auth = FirebaseAuth.instance;
+// final uid = _auth.currentUser!.uid;
+// var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Test'),
-      ),
-      body: 
-      
-      // StreamBuilder<DocumentSnapshot>(
-      //   stream: db,
-      //   builder:
-      //       (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-      //     if (snapshot.hasError) return Text('Something went wrong');
-      //     if (snapshot.connectionState == ConnectionState.waiting)
-      //       return CircularProgressIndicator();
+// class MessagesScreenState extends State<MessagesScreen> {
+//   final db = FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(uid)
+//       .collection('Messages')
+//       .doc('Loans approved')
+//       .collection('Loans approved')
+//       .snapshots();
 
-      //     dynamic data = snapshot.data!.data();
-      //   return Text(data['First name']);
-      //   },
-      // ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           titleSpacing: 30,
+//           automaticallyImplyLeading: false,
+//           backgroundColor: Color.fromRGBO(1, 67, 55, 1),
+//           toolbarHeight: 100,
+//           title: new Text(
+//             'Messages',
+//             style: TextStyle(
+//                 color: Color.fromRGBO(255, 255, 255, 1),
+//                 fontFamily: 'Poppins',
+//                 fontSize: 25,
+//                 letterSpacing: 1.2,
+//                 fontWeight: FontWeight.bold,
+//                 height: 1),
+//           ),
+//         ),
+//         body: StreamBuilder<QuerySnapshot>(
+//           stream: db,
+//           builder: (context, snapshot) {
+//             if (!snapshot.hasData)
+//               return const Center(
+//                 child: CircularProgressIndicator(),
+//               );
+//             return ListView.builder(
+//                 itemCount: snapshot.data!.docs.length,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   // return snapshot.data!.docs[index].data()![''];
+//                   return snapshot.data!.docs[index]['Loan amount'];
+//                 });
+//           },
+//         ));
+//   }
+// }
 
-      StreamBuilder<DocumentSnapshot>(
-        stream: db,
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) return Text('Something went wrong');
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return CircularProgressIndicator();
-
-          dynamic data = snapshot.data!.data();
-        return Text(data['Amount due']);
-        },
-      ),
-    );
-  }
-}

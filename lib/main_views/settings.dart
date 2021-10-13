@@ -2,29 +2,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main_views/account_method.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _SettingsPageState extends State<SettingsPage> {
   String errorMessage = '';
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late String uid;
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> db;
+
   @override
-  Widget build(BuildContext context) {
-    var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> db =
-        FirebaseFirestore.instance
+  void initState() {
+    super.initState();
+    uid = _auth.currentUser!.uid;
+    db = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('Profile')
         .doc('Personal details')
         .snapshots();
+  }
 
+  var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 30,
@@ -73,6 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         SizedBox(width: 40),
                         StreamBuilder<DocumentSnapshot>(
                           stream: db,
+// stream: db,
                           builder: (BuildContext context,
                               AsyncSnapshot<DocumentSnapshot> snapshot) {
                             if (snapshot.hasError)
@@ -83,7 +91,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
                             dynamic data = snapshot.data!.data();
                             return Text(data['First name']);
-                            // return Text('First name', style: boldFont);
                           },
                         ),
                       ]),
@@ -98,6 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(width: 40),
                       StreamBuilder<DocumentSnapshot>(
                         stream: db,
+// stream: db,
                         builder: (BuildContext context,
                             AsyncSnapshot<DocumentSnapshot> snapshot) {
                           if (snapshot.hasError)
@@ -108,7 +116,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
                           dynamic data = snapshot.data!.data();
                           return Text(data['Last name'], style: boldFont);
-                          // return Text('Last name', style: boldFont);
                         },
                       ),
                     ],
@@ -173,8 +180,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         } on FirebaseAuthException catch (error) {
                           errorMessage = error.message!;
                         }
-                        setState(() {});
                         Navigator.of(context).pushReplacementNamed('/signIn');
+                        setState(() {});
                       }),
                   SizedBox(height: 15),
                 ],

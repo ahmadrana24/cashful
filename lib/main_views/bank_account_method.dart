@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BankAccountMethod extends StatefulWidget {
@@ -9,8 +10,10 @@ class BankAccountMethod extends StatefulWidget {
 }
 
 class _BankAccountMethodState extends State<BankAccountMethod> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference collectionReference = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("Profile");
   final TextEditingController bankName = TextEditingController();
   final TextEditingController accountHolder = TextEditingController();
   final TextEditingController accountType = TextEditingController();
@@ -20,6 +23,8 @@ class _BankAccountMethodState extends State<BankAccountMethod> {
   final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
       .instance
       .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("Profile")
       .doc('Bank details')
       .snapshots();
 
@@ -38,7 +43,6 @@ class _BankAccountMethodState extends State<BankAccountMethod> {
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
-        toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
           'Bank account details',
@@ -59,120 +63,65 @@ class _BankAccountMethodState extends State<BankAccountMethod> {
                 child: Container(
                     padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                     child: Form(
-                      child: Column(
-                        children: <Widget>[
-                          StreamBuilder<DocumentSnapshot>(
-                            stream: db,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Something went wrong');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
+                      child: StreamBuilder<DocumentSnapshot>(
+                          stream: db,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError)
+                              return Text('Something went wrong');
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return CircularProgressIndicator();
 
-                              dynamic data = snapshot.data!.data();
-                              return TextField(
-                                controller: bankName,
-                                decoration: InputDecoration(
-                                  labelText: (data['Bank name']),
-                                  border: UnderlineInputBorder(),
+                            dynamic data = snapshot.data!.data();
+                            if (data != null) {
+                              // return Text("No bank account detail found");
+                              bankName.text = data['Bank name'] ?? '';
+                              accountHolder.text = data['Account holder'] ?? '';
+                              accountType.text = data['Account type'] ?? '';
+                              branchCode.text = data['Branch code'] ?? '';
+                              accountNumber.text = data['Account number'] ?? '';
+                            }
+
+                            return Column(
+                              children: <Widget>[
+                                TextField(
+                                  controller: bankName,
+                                  decoration: InputDecoration(
+                                    labelText: 'Bank name',
+                                    border: UnderlineInputBorder(),
+                                  ),
                                 ),
-                              );
-
-                              // return Text(data['Amount due']);
-                            },
-                          ),
-                          StreamBuilder<DocumentSnapshot>(
-                            stream: db,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Something went wrong');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
-
-                              dynamic data = snapshot.data!.data();
-                              return TextField(
-                                controller: accountHolder,
-                                decoration: InputDecoration(
-                                  labelText: (data['Account holder']),
-                                  border: UnderlineInputBorder(),
+                                TextField(
+                                  controller: accountHolder,
+                                  decoration: InputDecoration(
+                                    labelText: 'Account holder',
+                                    border: UnderlineInputBorder(),
+                                  ),
                                 ),
-                              );
-
-                              // return Text(data['Amount due']);
-                            },
-                          ),
-                          StreamBuilder<DocumentSnapshot>(
-                            stream: db,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Something went wrong');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
-
-                              dynamic data = snapshot.data!.data();
-                              return TextField(
-                                controller: accountType,
-                                decoration: InputDecoration(
-                                  labelText: (data['Account type']),
-                                  border: UnderlineInputBorder(),
+                                TextField(
+                                  controller: accountType,
+                                  decoration: InputDecoration(
+                                    labelText: 'Account type',
+                                    border: UnderlineInputBorder(),
+                                  ),
                                 ),
-                              );
-
-                              // return Text(data['Amount due']);
-                            },
-                          ),
-                          StreamBuilder<DocumentSnapshot>(
-                            stream: db,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Something went wrong');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
-
-                              dynamic data = snapshot.data!.data();
-                              return TextField(
-                                controller: branchCode,
-                                decoration: InputDecoration(
-                                  labelText: (data['Branch code']),
-                                  border: UnderlineInputBorder(),
+                                TextField(
+                                  controller: branchCode,
+                                  decoration: InputDecoration(
+                                    labelText: 'Branch code',
+                                    border: UnderlineInputBorder(),
+                                  ),
                                 ),
-                              );
-
-                              // return Text(data['Amount due']);
-                            },
-                          ),
-                          StreamBuilder<DocumentSnapshot>(
-                            stream: db,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Something went wrong');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
-
-                              dynamic data = snapshot.data!.data();
-                              return TextField(
-                                controller: accountNumber,
-                                decoration: InputDecoration(
-                                  labelText: (data['Account number']),
-                                  border: UnderlineInputBorder(),
+                                TextField(
+                                  controller: accountNumber,
+                                  decoration: InputDecoration(
+                                    labelText: 'Account number',
+                                    border: UnderlineInputBorder(),
+                                  ),
                                 ),
-                              );
-
-                              // return Text(data['Amount due']);
-                            },
-                          ),
-                        ],
-                      ),
+                              ],
+                            );
+                          }),
                     )),
               ),
             ),
@@ -189,9 +138,7 @@ class _BankAccountMethodState extends State<BankAccountMethod> {
                           borderRadius: BorderRadius.circular(20))),
                 ),
                 onPressed: () async {
-                  await collectionReference
-                      .doc(collectionReference.doc('Bank details').id)
-                      .update({
+                  await collectionReference.doc('Bank details').update({
                     'Bank name': bankName.text,
                     'Account holder': accountHolder.text,
                     'Account type': accountType.text,

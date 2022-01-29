@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MTNAccountMethod extends StatelessWidget {
   final Stream<DocumentSnapshot<Map<String, dynamic>>> db = FirebaseFirestore
       .instance
       .collection('users')
-      .doc('Personal details')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('Profile')
+      .doc("Personal details")
       .snapshots();
 
   @override
@@ -18,7 +21,6 @@ class MTNAccountMethod extends StatelessWidget {
           titleSpacing: 30,
           automaticallyImplyLeading: true,
           backgroundColor: Color.fromRGBO(246, 246, 246, 1),
-          toolbarHeight: 100,
           title: new Text(
             'Pay',
             style: TextStyle(
@@ -58,7 +60,7 @@ class MTNAccountMethod extends StatelessWidget {
                         children: [
                           Text('Recepient'),
                           // SizedBox(width: 40),
-        
+
                           StreamBuilder<DocumentSnapshot>(
                             stream: db,
                             builder: (BuildContext context,
@@ -68,7 +70,7 @@ class MTNAccountMethod extends StatelessWidget {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting)
                                 return CircularProgressIndicator();
-        
+
                               dynamic data = snapshot.data!.data();
                               return Text(data['Last name'], style: boldFont);
                             },
@@ -91,7 +93,7 @@ class MTNAccountMethod extends StatelessWidget {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting)
                               return CircularProgressIndicator();
-        
+
                             dynamic data = snapshot.data!.data();
                             return Text(data['Mobile number'], style: boldFont);
                           },

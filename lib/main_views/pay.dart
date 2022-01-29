@@ -3,11 +3,9 @@ import 'package:flutter_application_1/main_views/paymtn.dart';
 import 'package:flutter_application_1/main_views/paystdbank.dart';
 
 class PayScreen extends StatefulWidget {
-  
   @override
   _PayScreenState createState() => _PayScreenState();
 }
-
 
 class _PayScreenState extends State<PayScreen> {
   @override
@@ -17,7 +15,6 @@ class _PayScreenState extends State<PayScreen> {
         titleSpacing: 30,
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         title: new Text(
           'Pay',
           style: TextStyle(
@@ -49,10 +46,8 @@ class _PayScreenState extends State<PayScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PayMtn()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => PayMtn()));
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

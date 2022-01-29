@@ -1,24 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class MessagesScreen extends StatefulWidget {
   @override
   MessagesScreenState createState() => MessagesScreenState();
 }
 
-
 var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
-
 
 class MessagesScreenState extends State<MessagesScreen> {
   String errorMessage = '';
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late String uid;
-  late Stream<DocumentSnapshot<Map<String, dynamic>>> db;
+  late Stream<QuerySnapshot<Map<String, dynamic>>> db;
 
-   @override
+  @override
   void initState() {
     super.initState();
     uid = _auth.currentUser!.uid;
@@ -26,10 +25,9 @@ class MessagesScreenState extends State<MessagesScreen> {
         .collection('users')
         .doc(uid)
         .collection('Messages')
-        .doc('Message')
         .snapshots();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +35,6 @@ class MessagesScreenState extends State<MessagesScreen> {
           titleSpacing: 30,
           automaticallyImplyLeading: false,
           backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          toolbarHeight: 100,
           title: new Text(
             'Messages',
             style: TextStyle(
@@ -49,163 +46,65 @@ class MessagesScreenState extends State<MessagesScreen> {
                 height: 1),
           ),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
+        body: Padding(
           padding: const EdgeInsets.all(40.0),
           child: Container(
-            height: 300,
-            width: 300,
+            padding: const EdgeInsets.all(30.0),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(40)),
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Status',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      SizedBox(
-                        width: 30,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: db,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) return Text('Something went wrong');
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(
+                    child: SizedBox(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
                       ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
+                      width: 30,
+                      height: 30,
+                    ),
+                  );
 
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Status'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ));
-                        },
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Loan amount'),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
+                QuerySnapshot? data = snapshot.data;
 
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Loan amount']);
-                        },
-                      )
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Loan date'),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
-
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Loan date']);
-                        },
-                      )
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Interest'),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
-
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Interest']);
-                        },
-                      )
-                    ],
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Penalty'),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
-
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Penalty']);
-                        },
-                      )
-                    ],
-                  )
-                ],
-              ),
+                if (data == null) {
+                  return Text("No messsages");
+                } else {
+                  return ListView(
+                    children: data.docs
+                        .map(
+                          (e) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                contentPadding:
+                                    EdgeInsets.symmetric(vertical: 8.0),
+                                title: Text(
+                                  e['Status'],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(DateFormat("DD MM yyyy").format(
+                                      (e['date_time'] as Timestamp).toDate())),
+                                ),
+                                trailing: Text(e['amount']),
+                              ),
+                              Divider(
+                                color: Colors.black54,
+                              )
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              },
             ),
           ),
-        )));
+        ));
   }
 }

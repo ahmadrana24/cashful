@@ -37,7 +37,6 @@ class _StatusScreenState extends State<StatusScreen> {
         titleSpacing: 30,
         automaticallyImplyLeading: true,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         title: new Text(
           'Status',
           style: TextStyle(
@@ -118,8 +117,13 @@ class _StatusScreenState extends State<StatusScreen> {
                                       return CircularProgressIndicator();
 
                                     dynamic data = snapshot.data!.data();
+                                    var balance = 0.0.toString();
+
+                                    if (data != null) {
+                                      balance = data['Outstanding balance'];
+                                    }
                                     return Text(
-                                      data['Outstanding balance'],
+                                      balance,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color.fromRGBO(
@@ -149,8 +153,13 @@ class _StatusScreenState extends State<StatusScreen> {
                                   return CircularProgressIndicator();
 
                                 dynamic data = snapshot.data!.data();
+                                var due_date = "";
+
+                                if (data != null) {
+                                  due_date = data['Due date'];
+                                }
                                 return Text(
-                                  data['Due date'],
+                                  due_date,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Color.fromRGBO(
@@ -192,8 +201,13 @@ class _StatusScreenState extends State<StatusScreen> {
                               return CircularProgressIndicator();
 
                             dynamic data = snapshot.data!.data();
+                            var loan_amount = 0.0.toString();
+
+                            if (data != null) {
+                              loan_amount = data['Loan amount'];
+                            }
                             return Text(
-                              data['Loan amount'],
+                              loan_amount,
                               style: boldFont,
                             );
                           },
@@ -218,8 +232,13 @@ class _StatusScreenState extends State<StatusScreen> {
                             return CircularProgressIndicator();
 
                           dynamic data = snapshot.data!.data();
+                          var interest = 0.0.toString();
+
+                          if (data != null) {
+                            interest = data['Interest'];
+                          }
                           return Text(
-                            data['Interest'],
+                            interest,
                             style: boldFont,
                           );
                         },
@@ -245,8 +264,13 @@ class _StatusScreenState extends State<StatusScreen> {
                             return CircularProgressIndicator();
 
                           dynamic data = snapshot.data!.data();
+                          var loan_term = '';
+                          if (data != null) {
+                            loan_term = data['Loan term'];
+                          }
+
                           return Text(
-                            data['Loan term'],
+                            loan_term,
                             style: boldFont,
                           );
                         },
@@ -270,8 +294,13 @@ class _StatusScreenState extends State<StatusScreen> {
                             return CircularProgressIndicator();
 
                           dynamic data = snapshot.data!.data();
+                          var loan_date = '';
+                          if (data != null) {
+                            loan_date = data['Loan date'];
+                          }
+
                           return Text(
-                            data['Loan date'],
+                            loan_date,
                             style: boldFont,
                           );
                         },

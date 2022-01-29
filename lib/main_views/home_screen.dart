@@ -7,6 +7,7 @@ import 'package:flutter_application_1/apply/recurring/loan_application_screen.da
 import 'package:flutter_application_1/main_views/help.dart';
 import 'package:flutter_application_1/main_views/pay.dart';
 import 'package:flutter_application_1/main_views/test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'status.dart';
 
@@ -32,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
         titleSpacing: 30,
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         title: new Text(
           'Home',
           style: TextStyle(
@@ -50,122 +50,142 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: EdgeInsets.all(15.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     height: 40,
                     margin: EdgeInsets.only(bottom: 1),
                   ),
                   Expanded(
-                    child: GridView.count(
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                      primary: false,
-                      crossAxisCount: 2,
-                      children: <Widget>[
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          // LoanApplicationScreen()));
-                              // builder: (context) => ApplyForSME4()));
-                               ApplySplash()));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Image(
-                                  image: AssetImage('assets/images/apply.png'),
-                                  height: 128,
-                                ),
-                                Text(
-                                  'Apply',
-                                  style: cardTextStyle,
-                                )
-                              ],
+                    child: Center(
+                      child: GridView.count(
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                        primary: false,
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            child: InkWell(
+                              onTap: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                if (prefs.getBool("firstTime") != null) {
+                                  if (prefs.getBool("firstTime")!) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                // LoanApplicationScreen()));
+                                                // builder: (context) => ApplyForSME4()));
+                                                ApplySplash()));
+                                  }
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              // LoanApplicationScreen()));
+                                              // builder: (context) => ApplyForSME4()));
+                                              ApplyForSME4()));
+                                }
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image(
+                                    image:
+                                        AssetImage('assets/images/apply.png'),
+                                    height: 128,
+                                  ),
+                                  Text(
+                                    'Apply',
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StatusScreen()));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Image(
-                                  image: AssetImage('assets/images/status.png'),
-                                  height: 128,
-                                ),
-                                Text(
-                                  'Status',
-                                  style: cardTextStyle,
-                                )
-                              ],
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => StatusScreen()));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image(
+                                    image:
+                                        AssetImage('assets/images/status.png'),
+                                    height: 128,
+                                  ),
+                                  Text(
+                                    'Status',
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PayScreen()));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Image(
-                                  image: AssetImage('assets/images/pay.png'),
-                                  height: 128,
-                                ),
-                                Text(
-                                  'Pay',
-                                  style: cardTextStyle,
-                                )
-                              ],
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PayScreen()));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage('assets/images/pay.png'),
+                                    height: 128,
+                                  ),
+                                  Text(
+                                    'Pay',
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HelpScreen()));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Image(
-                                  image: AssetImage('assets/images/help.png'),
-                                  height: 128,
-                                ),
-                                Text(
-                                  'Help',
-                                  style: cardTextStyle,
-                                )
-                              ],
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HelpScreen()));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage('assets/images/help.png'),
+                                    height: 128,
+                                  ),
+                                  Text(
+                                    'Help',
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],

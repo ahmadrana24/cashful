@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
       title: 'Login',
       home: MyLoginPage(),
     );
-    
   }
 }
 
@@ -34,8 +33,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
           'Log in',
@@ -89,7 +86,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                   decoration: InputDecoration(
                       border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)))),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(32.0)))),
                 ),
                 SizedBox(
                   height: 20.0,
@@ -122,7 +120,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                   decoration: InputDecoration(
                       border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)))),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(32.0)))),
                 ),
                 SizedBox(
                   height: 20.0,
@@ -134,19 +133,20 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   child: MaterialButton(
                     onPressed: () async {
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DefaultHomePage()),
-                    );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DefaultHomePage()),
+                      );
                       setState(() {
                         showProgress = true;
                       });
-      
+
                       try {
                         final newUser = await _auth.signInWithEmailAndPassword(
                             email: email, password: password);
-      
+
                         print(newUser.toString());
-      
+
                         if (newUser != null) {
                           Fluttertoast.showToast(
                               msg: "Login Successful",
@@ -166,14 +166,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     height: 45.0,
                     child: Text(
                       "Login",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, fontSize: 20.0),
                     ),
                   ),
-
-                  
                 ),
-              SizedBox(
+                SizedBox(
                   height: 15.0,
                 ),
                 GestureDetector(
@@ -188,7 +186,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     style: TextStyle(
                         color: Colors.grey[700], fontWeight: FontWeight.w900),
                   ),
-                )],
+                )
+              ],
             ),
           ),
         ),

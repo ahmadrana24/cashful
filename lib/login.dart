@@ -25,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
           'Login',

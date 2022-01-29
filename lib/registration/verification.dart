@@ -59,7 +59,9 @@ class _VerificationPageState extends State<VerificationPage> {
     url = await snapshot.ref.getDownloadURL();
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(uid).collection('Verification').doc('Identification')
+        .doc(uid)
+        .collection('Verification')
+        .doc('Identification')
         .set({'Image URL': url});
   }
 
@@ -68,7 +70,6 @@ class _VerificationPageState extends State<VerificationPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          toolbarHeight: 100,
           centerTitle: true,
           title: new Text(
             'Verification',
@@ -150,13 +151,20 @@ class _VerificationPageState extends State<VerificationPage> {
                       height: 180,
                     ),
                   ),
-                ),SizedBox(height: 10),
-                Column(children: [
-                  Text('Other forms of accepted ID:', textAlign: TextAlign.center),
-                  Text('License', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('Passport', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                  
-                ],),
+                ),
+                SizedBox(height: 10),
+                Column(
+                  children: [
+                    Text('Other forms of accepted ID:',
+                        textAlign: TextAlign.center),
+                    Text('License',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Passport',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
                 SizedBox(
                   height: 20,
                 ),

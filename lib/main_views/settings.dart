@@ -37,7 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
         titleSpacing: 30,
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         title: new Text(
           'Settings',
           style: TextStyle(
@@ -51,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.all(10),
           color: Color.fromRGBO(246, 246, 246, 1),
           child: Column(children: [
             SizedBox(
@@ -67,7 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Inter'))),
             Padding(
-              padding: EdgeInsets.all(30.0),
+              padding: EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   SizedBox(
@@ -77,7 +76,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('First name'),
-                        SizedBox(width: 40),
                         StreamBuilder<DocumentSnapshot>(
                           stream: db,
 // stream: db,
@@ -90,13 +88,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               return CircularProgressIndicator();
 
                             dynamic data = snapshot.data!.data();
-                            return Text(data['First name']);
+                            return Text(data['First name'], style: boldFont);
                           },
                         ),
                       ]),
                   Divider(color: Colors.black),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   Divider(color: Colors.black),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   InkWell(
                     child: Row(
@@ -136,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   Divider(color: Colors.black),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   InkWell(
                     onTap: () {

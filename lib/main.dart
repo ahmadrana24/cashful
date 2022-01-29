@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //initialRoute: '/home',
       title: 'Cashful',
+      theme: ThemeData(
+        primaryColor: Color.fromRGBO(1, 67, 55, 1),
+      ),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
@@ -106,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
           'Create account',

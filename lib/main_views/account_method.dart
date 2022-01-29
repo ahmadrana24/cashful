@@ -3,7 +3,6 @@ import 'package:flutter_application_1/main_views/bank_account_method.dart';
 import 'package:flutter_application_1/main_views/mtn_account_method.dart';
 
 class AccountMethod extends StatefulWidget {
-  
   @override
   AccountMethodState createState() => AccountMethodState();
 }
@@ -23,7 +22,6 @@ class AccountMethodState extends State<AccountMethod> {
           },
         ),
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        toolbarHeight: 100,
         title: new Text(
           'Accounts',
           style: TextStyle(

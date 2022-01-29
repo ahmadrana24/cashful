@@ -21,6 +21,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
   final TextEditingController address = TextEditingController();
   final TextEditingController mobileNumber = TextEditingController();
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
 
@@ -47,7 +49,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
       home: Scaffold(
           appBar: AppBar(
             backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-            toolbarHeight: 100,
             centerTitle: true,
             title: new Text(
               'Get started',
@@ -65,59 +66,95 @@ class _GetStartedPageState extends State<GetStartedPage> {
               child: Container(
                   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                   child: Form(
+                    key: _formKey,
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          controller: firstName,
-                          decoration: InputDecoration(
-                            labelText: 'First Name',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: lastName,
-                          decoration: InputDecoration(
-                            labelText: 'Last Name',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: dateOfBirth,
-                          decoration: InputDecoration(
-                            labelText: 'Date of birth',
-                            hintText: 'dd/mm/yyyy',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: gender,
-                          decoration: InputDecoration(
-                            labelText: 'Gender',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: id,
-                          decoration: InputDecoration(
-                            labelText: 'ID number',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: address,
-                          decoration: InputDecoration(
-                            labelText: 'Address',
-                            hintText: '102 Arnd St, Bloemfontein, Free State',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
-                        TextField(
-                          controller: mobileNumber,
-                          decoration: InputDecoration(
-                            labelText: 'Mobile number',
-                            border: UnderlineInputBorder(),
-                          ),
-                        ),
+                        TextFormField(
+                            controller: firstName,
+                            decoration: InputDecoration(
+                              labelText: 'First Name',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed first name is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: lastName,
+                            decoration: InputDecoration(
+                              labelText: 'Last Name',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed last name is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: dateOfBirth,
+                            decoration: InputDecoration(
+                              labelText: 'Date of birth',
+                              hintText: 'dd/mm/yyyy',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed date of birth is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: gender,
+                            decoration: InputDecoration(
+                              labelText: 'Gender',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed gender is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: id,
+                            decoration: InputDecoration(
+                              labelText: 'ID number',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed ID number is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: address,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              hintText: '102 Arnd St, Bloemfontein, Free State',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed address is required";
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            controller: mobileNumber,
+                            decoration: InputDecoration(
+                              labelText: 'Mobile number',
+                              border: UnderlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Filed mobile number is required";
+                              }
+                              return null;
+                            }),
                       ],
                     ),
                   )),
@@ -131,12 +168,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
               color: Colors.black,
             ),
             onPressed: () async {
-              uploadPersonalDetails();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VerificationPage()),
-              );
-
+              if (_formKey.currentState!.validate()) {
+                uploadPersonalDetails();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VerificationPage()),
+                );
+              }
               // await collectionReference
               //     .doc(collectionReference.doc(uid).id)
               //     .set({
@@ -160,8 +198,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
               //     'Address': address.text,
               //     'Mobile number': mobileNumber.text
               //   });
-
-              
             },
           )),
     );

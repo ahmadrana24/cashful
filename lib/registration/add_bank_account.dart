@@ -59,7 +59,6 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
-        toolbarHeight: 100,
         centerTitle: true,
         title: new Text(
           'Add bank account',
@@ -136,7 +135,7 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                 ),
                 onPressed: () async {
                   uploadBankDetails();
-                  Navigator.pop(context);
+                  Navigator.pop(context, "Data Addded");
                   // await collectionReference
                   //     .doc(collectionReference.doc('Bank details').id)
                   //     .set({

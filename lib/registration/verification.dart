@@ -243,6 +243,11 @@ class _VerificationPageState extends State<VerificationPage> {
             color: Colors.black,
           ),
           onPressed: () async {
+            if (file == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("You need to upload you're verification")));
+              return;
+            }
             uploadFile();
             Navigator.push(
               context,

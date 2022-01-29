@@ -181,6 +181,13 @@ class _VerificationPage4State extends State<VerificationPage4> {
               'Please ensure you only add a South African account that is in your own name',
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          SizedBox(height: 20),
+          Text('Add at least one account',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.red)),
           SizedBox(height: 40),
           ElevatedButton(
               style: ButtonStyle(
@@ -196,8 +203,8 @@ class _VerificationPage4State extends State<VerificationPage4> {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("You have to add at least one bank account."),
                   ));
-                }else
-                Navigator.of(context).pushReplacementNamed('/home');
+                } else
+                  Navigator.of(context).pushReplacementNamed('/home');
               }),
         ]),
       )),

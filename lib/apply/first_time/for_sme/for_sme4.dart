@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/main_views/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApplyForSME4 extends StatefulWidget {
   const ApplyForSME4({Key? key}) : super(key: key);
@@ -128,8 +129,11 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                     controller: loanDetails,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
-                        isDense: true,
+                        isDense: false,
                         contentPadding: const EdgeInsets.all(5),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor)),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         )),
@@ -157,8 +161,19 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                    margin: EdgeInsets.only(right: 75), child: Text('5/5')),
+                FutureBuilder(
+                    builder:
+                        (context, AsyncSnapshot<SharedPreferences> snapshot) {
+                      var firstTime = snapshot.data!.getBool("first-time");
+                      if (snapshot.hasData) if (firstTime != null &&
+                          firstTime) {
+                        return SizedBox();
+                      }
+                      return Container(
+                          margin: EdgeInsets.only(right: 75),
+                          child: Text('5/5'));
+                    },
+                    future: SharedPreferences.getInstance()),
                 Container(
                   margin: EdgeInsets.only(right: 40),
                   child: TextButton(
@@ -233,6 +248,11 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                         child: Text('Finish'),
                                         onPressed: () async {
                                           uploadLoanApplication();
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          await prefs.setBool(
+                                              "first-time", true);
                                           //  await collectionReference
                                           //       .doc(collectionReference
                                           //           .doc('Loan applications')
@@ -243,14 +263,16 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                           //     'Amount requested': loanAmount.text,
                                           //   });
 
-                                          Navigator.push(context,MaterialPageRoute(builder: (_) =>HomeWithBottomNavBar()));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      HomeWithBottomNavBar()));
                                         }),
                                   )
                                 ]);
                             return dialog;
-                          }
-                          )
-                          ),
+                          })),
                 ),
               ],
             ),

@@ -117,13 +117,13 @@ class _StatusScreenState extends State<StatusScreen> {
                                       return CircularProgressIndicator();
 
                                     dynamic data = snapshot.data!.data();
-                                    var balance = 0.0.toString();
+                                    var balance = 0.00.toStringAsPrecision(3);
 
                                     if (data != null) {
                                       balance = data['Outstanding balance'];
                                     }
                                     return Text(
-                                      balance,
+                                      "R $balance",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: Color.fromRGBO(
@@ -201,13 +201,13 @@ class _StatusScreenState extends State<StatusScreen> {
                               return CircularProgressIndicator();
 
                             dynamic data = snapshot.data!.data();
-                            var loan_amount = 0.0.toString();
+                            var loan_amount = 0.00.toStringAsPrecision(3);
 
                             if (data != null) {
                               loan_amount = data['Loan amount'];
                             }
                             return Text(
-                              loan_amount,
+                              "R $loan_amount",
                               style: boldFont,
                             );
                           },
@@ -232,13 +232,13 @@ class _StatusScreenState extends State<StatusScreen> {
                             return CircularProgressIndicator();
 
                           dynamic data = snapshot.data!.data();
-                          var interest = 0.0.toString();
+                          var interest = 0.00.toStringAsPrecision(3);
 
                           if (data != null) {
                             interest = data['Interest'];
                           }
                           return Text(
-                            interest,
+                            "R $interest",
                             style: boldFont,
                           );
                         },

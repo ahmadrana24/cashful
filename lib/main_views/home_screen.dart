@@ -72,15 +72,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () async {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
-                                if (prefs.getBool("firstTime") != null) {
-                                  if (prefs.getBool("firstTime")!) {
+                                if (prefs.getBool("first-time") != null) {
+                                  if (prefs.getBool("first-time")!) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 // LoanApplicationScreen()));
                                                 // builder: (context) => ApplyForSME4()));
-                                                ApplySplash()));
+                                                ApplyForSME4()));
                                   }
                                 } else {
                                   Navigator.push(
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           builder: (context) =>
                                               // LoanApplicationScreen()));
                                               // builder: (context) => ApplyForSME4()));
-                                              ApplyForSME4()));
+                                              ApplySplash()));
                                 }
                               },
                               child: Column(

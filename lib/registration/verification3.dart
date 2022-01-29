@@ -59,7 +59,9 @@ class _VerificationPageState extends State<VerificationPage3> {
     url = await snapshot.ref.getDownloadURL();
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(uid).collection('Verification').doc('Proof of address')
+        .doc(uid)
+        .collection('Verification')
+        .doc('Proof of address')
         .set({'Image URL': url});
   }
 
@@ -230,10 +232,16 @@ class _VerificationPageState extends State<VerificationPage3> {
             color: Colors.black,
           ),
           onPressed: () async {
+            if (file == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("You need to upload you're verification")));
+              return;
+            }
             uploadFile();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => VerificationPage4(context)),
+              MaterialPageRoute(
+                  builder: (context) => VerificationPage4(context)),
             );
           },
         ));

@@ -59,7 +59,9 @@ class _VerificationPageState extends State<VerificationPage2> {
     url = await snapshot.ref.getDownloadURL();
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(uid).collection('Verification').doc('Identification + selfie')
+        .doc(uid)
+        .collection('Verification')
+        .doc('Identification + selfie')
         .set({'Image URL': url});
   }
 
@@ -233,6 +235,11 @@ class _VerificationPageState extends State<VerificationPage2> {
             color: Colors.black,
           ),
           onPressed: () async {
+            if (file == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("You need to upload you're verification")));
+              return;
+            }
             uploadFile();
             Navigator.push(
               context,

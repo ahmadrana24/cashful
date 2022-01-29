@@ -72,7 +72,9 @@ class MTNAccountMethod extends StatelessWidget {
                                 return CircularProgressIndicator();
 
                               dynamic data = snapshot.data!.data();
-                              return Text(data['Last name'], style: boldFont);
+                              return Text(
+                                  " ${data['First name']}  ${data['Last name']}",
+                                  style: boldFont);
                             },
                           ),
                         ]),

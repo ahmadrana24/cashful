@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class PayStdBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var boldFont = TextStyle(
-      fontFamily: 'Inter',
-      fontWeight: FontWeight.w600
-    );
+    var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
@@ -26,9 +23,9 @@ class PayStdBank extends StatelessWidget {
                 height: 1),
           ),
         ),
-        body: Container(color: Color.fromRGBO(246, 246, 246, 1),
-          child: Column(
-            children: [
+        body: Container(
+          color: Color.fromRGBO(246, 246, 246, 1),
+          child: Column(children: [
             SizedBox(
               height: 30,
             ),

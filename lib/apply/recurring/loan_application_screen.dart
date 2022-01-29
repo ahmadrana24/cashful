@@ -314,11 +314,7 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                                         child: Text('Finish'),
                                         onPressed: () async {
                                           uploadLoanApplication();
-                                          SharedPreferences prefs =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          await prefs.setBool(
-                                              "first-time", true);
+
                                           //  await collectionReference
                                           //       .doc(collectionReference
                                           //           .doc('Loan applications')

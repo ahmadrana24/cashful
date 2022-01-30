@@ -117,8 +117,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                               lastDate: DateTime.now(),
                             ).then((value) {
                               print(value);
-                              var date =
-                                  DateFormat("DD/MM/yyyy").format(value!);
+                              var date = DateFormat.yMd().format(value!);
                               setState(() {
                                 dateOfBirth.text = date.toString();
                               });

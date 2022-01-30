@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () async {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
+                                print(prefs.getBool("first-time"));
                                 if (prefs.getBool("first-time") != null) {
                                   if (prefs.getBool("first-time")!) {
                                     Navigator.push(

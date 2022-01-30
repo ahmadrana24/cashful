@@ -29,7 +29,17 @@ class MyApp extends StatelessWidget {
           primaryColor: Color.fromRGBO(1, 67, 55, 1),
           appBarTheme: AppBarTheme(
             backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          )),
+          ),
+          textSelectionTheme:
+              TextSelectionThemeData(cursorColor: Color.fromRGBO(1, 67, 55, 1)),
+          inputDecorationTheme: InputDecorationTheme(
+              floatingLabelStyle: TextStyle(
+                color: Color.fromRGBO(1, 67, 55, 1),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                color: Color.fromRGBO(1, 67, 55, 1),
+              )))),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {

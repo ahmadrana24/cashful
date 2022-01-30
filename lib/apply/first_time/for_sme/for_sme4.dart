@@ -127,6 +127,7 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                   ),
                   TextField(
                     controller: loanDetails,
+                    maxLines: 10,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: false,
@@ -164,14 +165,17 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                 FutureBuilder(
                     builder:
                         (context, AsyncSnapshot<SharedPreferences> snapshot) {
-                      var firstTime = snapshot.data!.getBool("first-time");
-                      if (snapshot.hasData) if (firstTime != null &&
-                          firstTime) {
-                        return SizedBox();
+                      if (snapshot.hasData) {
+                        var firstTime = snapshot.data!.getBool("first-time");
+                        if (snapshot.hasData) if (firstTime != null &&
+                            firstTime) {
+                          return SizedBox();
+                        }
+                        return Container(
+                            margin: EdgeInsets.only(right: 75),
+                            child: Text('5/5'));
                       }
-                      return Container(
-                          margin: EdgeInsets.only(right: 75),
-                          child: Text('5/5'));
+                      return SizedBox();
                     },
                     future: SharedPreferences.getInstance()),
                 Container(
@@ -189,90 +193,91 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                         'Submit',
                         style: TextStyle(fontSize: 16.0, color: Colors.white),
                       ),
-                      onPressed: () => showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            AlertDialog dialog = AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                content: Container(
-                                  height: 200,
-                                  width: 200,
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Image(
-                                            image: AssetImage(
-                                                'assets/images/mail.png')),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('Submitted',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.grey)),
-                                        SizedBox(height: 15),
-                                        Text('Application pending',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black)),
-                                        SizedBox(height: 15),
-                                        Text(
-                                            "We'll notify you of your status within the next 24 hours",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                      ]),
-                                ),
-                                actions: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Color.fromRGBO(1, 67, 55, 1)),
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20))),
-                                        ),
-                                        child: Text('Finish'),
-                                        onPressed: () async {
-                                          uploadLoanApplication();
-                                          SharedPreferences prefs =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          await prefs.setBool(
-                                              "first-time", true);
-                                          //  await collectionReference
-                                          //       .doc(collectionReference
-                                          //           .doc('Loan applications')
-                                          //           .id).collection('Loan details')
-                                          //       .add({
-                                          //     'Loan type': loanType,
-                                          //     'Loan details': loanDetails.text,
-                                          //     'Amount requested': loanAmount.text,
-                                          //   });
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setBool("first-time", true);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              AlertDialog dialog = AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  content: Container(
+                                    height: 200,
+                                    width: 200,
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image(
+                                              image: AssetImage(
+                                                  'assets/images/mail.png')),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('Submitted',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.grey)),
+                                          SizedBox(height: 15),
+                                          Text('Application pending',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black)),
+                                          SizedBox(height: 15),
+                                          Text(
+                                              "We'll notify you of your status within the next 24 hours",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black)),
+                                        ]),
+                                  ),
+                                  actions: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Color.fromRGBO(
+                                                        1, 67, 55, 1)),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20))),
+                                          ),
+                                          child: Text('Finish'),
+                                          onPressed: () async {
+                                            uploadLoanApplication();
+                                            //  await collectionReference
+                                            //       .doc(collectionReference
+                                            //           .doc('Loan applications')
+                                            //           .id).collection('Loan details')
+                                            //       .add({
+                                            //     'Loan type': loanType,
+                                            //     'Loan details': loanDetails.text,
+                                            //     'Amount requested': loanAmount.text,
+                                            //   });
 
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      HomeWithBottomNavBar()));
-                                        }),
-                                  )
-                                ]);
-                            return dialog;
-                          })),
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        HomeWithBottomNavBar()));
+                                          }),
+                                    )
+                                  ]);
+                              return dialog;
+                            });
+                      }),
                 ),
               ],
             ),

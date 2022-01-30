@@ -135,7 +135,7 @@ class _VerificationPage4State extends State<VerificationPage4> {
                           });
                     },
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                               child: Image(
@@ -159,7 +159,7 @@ class _VerificationPage4State extends State<VerificationPage4> {
                       }
                     },
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                               margin: EdgeInsets.only(left: 5),
@@ -182,12 +182,12 @@ class _VerificationPage4State extends State<VerificationPage4> {
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           SizedBox(height: 20),
-          Text('Add at least one account',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.red)),
+          // Text('Add at least one account',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //         fontWeight: FontWeight.bold,
+          //         fontSize: 14,
+          //         color: Colors.red)),
           SizedBox(height: 40),
           ElevatedButton(
               style: ButtonStyle(
@@ -201,7 +201,7 @@ class _VerificationPage4State extends State<VerificationPage4> {
               onPressed: () {
                 if (!_paymentMethodAdded) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("You have to add at least one bank account."),
+                    content: Text("Please add at least one account."),
                   ));
                 } else
                   Navigator.of(context).pushReplacementNamed('/home');

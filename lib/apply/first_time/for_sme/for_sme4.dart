@@ -127,7 +127,7 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                   ),
                   TextField(
                     controller: loanDetails,
-                    maxLines: 10,
+                    maxLines: 5,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
                         isDense: false,

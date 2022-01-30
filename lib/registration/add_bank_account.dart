@@ -86,7 +86,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             decoration: InputDecoration(
                                 labelText: 'Bank Name',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -96,7 +97,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             decoration: InputDecoration(
                                 labelText: 'Account Holder',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -106,7 +108,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             decoration: InputDecoration(
                                 labelText: 'Account Type',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -116,7 +119,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             decoration: InputDecoration(
                                 labelText: 'Branch Code',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -126,7 +130,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             decoration: InputDecoration(
                                 labelText: 'Account Number',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),

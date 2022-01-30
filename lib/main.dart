@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: InputDecorationTheme(
               floatingLabelStyle: TextStyle(
                 color: Color.fromRGBO(1, 67, 55, 1),
+                fontWeight: FontWeight.bold,
               ),
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(

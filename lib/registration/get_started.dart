@@ -82,7 +82,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             decoration: InputDecoration(
                                 labelText: 'First Name',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -97,7 +98,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             decoration: InputDecoration(
                                 labelText: 'Last Name',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -134,7 +136,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                                     labelText: 'Date of birth',
                                     hintText: 'dd/mm/yyyy',
                                     floatingLabelStyle: TextStyle(
-                                        color: Theme.of(context).primaryColor),
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold),
                                     hintStyle: TextStyle(color: Colors.black),
                                     border: _underlineBorder(),
                                     enabledBorder: _underlineBorder(),
@@ -162,7 +165,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                               labelText: 'Gender',
 
                               floatingLabelStyle: TextStyle(
-                                  color: Theme.of(context).primaryColor),
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold),
                               // border: _underlineBorder(),
                               // enabledBorder: _underlineBorder(),
                               // focusedBorder: _underlineBorder()
@@ -178,7 +182,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             decoration: InputDecoration(
                                 labelText: 'ID number',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -195,7 +200,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                                 hintText:
                                     '102 Arnd St, Bloemfontein, Free State',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),
@@ -210,7 +216,8 @@ class _GetStartedPageState extends State<GetStartedPage> {
                             decoration: InputDecoration(
                                 labelText: 'Mobile number',
                                 floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold),
                                 border: _underlineBorder(),
                                 enabledBorder: _underlineBorder(),
                                 focusedBorder: _underlineBorder()),

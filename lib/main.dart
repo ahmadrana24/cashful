@@ -30,8 +30,10 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: Color.fromRGBO(1, 67, 55, 1),
           ),
-          textSelectionTheme:
-              TextSelectionThemeData(cursorColor: Color.fromRGBO(1, 67, 55, 1)),
+          textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Color.fromRGBO(1, 67, 55, 1),
+              selectionColor: Color.fromRGBO(1, 67, 55, 1),
+              selectionHandleColor: Color.fromRGBO(1, 67, 55, 1)),
           inputDecorationTheme: InputDecorationTheme(
               floatingLabelStyle: TextStyle(
                 color: Color.fromRGBO(1, 67, 55, 1),

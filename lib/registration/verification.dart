@@ -244,8 +244,8 @@ class _VerificationPageState extends State<VerificationPage> {
           ),
           onPressed: () async {
             if (file == null) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("You need to upload you're verification")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Please upload your ID to continue")));
               return;
             }
             uploadFile();

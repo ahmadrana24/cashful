@@ -81,40 +81,55 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                     child: Form(
                       child: Column(
                         children: <Widget>[
-                          TextField(
+                          TextFormField(
                             controller: bankName,
                             decoration: InputDecoration(
-                              labelText: 'Bank Name',
-                              border: UnderlineInputBorder(),
-                            ),
+                                labelText: 'Bank Name',
+                                floatingLabelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                                border: _underlineBorder(),
+                                enabledBorder: _underlineBorder(),
+                                focusedBorder: _underlineBorder()),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: accountHolder,
                             decoration: InputDecoration(
-                              labelText: 'Account Holder',
-                              border: UnderlineInputBorder(),
-                            ),
+                                labelText: 'Account Holder',
+                                floatingLabelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                                border: _underlineBorder(),
+                                enabledBorder: _underlineBorder(),
+                                focusedBorder: _underlineBorder()),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: accountType,
                             decoration: InputDecoration(
-                              labelText: 'Account Type',
-                              border: UnderlineInputBorder(),
-                            ),
+                                labelText: 'Account Type',
+                                floatingLabelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                                border: _underlineBorder(),
+                                enabledBorder: _underlineBorder(),
+                                focusedBorder: _underlineBorder()),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: branchCode,
                             decoration: InputDecoration(
-                              labelText: 'Branch Code',
-                              border: UnderlineInputBorder(),
-                            ),
+                                labelText: 'Branch Code',
+                                floatingLabelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                                border: _underlineBorder(),
+                                enabledBorder: _underlineBorder(),
+                                focusedBorder: _underlineBorder()),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: accountNumber,
                             decoration: InputDecoration(
-                              labelText: 'Account Number',
-                              border: UnderlineInputBorder(),
-                            ),
+                                labelText: 'Account Number',
+                                floatingLabelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                                border: _underlineBorder(),
+                                enabledBorder: _underlineBorder(),
+                                focusedBorder: _underlineBorder()),
                           ),
                         ],
                       ),
@@ -135,7 +150,7 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                 ),
                 onPressed: () async {
                   uploadBankDetails();
-                  Navigator.pop(context, "Data Addded");
+                  Navigator.pop(context, "Data Added");
                   // await collectionReference
                   //     .doc(collectionReference.doc('Bank details').id)
                   //     .set({
@@ -150,5 +165,10 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
         ),
       ),
     ));
+  }
+
+  UnderlineInputBorder _underlineBorder() {
+    return UnderlineInputBorder(
+        borderSide: BorderSide(color: Theme.of(context).primaryColor));
   }
 }

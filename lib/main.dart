@@ -1,18 +1,28 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/main_views/account_method.dart';
-import 'package:flutter_application_1/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/registration/get_started.dart';
+import 'package:flutter_application_1/pages/main_views/account_method.dart';
+import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/pages/main_views/no_connection_screen.dart';
+import 'package:flutter_application_1/pages/registration/get_started.dart';
+import 'package:flutter_application_1/view_models/connectivity_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
-import 'main_views/settings.dart';
+import 'pages/main_views/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging messageing = FirebaseMessaging.instance;
+  String? token = await messageing.getToken();
+  print("FCM token: $token");
   runApp(MyApp());
 }
 
@@ -43,20 +53,30 @@ class MyApp extends StatelessWidget {
                   borderSide: BorderSide(
                 color: Color.fromRGBO(1, 67, 55, 1),
               )))),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data == null) {
-              return LoginScreen();
-            } else {
-              return MyHomePage();
-            }
-          } else {
-            return LoginScreen();
-          }
-        },
-      ),
+      home: ChangeNotifierProvider(
+          create: (_) => ConnectivityViewModel(),
+          child: Consumer<ConnectivityViewModel>(
+            builder: (context, viewModel, child) {
+              print(viewModel.result);
+              if (viewModel.result == ConnectivityResult.none) {
+                return NoConnectionScreen();
+              } else
+                return StreamBuilder<User?>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data == null) {
+                        return LoginScreen();
+                      } else {
+                        return MyHomePage();
+                      }
+                    } else {
+                      return LoginScreen();
+                    }
+                  },
+                );
+            },
+          )),
 
       routes: {
         '/home': (context) => HomeWithBottomNavBar(),
@@ -102,7 +122,14 @@ final uid = _auth.currentUser!.uid;
 
 class _MyHomePageState extends State<MyHomePage> {
   void createUID() async {
-    FirebaseFirestore.instance.collection('users').doc(uid).set({});
+    FirebaseMessaging messageing = FirebaseMessaging.instance;
+    String? token = await messageing.getToken();
+    print("FCM token: $token");
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection("tokens")
+        .add({"fcm_token": token});
     // .collection('Profile')
     // .doc('Applications')
     // .set({});

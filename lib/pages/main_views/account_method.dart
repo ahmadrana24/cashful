@@ -18,7 +18,7 @@ class AccountMethodState extends State<AccountMethod> {
           icon: Icon(Icons.arrow_back_ios),
           iconSize: 20.0,
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/home');
+            Navigator.of(context).pop();
           },
         ),
         backgroundColor: Color.fromRGBO(1, 67, 55, 1),

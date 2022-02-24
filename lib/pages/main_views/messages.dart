@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:intl/intl.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -31,25 +32,33 @@ class MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 30,
-          automaticallyImplyLeading: false,
-          backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          title: new Text(
-            'Messages',
-            style: TextStyle(
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontFamily: 'Poppins',
-                fontSize: 25,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.bold,
-                height: 1),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(40.0),
+        // appBar: AppBar(
+        //   titleSpacing: 30,
+        //   automaticallyImplyLeading: false,
+        //   backgroundColor: Color.fromRGBO(1, 67, 55, 1),
+        //   title: new Text(
+        //     'Messages',
+        //     style: TextStyle(
+        //         color: Color.fromRGBO(255, 255, 255, 1),
+        //         fontFamily: 'Poppins',
+        //         fontSize: 25,
+        //         letterSpacing: 1.2,
+        //         fontWeight: FontWeight.bold,
+        //         height: 1),
+        //   ),
+        // ),
+        body: Stack(
+      children: [
+        Image.asset("assets/images/notification_wave_bg.png",
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: double.infinity,
+            fit: BoxFit.cover),
+        Align(
+          alignment: Alignment.bottomCenter,
           child: Container(
+            height: MediaQuery.of(context).size.height * 0.7,
             padding: const EdgeInsets.all(30.0),
+            margin: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(40)),
             child: StreamBuilder<QuerySnapshot>(
@@ -105,6 +114,9 @@ class MessagesScreenState extends State<MessagesScreen> {
               },
             ),
           ),
-        ));
+        ),
+        Positioned(top: 50, left: 20, child: TextH1(title: "Notifications"))
+      ],
+    ));
   }
 }

@@ -7,6 +7,8 @@ import 'package:flutter_application_1/pages/apply/recurring/loan_application_scr
 import 'package:flutter_application_1/pages/main_views/help.dart';
 import 'package:flutter_application_1/pages/main_views/pay.dart';
 import 'package:flutter_application_1/pages/main_views/test.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'status.dart';
@@ -17,35 +19,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var cardTextStyle = TextStyle(
+      fontFamily: 'Poppins',
+      letterSpacing: 1.2,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      height: 1);
   @override
   Widget build(BuildContext context) {
     // style
-    var cardTextStyle = TextStyle(
-        fontFamily: 'Poppins',
-        letterSpacing: 1.2,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-        height: 1);
 
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 30,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        title: new Text(
-          'Home',
-          style: TextStyle(
-              color: Color.fromRGBO(255, 255, 255, 1),
-              fontFamily: 'Poppins',
-              fontSize: 25,
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.bold,
-              height: 1),
-        ),
-      ),
+      // appBar: AppBar(
+      //   titleSpacing: 30,
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Color.fromRGBO(1, 67, 55, 1),
+      //   title: new Text(
+      //     'Home',
+      //     style: TextStyle(
+      //         color: Color.fromRGBO(255, 255, 255, 1),
+      //         fontFamily: 'Poppins',
+      //         fontSize: 25,
+      //         letterSpacing: 1.2,
+      //         fontWeight: FontWeight.bold,
+      //         height: 1),
+      //   ),
+      // ),
       body: Stack(
         children: <Widget>[
+          Image.asset("assets/images/home_wave_bg.png",
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: double.infinity,
+              fit: BoxFit.cover),
           SafeArea(
             child: Padding(
               padding: EdgeInsets.all(15.0),
@@ -69,121 +75,72 @@ class _HomeScreenState extends State<HomeScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             child: InkWell(
-                              onTap: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                print(prefs.getBool("first-time"));
-                                if (prefs.getBool("first-time") != null) {
-                                  if (prefs.getBool("first-time")!) {
+                                onTap: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  print(prefs.getBool("first-time"));
+                                  if (prefs.getBool("first-time") != null) {
+                                    if (prefs.getBool("first-time")!) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  // LoanApplicationScreen()));
+                                                  // builder: (context) => ApplyForSME4()));
+                                                  ApplyForSME4()));
+                                    }
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 // LoanApplicationScreen()));
                                                 // builder: (context) => ApplyForSME4()));
-                                                ApplyForSME4()));
+                                                ApplySplash()));
                                   }
-                                } else {
+                                },
+                                child: _floatingHomeCard(
+                                    'assets/images/apply.svg', 'Apply')),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            child: InkWell(
+                                onTap: () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              // LoanApplicationScreen()));
-                                              // builder: (context) => ApplyForSME4()));
-                                              ApplySplash()));
-                                }
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image(
-                                    image:
-                                        AssetImage('assets/images/apply.png'),
-                                    height: 128,
-                                  ),
-                                  Text(
-                                    'Apply',
-                                    style: cardTextStyle,
-                                  )
-                                ],
-                              ),
-                            ),
+                                              StatusScreen()));
+                                },
+                                child: _floatingHomeCard(
+                                    'assets/images/status.svg', 'Status')),
                           ),
                           Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => StatusScreen()));
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image(
-                                    image:
-                                        AssetImage('assets/images/status.png'),
-                                    height: 128,
-                                  ),
-                                  Text(
-                                    'Status',
-                                    style: cardTextStyle,
-                                  )
-                                ],
-                              ),
-                            ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PayScreen()));
+                                },
+                                child: _floatingHomeCard(
+                                    'assets/images/pay.svg', 'Pay')),
                           ),
                           Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PayScreen()));
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image(
-                                    image: AssetImage('assets/images/pay.png'),
-                                    height: 128,
-                                  ),
-                                  Text(
-                                    'Pay',
-                                    style: cardTextStyle,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HelpScreen()));
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Image(
-                                    image: AssetImage('assets/images/help.png'),
-                                    height: 128,
-                                  ),
-                                  Text(
-                                    'Help',
-                                    style: cardTextStyle,
-                                  )
-                                ],
-                              ),
-                            ),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HelpScreen()));
+                                },
+                                child: _floatingHomeCard(
+                                    'assets/images/help.svg', 'Help')),
                           ),
                         ],
                       ),
@@ -193,8 +150,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          Positioned(top: 50, left: 20, child: TextH1(title: "Home"))
         ],
       ),
+    );
+  }
+
+  Widget _floatingHomeCard(imageUrl, title) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SvgPicture.asset(
+          imageUrl,
+          height: 50,
+        ),
+        SizedBox(height: 10),
+        Text(
+          title,
+          style: cardTextStyle,
+        )
+      ],
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/pages/main_views/home_screen.dart';
 import 'package:flutter_application_1/pages/main_views/settings.dart';
 import 'package:flutter_application_1/pages/main_views/messages.dart';
 
 class HomeWithBottomNavBar extends StatefulWidget {
+  static const pageName = '/homeWithBottomNavBar';
   const HomeWithBottomNavBar({Key? key}) : super(key: key);
 
   @override
@@ -29,11 +31,14 @@ class HomeWithBottomNavBarState extends State<HomeWithBottomNavBar> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
+        iconSize: 40,
+        unselectedLabelStyle:
+            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         onTap: (index) => setState(() => currentIndex = index),
-        type: BottomNavigationBarType.shifting,
-        selectedFontSize: 14,
-        selectedItemColor: Colors.teal[700],
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: kPrimaryBlue,
+        selectedLabelStyle:
+            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         unselectedItemColor: Colors.grey[500],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

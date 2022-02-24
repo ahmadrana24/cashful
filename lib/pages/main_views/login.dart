@@ -178,7 +178,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                      MaterialPageRoute(builder: (context) => CreateAccountPage()),
                     );
                   },
                   child: Text(

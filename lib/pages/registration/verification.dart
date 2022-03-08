@@ -6,11 +6,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'verification2.dart';
 
 class VerificationPage extends StatefulWidget {
+  static const pageName = "/verificationOne";
   @override
   _VerificationPageState createState() => _VerificationPageState();
 }
@@ -68,171 +71,196 @@ class _VerificationPageState extends State<VerificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          centerTitle: true,
-          title: new Text(
-            'Verification',
-            style: TextStyle(
-                color: Color.fromRGBO(255, 255, 255, 1),
-                fontFamily: 'Poppins',
-                fontSize: 25,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.bold,
-                height: 1),
-          ),
-        ),
-        body: Container(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(15),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  child: Text(
-                    'Upload your ID card for verification',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Uploading clear documents can make the approval process faster',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
-                    ),
-                  ),
-                  constraints: BoxConstraints(
-                      minHeight: 80,
-                      maxHeight: 100,
-                      maxWidth: 360,
-                      minWidth: 80),
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(254, 255, 224, 1),
-                      borderRadius: BorderRadius.circular(20)),
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Center(
-                  child: Container(
-                    child: Text(
-                      'Please ensure all corners of your ID card are visible',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50),
-                Container(
-                  child: DottedBorder(
-                    dashPattern: [2, 5, 3, 4],
-                    color: Colors.black,
-                    strokeWidth: 1,
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              child: file == null
-                                  ? Icon(Icons.upload)
-                                  : Image.file(file!, width: 260, height: 180)),
-                        ],
-                      ),
-                      color: Colors.grey[300],
-                      width: 260,
-                      height: 180,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Column(
-                  children: [
-                    Text('Other forms of accepted ID:',
-                        textAlign: TextAlign.center),
-                    Text('License',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Passport',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: imageSelectFromCamera,
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.camera,
-                              color: Colors.grey[500],
+        // appBar: AppBar(
+        //   backgroundColor: Color.fromRGBO(1, 67, 55, 1),
+        //   centerTitle: true,
+        //   title: new Text(
+        //     'Verification',
+        //     style: TextStyle(
+        //         color: Color.fromRGBO(255, 255, 255, 1),
+        //         fontFamily: 'Poppins',
+        //         fontSize: 25,
+        //         letterSpacing: 1.2,
+        //         fontWeight: FontWeight.bold,
+        //         height: 1),
+        //   ),
+        // ),
+        backgroundColor: kPrimaryBlue,
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 80),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: TextH1(title: "Verification"),
+              ),
+              Expanded(
+                child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(20.0))),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                'Upload your ID card for verification',
+                                style: TextStyle(fontSize: 18),
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Camera',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          )
-                        ],
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Uploading clear documents can make the approval process faster',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(),
+                                ),
+                              ),
+                              constraints: BoxConstraints(
+                                  minHeight: 80,
+                                  maxHeight: 100,
+                                  maxWidth: 360,
+                                  minWidth: 80),
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(254, 255, 224, 1),
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Center(
+                              child: Container(
+                                child: Text(
+                                  'Please ensure all corners of your ID card are visible',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            Container(
+                              child: DottedBorder(
+                                dashPattern: [2, 5, 3, 4],
+                                color: Colors.black,
+                                strokeWidth: 1,
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          child: file == null
+                                              ? Icon(Icons.upload)
+                                              : Image.file(file!,
+                                                  width: 260, height: 180)),
+                                    ],
+                                  ),
+                                  color: Colors.grey[300],
+                                  width: 260,
+                                  height: 180,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              children: [
+                                Text('Other forms of accepted ID:',
+                                    textAlign: TextAlign.center),
+                                Text('License',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Text('Passport',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: imageSelectFromCamera,
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20))),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.camera,
+                                          color: Colors.grey[500],
+                                        ),
+                                      ),
+                                      Text(
+                                        'Camera',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 40,
+                                ),
+                                ElevatedButton(
+                                  onPressed: imageSelectFromGallery,
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20))),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            Icons.folder_open,
+                                            color: Colors.grey[500],
+                                          )),
+                                      Text(
+                                        'Gallery',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 40,
-                    ),
-                    ElevatedButton(
-                      onPressed: imageSelectFromGallery,
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.folder_open,
-                                color: Colors.grey[500],
-                              )),
-                          Text(
-                            'Gallery',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+                    )),
+              )
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -243,16 +271,18 @@ class _VerificationPageState extends State<VerificationPage> {
             color: Colors.black,
           ),
           onPressed: () async {
-            if (file == null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Please upload your ID to continue")));
-              return;
-            }
-            uploadFile();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => VerificationPage2()),
-            );
+            Navigator.pushNamed(context, VerificationPage2.pageName);
+            return;
+            // if (file == null) {
+            //   ScaffoldMessenger.of(context).showSnackBar(
+            //       SnackBar(content: Text("Please upload your ID to continue")));
+            //   return;
+            // }
+            // uploadFile();
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => VerificationPage2()),
+            // );
           },
         ));
   }

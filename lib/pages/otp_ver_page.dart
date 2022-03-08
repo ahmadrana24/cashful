@@ -15,7 +15,7 @@ class OTPVerificationPage extends StatefulWidget {
 class _OTPVerificationPageState extends State<OTPVerificationPage> {
   var _key = GlobalKey<FormState>();
   var _otpCode = "";
-  
+
   @override
   Widget build(BuildContext context) {
     var authViewModel = Provider.of<AuthViewModel>(context);

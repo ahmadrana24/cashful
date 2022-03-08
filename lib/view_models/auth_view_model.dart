@@ -52,7 +52,6 @@ class AuthViewModel extends ChangeNotifier {
     authState = AuthState.Busy;
     UserCredential _userCredential =
         await _auth.signInWithCredential(credential);
-    //TODO: check if users data exists if not redirect to registration page
     _userCredential.user!.uid;
     authState = AuthState.Success;
     notifyListeners();

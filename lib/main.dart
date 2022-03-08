@@ -7,25 +7,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/app_route.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/pages/main_views/account_method.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/main_views/no_connection_screen.dart';
 import 'package:flutter_application_1/pages/registration/get_started.dart';
 import 'package:flutter_application_1/view_models/auth_view_model.dart';
-import 'package:flutter_application_1/view_models/connectivity_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
-import 'pages/main_views/settings.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging messageing = FirebaseMessaging.instance;
-  String? token = await messageing.getToken();
-  print("FCM token: $token");
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -36,9 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthViewModel())
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
       child: MaterialApp(
         //initialRoute: '/home',
         debugShowCheckedModeBanner: false,

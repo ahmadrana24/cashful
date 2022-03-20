@@ -1,16 +1,23 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/configs/app_route.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/pages/registration/get_started.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
 import 'package:flutter_application_1/view_models/auth_view_model.dart';
+import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
+import 'package:flutter_application_1/view_models/notifications_view_model.dart';
+import 'package:flutter_application_1/view_models/payment_methods_view_model.dart';
+import 'package:flutter_application_1/view_models/registration/get_started_view_model.dart';
+import 'package:flutter_application_1/view_models/splash_view_model.dart';
+import 'package:flutter_application_1/view_models/status_view_model.dart';
+import 'package:flutter_application_1/view_models/user_view_model.dart';
+import 'package:flutter_application_1/view_models/verification_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +25,9 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging messageing = FirebaseMessaging.instance;
+  String? token = await messageing.getToken();
+  print("FCM token: $token");
   setupLocator();
   runApp(MyApp());
 }
@@ -29,7 +39,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => locator<AuthViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<GetStartedViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<VerificationViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<SplashViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<ApplyViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<LoanRequestViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<UserViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<StatusViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => locator<PaymentMethodViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<NotificationViewModel>())
+      ],
       child: MaterialApp(
         //initialRoute: '/home',
         debugShowCheckedModeBanner: false,

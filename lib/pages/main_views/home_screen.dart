@@ -1,12 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/apply/first_time/apply_splash.dart';
-import 'package:flutter_application_1/pages/apply/first_time/for_sme/for_sme4.dart';
-import 'package:flutter_application_1/pages/apply/recurring/loan_application_screen.dart';
+import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
+import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/help.dart';
 import 'package:flutter_application_1/pages/main_views/pay.dart';
-import 'package:flutter_application_1/pages/main_views/test.dart';
+import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,127 +25,124 @@ class _HomeScreenState extends State<HomeScreen> {
       fontWeight: FontWeight.bold,
       color: Colors.black,
       height: 1);
+  double dx = 0.5;
+
   @override
   Widget build(BuildContext context) {
     // style
-
-    return Scaffold(
-      // appBar: AppBar(
-      //   titleSpacing: 30,
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-      //   title: new Text(
-      //     'Home',
-      //     style: TextStyle(
-      //         color: Color.fromRGBO(255, 255, 255, 1),
-      //         fontFamily: 'Poppins',
-      //         fontSize: 25,
-      //         letterSpacing: 1.2,
-      //         fontWeight: FontWeight.bold,
-      //         height: 1),
-      //   ),
-      // ),
-      body: Stack(
+    Future.delayed(Duration(milliseconds: 200), () {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        setState(() {
+          dx = 1;
+        });
+      });
+    });
+    return BaseView<UserViewModel>(
+      builder: (context, model, child) => Stack(
         children: <Widget>[
           Image.asset("assets/images/home_wave_bg.png",
               height: MediaQuery.of(context).size.height * 0.6,
               width: double.infinity,
               fit: BoxFit.cover),
-          SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 40,
-                    margin: EdgeInsets.only(bottom: 1),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: GridView.count(
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                        primary: false,
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            child: InkWell(
-                                onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  print(prefs.getBool("first-time"));
-                                  if (prefs.getBool("first-time") != null) {
-                                    if (prefs.getBool("first-time")!) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  // LoanApplicationScreen()));
-                                                  // builder: (context) => ApplyForSME4()));
-                                                  ApplyForSME4()));
+          AnimatedScale(
+            scale: dx,
+            curve: Curves.ease,
+            duration: Duration(milliseconds: 200),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 40,
+                      margin: EdgeInsets.only(bottom: 1),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: GridView.count(
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                          primary: false,
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          children: <Widget>[
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: InkWell(
+                                  onTap: () async {
+                                    // SharedPreferences prefs =
+                                    //     await SharedPreferences.getInstance();
+                                    // print(prefs.getBool("first-time"));
+                                    if (model.user!.backgroundInformation ==
+                                        null) {
+                                      Navigator.pushNamed(
+                                          context, ApplySplash.pageName);
+                                    } else {
+                                      Navigator.pushNamed(context,
+                                          LoanApplicationInfoPage.pageName);
                                     }
-                                  } else {
+                                    // if (prefs.getBool("first-time") != null) {
+                                    //   if (prefs.getBool("first-time")!) {
+                                    //     Navigator.pushNamed(
+                                    //         context, ApplySplash.pageName);
+                                    //   }
+                                    // } else {
+                                    //   Navigator.pushNamed(
+                                    //       context, ApplySplash.pageName);
+                                    // }
+                                  },
+                                  child: _floatingHomeCard(
+                                      'assets/images/apply.svg', 'Apply')),
+                            ),
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: InkWell(
+                                  onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                // LoanApplicationScreen()));
-                                                // builder: (context) => ApplyForSME4()));
-                                                ApplySplash()));
-                                  }
-                                },
-                                child: _floatingHomeCard(
-                                    'assets/images/apply.svg', 'Apply')),
-                          ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              StatusScreen()));
-                                },
-                                child: _floatingHomeCard(
-                                    'assets/images/status.svg', 'Status')),
-                          ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PayScreen()));
-                                },
-                                child: _floatingHomeCard(
-                                    'assets/images/pay.svg', 'Pay')),
-                          ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HelpScreen()));
-                                },
-                                child: _floatingHomeCard(
-                                    'assets/images/help.svg', 'Help')),
-                          ),
-                        ],
+                                                StatusScreen()));
+                                  },
+                                  child: _floatingHomeCard(
+                                      'assets/images/status.svg', 'Status')),
+                            ),
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PayScreen()));
+                                  },
+                                  child: _floatingHomeCard(
+                                      'assets/images/pay.svg', 'Pay')),
+                            ),
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HelpScreen()));
+                                  },
+                                  child: _floatingHomeCard(
+                                      'assets/images/help.svg', 'Help')),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
-import 'package:flutter_application_1/pages/registration/verification4.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 
 class AddBankAccountScreen extends StatefulWidget {
@@ -12,65 +12,18 @@ class AddBankAccountScreen extends StatefulWidget {
 }
 
 class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
-  void uploadBankDetails() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Profile')
-        .doc('Bank details')
-        .set({
-      'Bank name': bankName.text,
-      'Account holder': accountHolder.text,
-      'Account type': accountType.text,
-      'Branch code': branchCode.text,
-      'Account number': accountNumber.text,
-    });
-  }
 
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
   final TextEditingController bankName = TextEditingController();
   final TextEditingController accountHolder = TextEditingController();
   final TextEditingController accountType = TextEditingController();
   final TextEditingController branchCode = TextEditingController();
   final TextEditingController accountNumber = TextEditingController();
+  BankDetail? bankDetail;
+  var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   //  leading:
-      //   //  InkWell(
-      //   //     onTap: () {
-      //   //       Navigator.pop(context);
-      //   //     },
-      //   //   ),
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back_ios),
-      //     iconSize: 20.0,
-      //     onPressed: () {
-      //       Navigator.pop(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => VerificationPage4()),
-      //       );
-      //     },
-      // //   ),
-      //   backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-      //   iconTheme: IconThemeData(
-      //     color: Colors.white,
-      //   ),
-      //   centerTitle: true,
-      //   title: new Text(
-      //     'Add bank account',
-      //     style: TextStyle(
-      //         color: Color.fromRGBO(255, 255, 255, 1),
-      //         fontFamily: 'Poppins',
-      //         fontSize: 25,
-      //         letterSpacing: 1.2,
-      //         fontWeight: FontWeight.bold,
-      //         height: 1),
-      //   ),
-      // ),
       backgroundColor: kPrimaryBlue,
       body: SafeArea(
         child: Column(
@@ -93,9 +46,12 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                       padding:
                           EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                       child: Form(
+                        key: _formKey,
                         child: Column(
                           children: <Widget>[
                             TextFormField(
+                              validator: (value) =>
+                                  AppHelper.requiredValidator(value),
                               controller: bankName,
                               decoration: InputDecoration(
                                   labelText: 'Bank Name',
@@ -109,6 +65,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             ),
                             TextFormField(
                               controller: accountHolder,
+                              validator: (value) =>
+                                  AppHelper.requiredValidator(value),
                               decoration: InputDecoration(
                                   labelText: 'Account Holder',
                                   floatingLabelStyle: TextStyle(
@@ -121,6 +79,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             ),
                             TextFormField(
                               controller: accountType,
+                              validator: (value) =>
+                                  AppHelper.requiredValidator(value),
                               decoration: InputDecoration(
                                   labelText: 'Account Type',
                                   floatingLabelStyle: TextStyle(
@@ -133,6 +93,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             ),
                             TextFormField(
                               controller: branchCode,
+                              validator: (value) =>
+                                  AppHelper.requiredValidator(value),
                               decoration: InputDecoration(
                                   labelText: 'Branch Code',
                                   floatingLabelStyle: TextStyle(
@@ -145,6 +107,8 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                             ),
                             TextFormField(
                               controller: accountNumber,
+                              validator: (value) =>
+                                  AppHelper.requiredValidator(value),
                               decoration: InputDecoration(
                                   labelText: 'Account Number',
                                   floatingLabelStyle: TextStyle(
@@ -172,8 +136,17 @@ class _AddBankAccountScreenState extends State<AddBankAccountScreen> {
                                               BorderRadius.circular(20))),
                                 ),
                                 onPressed: () async {
-                                  uploadBankDetails();
-                                  Navigator.pop(context, "Data Added");
+                                  if (_formKey.currentState!.validate()) {
+                                    bankDetail = BankDetail(
+                                        hodlerName: accountHolder.text,
+                                        accountNumber: accountNumber.text,
+                                        accountType: accountType.text,
+                                        bankName: bankName.text,
+                                        bankCode: branchCode.text);
+                                    Navigator.pop(context, bankDetail);
+                                  }
+                                  // uploadBankDetails();
+                                  // Navigator.pop(context, "Data Added");
                                   // await collectionReference
                                   //     .doc(collectionReference.doc('Bank details').id)
                                   //     .set({

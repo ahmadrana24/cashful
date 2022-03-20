@@ -4,6 +4,7 @@ enum ViewState { Idle, Busy }
 
 class BaseViewModel extends ChangeNotifier {
   ViewState _state = ViewState.Idle;
+  String? errorMessage;
 
   ViewState get state => this._state;
 

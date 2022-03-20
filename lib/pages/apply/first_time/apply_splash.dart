@@ -10,26 +10,6 @@ class ApplySplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   titleSpacing: 30,
-        //   elevation: 0,
-        //   automaticallyImplyLeading: true,
-        //   iconTheme: IconThemeData(
-        //     color: Colors.black,
-        //   ),
-        //   backgroundColor: Colors.white,
-        //   toolbarHeight: 100,
-        //   title: new Text(
-        //     'Apply',
-        //     style: TextStyle(
-        //         color: Colors.black,
-        //         fontFamily: 'Poppins',
-        //         fontSize: 25,
-        //         letterSpacing: 1.2,
-        //         fontWeight: FontWeight.bold,
-        //         height: 1),
-        //   ),
-        // ),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Stack(

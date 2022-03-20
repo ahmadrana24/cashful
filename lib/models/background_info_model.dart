@@ -3,37 +3,43 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BackgroundInformation {
-  String id;
-  String creditScoreValue;
-  String employmentStatus;
-  bool isCreditScorePresent;
-  bool isSmallBusinessOwner;
-  String businessOffering;
-  String lengthOfOperation;
-  String sourceOfFinancing;
-  String businessExpenceMonthly;
-  String businessrevenueMonthly;
-  String investmentToDate;
-  String savingMonthly;
-  String stockvelContribution;
-  bool isPartOfStockvel;
-  String highestLevelOfEducation;
+  String? id;
+  String? creditScoreValue;
+  String? employmentStatus;
+  bool? isCreditScorePresent = false;
+  bool? isSmallBusinessOwner = false;
+  String? businessOffering;
+  String? lengthOfOperation;
+  String? sourceOfFinancing;
+  String? businessExpenceMonthly;
+  String? businessrevenueMonthly;
+  String? investmentToDate;
+  String? savingMonthly;
+  String? stockvelContribution;
+  bool? isPartOfStockvel = false;
+  String? highestLevelOfEducation;
+  String? sourceOfIncome;
+  String? monthlyIncome;
+  String? monthlyExpense;
   BackgroundInformation({
-    required this.id,
-    required this.creditScoreValue,
-    required this.employmentStatus,
-    required this.isCreditScorePresent,
-    required this.isSmallBusinessOwner,
-    required this.businessOffering,
-    required this.lengthOfOperation,
-    required this.sourceOfFinancing,
-    required this.businessExpenceMonthly,
-    required this.businessrevenueMonthly,
-    required this.investmentToDate,
-    required this.savingMonthly,
-    required this.stockvelContribution,
-    required this.isPartOfStockvel,
-    required this.highestLevelOfEducation,
+    this.id,
+    this.creditScoreValue,
+    this.employmentStatus,
+    this.isCreditScorePresent,
+    this.isSmallBusinessOwner,
+    this.businessOffering,
+    this.lengthOfOperation,
+    this.sourceOfFinancing,
+    this.businessExpenceMonthly,
+    this.businessrevenueMonthly,
+    this.investmentToDate,
+    this.savingMonthly,
+    this.stockvelContribution,
+    this.isPartOfStockvel,
+    this.highestLevelOfEducation,
+    this.sourceOfIncome,
+    this.monthlyIncome,
+    this.monthlyExpense,
   });
 
   Map<String, dynamic> toMap() {
@@ -53,26 +59,32 @@ class BackgroundInformation {
       'stockvelContribution': stockvelContribution,
       'isPartOfStockvel': isPartOfStockvel,
       'highestLevelOfEducation': highestLevelOfEducation,
+      'sourceOfIncome': sourceOfIncome,
+      'monthlyIncome': monthlyIncome,
+      'monthlyExpense': monthlyExpense,
     };
   }
 
   factory BackgroundInformation.fromMap(Map<String, dynamic> map) {
     return BackgroundInformation(
-      id: map['id'] ?? '',
-      creditScoreValue: map['creditScoreValue'] ?? '',
-      employmentStatus: map['employmentStatus'] ?? '',
-      isCreditScorePresent: map['isCreditScorePresent'] ?? false,
-      isSmallBusinessOwner: map['isSmallBusinessOwner'] ?? false,
-      businessOffering: map['businessOffering'] ?? '',
-      lengthOfOperation: map['lengthOfOperation'] ?? '',
-      sourceOfFinancing: map['sourceOfFinancing'] ?? '',
-      businessExpenceMonthly: map['businessExpenceMonthly'] ?? '',
-      businessrevenueMonthly: map['businessrevenueMonthly'] ?? '',
-      investmentToDate: map['investmentToDate'] ?? '',
-      savingMonthly: map['savingMonthly'] ?? '',
-      stockvelContribution: map['stockvelContribution'] ?? '',
-      isPartOfStockvel: map['isPartOfStockvel'] ?? false,
-      highestLevelOfEducation: map['highestLevelOfEducation'] ?? '',
+      id: map['id'],
+      creditScoreValue: map['creditScoreValue'],
+      employmentStatus: map['employmentStatus'],
+      isCreditScorePresent: map['isCreditScorePresent'],
+      isSmallBusinessOwner: map['isSmallBusinessOwner'],
+      businessOffering: map['businessOffering'],
+      lengthOfOperation: map['lengthOfOperation'],
+      sourceOfFinancing: map['sourceOfFinancing'],
+      businessExpenceMonthly: map['businessExpenceMonthly'],
+      businessrevenueMonthly: map['businessrevenueMonthly'],
+      investmentToDate: map['investmentToDate'],
+      savingMonthly: map['savingMonthly'],
+      stockvelContribution: map['stockvelContribution'],
+      isPartOfStockvel: map['isPartOfStockvel'],
+      highestLevelOfEducation: map['highestLevelOfEducation'],
+      sourceOfIncome: map['sourceOfIncome'],
+      monthlyIncome: map['monthlyIncome'],
+      monthlyExpense: map['monthlyExpense'],
     );
   }
 
@@ -85,5 +97,27 @@ class BackgroundInformation {
     var data = snapshot.data() as Map<String, dynamic>;
     data['id'] = snapshot.id;
     return BackgroundInformation.fromMap(data);
+  }
+
+  factory BackgroundInformation.mock() {
+    return BackgroundInformation(
+        businessExpenceMonthly: "100",
+        businessOffering: "test",
+        businessrevenueMonthly: "1000",
+        creditScoreValue: "",
+        employmentStatus: null,
+        highestLevelOfEducation: "Postgraduate",
+        id: null,
+        investmentToDate: "R7500 - R9999",
+        isCreditScorePresent: false,
+        isPartOfStockvel: false,
+        isSmallBusinessOwner: true,
+        lengthOfOperation: "tesy",
+        monthlyExpense: null,
+        monthlyIncome: null,
+        savingMonthly: "R250 - R499",
+        sourceOfFinancing: "Personal savings",
+        sourceOfIncome: null,
+        stockvelContribution: "");
   }
 }

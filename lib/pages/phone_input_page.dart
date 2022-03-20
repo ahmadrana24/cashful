@@ -22,7 +22,7 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
         if (authVM.authState == AuthState.CodeSent) {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             // Navigator.pop(context);
-    authViewModel.authState = AuthState.Idle;
+            authViewModel.authState = AuthState.Idle;
             Navigator.pushNamed(context, OTPVerificationPage.pageName);
           });
         }
@@ -98,19 +98,20 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
                                 padding: EdgeInsets.all(12.0),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(100)),
-                                onPressed: authVM.authState == AuthState.Busy
-                                    ? null
-                                    : () {
+                                onPressed:  () {
                                         authViewModel.sendOTP(_phoneNumber);
                                       },
                                 minWidth: double.infinity,
                                 height: 45.0,
-                                child: Text(
-                                  "Get OTP",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 20.0),
-                                ),
+                                child: authVM.authState == AuthState.Busy
+                                    ? CircularProgressIndicator(
+                                        color: Colors.white)
+                                    : Text(
+                                        "Get OTP",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 20.0),
+                                      ),
                               ),
                               SizedBox(
                                 height: 15.0,

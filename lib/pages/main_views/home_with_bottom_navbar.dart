@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/pages/main_views/home_screen.dart';
 import 'package:flutter_application_1/pages/main_views/settings.dart';
@@ -12,6 +13,7 @@ class HomeWithBottomNavBar extends StatefulWidget {
   HomeWithBottomNavBarState createState() => HomeWithBottomNavBarState();
 }
 
+
 class HomeWithBottomNavBarState extends State<HomeWithBottomNavBar> {
   int currentIndex = 0;
   final screens = [
@@ -22,6 +24,11 @@ class HomeWithBottomNavBarState extends State<HomeWithBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      statusBarColor: kPrimaryBlue,
+    ));
     return Scaffold(
       body: Center(
         child: IndexedStack(
@@ -58,3 +65,4 @@ class HomeWithBottomNavBarState extends State<HomeWithBottomNavBar> {
     );
   }
 }
+

@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_final_step.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
 
 class ApplyForRest4 extends StatefulWidget {
+  static const pageName = "applyForRest4";
+
   const ApplyForRest4({Key? key}) : super(key: key);
 
   @override
   _ApplyForRest4State createState() => _ApplyForRest4State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyForRest4State extends State<ApplyForRest4> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
+  var viewModel = locator<ApplyViewModel>();
 
   String loanType = '';
   final TextEditingController loanDetails = TextEditingController();
@@ -30,18 +30,6 @@ class _ApplyForRest4State extends State<ApplyForRest4> {
       fontSize: 16,
       fontWeight: FontWeight.bold));
 
-  void uploadLoanApplication() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Loan requests')
-        .doc()
-        .set({
-      'Loan type': loanType,
-      'Loan details': loanDetails.text,
-      'Amount requested': loanAmount.text,
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,82 +168,6 @@ class _ApplyForRest4State extends State<ApplyForRest4> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(ApplyFinalStep.pageName);
                   },
-                  // onPressed: () => showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       AlertDialog dialog = AlertDialog(
-                  //           shape: RoundedRectangleBorder(
-                  //               borderRadius:
-                  //                   BorderRadius.all(Radius.circular(10.0))),
-                  //           content: Container(
-                  //             height: 200,
-                  //             width: 200,
-                  //             child: Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment:
-                  //                     CrossAxisAlignment.center,
-                  //                 children: [
-                  //                   Image(
-                  //                       image: AssetImage(
-                  //                           'assets/images/mail.png')),
-                  //                   SizedBox(
-                  //                     height: 10,
-                  //                   ),
-                  //                   Text('Submitted',
-                  //                       style: TextStyle(
-                  //                           fontSize: 15,
-                  //                           color: Colors.grey)),
-                  //                   SizedBox(height: 15),
-                  //                   Text('Application pending',
-                  //                       style: TextStyle(
-                  //                           fontSize: 18,
-                  //                           fontWeight: FontWeight.bold,
-                  //                           color: Colors.black)),
-                  //                   SizedBox(height: 15),
-                  //                   Text(
-                  //                       "We'll notify you of your status within the next 24 hours",
-                  //                       textAlign: TextAlign.center,
-                  //                       style: TextStyle(
-                  //                           fontSize: 15,
-                  //                           color: Colors.black)),
-                  //                 ]),
-                  //           ),
-                  //           actions: [
-                  //             Container(
-                  //                 alignment: Alignment.center,
-                  //                 child: ElevatedButton(
-                  //                     style: ButtonStyle(
-                  //                       backgroundColor:
-                  //                           MaterialStateProperty.all(
-                  //                               Color.fromRGBO(1, 67, 55, 1)),
-                  //                       shape: MaterialStateProperty.all<
-                  //                               RoundedRectangleBorder>(
-                  //                           RoundedRectangleBorder(
-                  //                               borderRadius:
-                  //                                   BorderRadius.circular(
-                  //                                       20))),
-                  //                     ),
-                  //                     child: Text('Finish'),
-                  //                     onPressed: () async {
-                  //                       uploadLoanApplication();
-                  //                       //  await collectionReference
-                  //                       //     .doc(collectionReference
-                  //                       //         .doc('Loan applications')
-                  //                       //         .id).collection('Loan details')
-                  //                       //     .add({
-                  //                       //   'Loan type': loanType,
-                  //                       //   'Loan details': loanDetails.text,
-                  //                       //   'Amount requested': loanAmount.text,
-                  //                       // });
-                  //                       Navigator.push(
-                  //                           context,
-                  //                           MaterialPageRoute(
-                  //                               builder: (_) =>
-                  //                                   HomeWithBottomNavBar()));
-                  //                     }))
-                  //           ]);
-                  //       return dialog;
-                  //     })
                 ),
               ),
             ],

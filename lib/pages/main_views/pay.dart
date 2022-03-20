@@ -72,10 +72,11 @@ class _PayScreenState extends State<PayScreen> {
                           children: [
                             Container(
                                 child: Image(
+                                    width: 60,
                                     image: AssetImage(
-                                        'assets/images/stdbank.png'))),
+                                        'assets/images/std_bank.png'))),
                             SizedBox(
-                              width: 35,
+                              width: 20,
                             ),
                             Container(child: Text('EFT Transfer'))
                           ]),

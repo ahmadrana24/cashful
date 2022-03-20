@@ -2,24 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/main_views/home_screen.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApplyForSME4 extends StatefulWidget {
+  static const pageName = "applyForSME4";
+
   const ApplyForSME4({Key? key}) : super(key: key);
 
   @override
   _ApplyForSME3State createState() => _ApplyForSME3State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyForSME3State extends State<ApplyForSME4> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
+  var viewModel = locator<ApplyViewModel>();
 
   String loanType = '';
   final TextEditingController loanDetails = TextEditingController();
@@ -30,20 +29,6 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-
-  void uploadLoanApplication() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Loan requests')
-        .doc()
-        .set({
-      'Loan type': loanType,
-      'Loan details': loanDetails.text,
-      'Amount requested': loanAmount.text,
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ApplyStepsCommon(
@@ -255,7 +240,7 @@ class _ApplyForSME3State extends State<ApplyForSME4> {
                                         ),
                                         child: Text('Finish'),
                                         onPressed: () async {
-                                          uploadLoanApplication();
+                                          // uploadLoanApplication();
                                           //  await collectionReference
                                           //       .doc(collectionReference
                                           //           .doc('Loan applications')

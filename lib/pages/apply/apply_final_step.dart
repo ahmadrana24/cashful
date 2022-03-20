@@ -1,77 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/configs/size_const.dart';
+import 'package:flutter_application_1/models/loan_request_model.dart';
+import 'package:flutter_application_1/pages/base_view.dart';
+import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/view_models/base_view_model.dart';
+import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 
 class ApplyFinalStep extends StatefulWidget {
   static const pageName = "/applyFinalStep";
-
+  final LoanRequest _loanRequest;
+  ApplyFinalStep(this._loanRequest);
   @override
   State<ApplyFinalStep> createState() => _ApplyFinalStepState();
 }
 
 class _ApplyFinalStepState extends State<ApplyFinalStep> {
+  var viewModel = locator<LoanRequestViewModel>();
+
   var _min = 0;
-  var _max = 1000;
-  var _loanValue = 0.0;
+  var _max = 100;
+  var _loanValue = 100.0;
   var _returnDateIndex = 0;
+  var _showSlider = false;
+
+  var _paymentDays = [7, 14, 21, 31];
+  var _interest = 0.12;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: kBgLight,
+    return BaseView<LoanRequestViewModel>(builder: (context, model, child) {
+      return Scaffold(
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 40,
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: TextH1(
+                title: "Apply",
+                color: Colors.black,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: TextH1(
-                  title: "Apply",
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                  child: Container(
-                padding: EdgeInsets.all(30.0),
-                width: kScreenWidth(context),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(40))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextH3(
-                      title: "Select loan amount",
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.all(30.0),
+              width: kScreenWidth(context),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(40))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextH3(
+                    title: "Select loan amount",
+                    color: Colors.black,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    // "You qualify for an advance maximum of up to R600, please move the slider to select an amount",
+                    "As a first time borrower, you qualify for an advance maximum of up to R100.",
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.6),
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        border: Border.all(width: 1, color: Colors.black26)),
+                    child: TextH2(
+                      title: "R${_loanValue.toStringAsFixed(0)}",
                       color: Colors.black,
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      "You qualify for an advance maximum of up to R600, please move the slider to select an amount",
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.6),
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          border: Border.all(width: 1, color: Colors.black26)),
-                      child: TextH2(
-                        title: "R${_loanValue.toStringAsFixed(0)}",
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 40),
+                  ),
+                  SizedBox(height: 40),
+                  if (_showSlider)
                     Row(
                       children: [
                         Text(
@@ -97,78 +113,83 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 40,
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 10.0,
+                    runSpacing: 10.0,
+                    children: _paymentDays
+                        .map<Widget>((
+                          e,
+                        ) =>
+                            _daysWidget("$e days", _paymentDays.indexOf(e)))
+                        .toList(),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Interest",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text("(${_interest * 100}%) R${_interest * _loanValue}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Total repayable",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text("R${_loanValue + _interest * _loanValue}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(kPrimaryBlue),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40))),
+                          ),
+                          child: model.state == ViewState.Busy
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  'Submit',
+                                  style: TextStyle(
+                                      fontSize: 16.0, color: Colors.white),
+                                ),
+                          onPressed: () {
+                            _submit();
+                          }),
                     ),
-                    Wrap(
-                      alignment: WrapAlignment.start,
-                      spacing: 10.0,
-                      runSpacing: 10.0,
-                      children: [
-                        _daysWidget("14 days", 1),
-                        _daysWidget("21 days", 2),
-                        _daysWidget("31 days", 3),
-                        _daysWidget("45 days", 4)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Interest",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text("(12%) R72.00")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Total repayable",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)),
-                        Text("R672.00",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: SizedBox(
-                        width: 150,
-                        height: 50,
-                        child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kPrimaryBlue),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40))),
-                            ),
-                            child: Text(
-                              'Submit',
-                              style: TextStyle(
-                                  fontSize: 16.0, color: Colors.white),
-                            ),
-                            onPressed: () {
-                              _submit();
-                            }),
-                      ),
-                    )
-                  ],
-                ),
-              ))
-            ],
-          ),
-        ));
+                  )
+                ],
+              ),
+            ))
+          ],
+        )),
+      );
+    });
   }
 
   _daysWidget(String text, index) {
@@ -196,77 +217,86 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
     );
   }
 
-  _submit() {
-    showDialog(
-      context: context,
-      builder: (mContext) => AlertDialog(
-        backgroundColor: Colors.white,
-        content: Container(
-          height: 390,
-          padding: EdgeInsets.symmetric(vertical: 20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/images/apply_dialog_icon.png",
-                  width: 80,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Request submitted",
-                  style: TextStyle(color: Colors.black45),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextH4(title: "Your loan is on its way", color: Colors.black),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                    "Please allow up to 48 hours depending on your payment method",
-                    textAlign: TextAlign.center),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Pay early or on time to unlock more credit in future",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w300),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(kPrimaryBlue),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40))),
-                      ),
-                      child: Text(
-                        'Finish',
-                        style: TextStyle(fontSize: 16.0, color: Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.of(mContext).pop();
-                      }),
-                ),
-              ],
+  _submit() async {
+    widget._loanRequest.loanAmount = _loanValue.toStringAsFixed(2);
+    widget._loanRequest.paymentTime = _paymentDays[_returnDateIndex].toString();
+    widget._loanRequest.totalRepayable =
+        (_loanValue + _loanValue * _interest).toStringAsFixed(2);
+    var result = await viewModel.requestLoan(widget._loanRequest);
+    if (result)
+      showDialog(
+        context: context,
+        builder: (mContext) => AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            height: 390,
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/images/apply_dialog_icon.png",
+                    width: 80,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Request submitted",
+                    style: TextStyle(color: Colors.black45),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextH4(title: "Your loan is on its way", color: Colors.black),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                      "Please allow up to 48 hours depending on your payment method",
+                      textAlign: TextAlign.center),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "Pay early or on time to unlock more credit in future",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w300),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(kPrimaryBlue),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40))),
+                        ),
+                        child: Text(
+                          'Finish',
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.of(mContext).pop();
+                          Navigator.of(mContext).pop();
+                        }),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    else
+      AppHelper.showSnackBar("Something went wrong try again", context);
   }
 }

@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/models/bank_detail_model.dart';
+import 'package:flutter_application_1/models/loan_request_model.dart';
 import 'package:flutter_application_1/pages/apply/apply_final_step.dart';
 import 'package:flutter_application_1/pages/apply/first_time/apply_splash.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_rest/for_rest1.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_rest/for_rest2.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_rest/for_rest3.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_rest/for_rest4.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_sme/for_sme1.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_sme/for_sme2.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_sme/for_sme3.dart';
+import 'package:flutter_application_1/pages/apply/first_time/for_sme/for_sme4.dart';
+import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
+import 'package:flutter_application_1/pages/main_views/account_method.dart';
+import 'package:flutter_application_1/pages/main_views/bank_account_method.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/pages/otp_ver_page.dart';
 import 'package:flutter_application_1/pages/phone_input_page.dart';
@@ -11,42 +24,69 @@ import 'package:flutter_application_1/pages/registration/verification2.dart';
 import 'package:flutter_application_1/pages/registration/verification3.dart';
 import 'package:flutter_application_1/pages/registration/verification4.dart';
 import 'package:flutter_application_1/pages/splash_page.dart';
+import 'package:flutter_application_1/utils/auth_helper.dart';
 
 class AppRoute {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case GetStartedPage.pageName:
-        return _materialPageRoute(GetStartedPage());
+        return _materialPageRoute(GetStartedPage(), settings);
       case SplashPage.pageName:
-        return _materialPageRoute(SplashPage());
+        return _materialPageRoute(SplashPage(), settings);
       case HomeWithBottomNavBar.pageName:
-        return _materialPageRoute(HomeWithBottomNavBar());
+        return _materialPageRoute(HomeWithBottomNavBar(), settings);
       case LoginScreen.pageName:
-        return _materialPageRoute(LoginScreen());
+        return _materialPageRoute(LoginScreen(), settings);
       case PhoneInputPage.pageName:
-        return _materialPageRoute(PhoneInputPage());
+        return _materialPageRoute(PhoneInputPage(), settings);
       case OTPVerificationPage.pageName:
-        return _materialPageRoute(OTPVerificationPage());
+        return _materialPageRoute(OTPVerificationPage(), settings);
       case VerificationPage.pageName:
-        return _materialPageRoute(VerificationPage());
+        return _materialPageRoute(VerificationPage(), settings);
       case VerificationPage2.pageName:
-        return _materialPageRoute(VerificationPage2());
+        return _materialPageRoute(VerificationPage2(), settings);
       case VerificationPage2.pageName:
-        return _materialPageRoute(VerificationPage2());
+        return _materialPageRoute(VerificationPage2(), settings);
       case VerificationPage3.pageName:
-        return _materialPageRoute(VerificationPage3());
+        return _materialPageRoute(VerificationPage3(), settings);
       case VerificationPage4.pageName:
-        return _materialPageRoute(VerificationPage4());
+        return _materialPageRoute(VerificationPage4(), settings);
       case ApplySplash.pageName:
-        return _materialPageRoute(ApplySplash());
+        return _materialPageRoute(ApplySplash(), settings);
       case ApplyFinalStep.pageName:
-        return _materialPageRoute(ApplyFinalStep());
+        LoanRequest loanRequest = settings.arguments as LoanRequest;
+        return _materialPageRoute(ApplyFinalStep(loanRequest), settings);
+      case ApplyForSME1.pageName:
+        return _materialPageRoute(ApplyForSME1(), settings);
+      case ApplyForSME2.pageName:
+        return _materialPageRoute(ApplyForSME2(), settings);
+      case ApplyForSME3.pageName:
+        return _materialPageRoute(ApplyForSME3(), settings);
+      case ApplyForSME4.pageName:
+        return _materialPageRoute(ApplyForSME4(), settings);
+      case ApplyForRest1.pageName:
+        return _materialPageRoute(ApplyForRest1(), settings);
+      case ApplyForRest2.pageName:
+        return _materialPageRoute(ApplyForRest2(), settings);
+      case ApplyForRest3.pageName:
+        return _materialPageRoute(ApplyForRest3(), settings);
+      case ApplyForRest4.pageName:
+        return _materialPageRoute(ApplyForRest4(), settings);
+      case AccountMethod.pageName:
+        return _materialPageRoute(AccountMethod(), settings);
+      case UpdateBankAccountScreen.pageName:
+        BankDetail bankDetail = settings.arguments as BankDetail;
+        return _materialPageRoute(UpdateBankAccountScreen(bankDetail), settings);
+      case LoanApplicationInfoPage.pageName:
+        return _materialPageRoute(LoanApplicationInfoPage(), settings);
       default:
-        return _materialPageRoute(SplashPage());
+        if (AuthHelper.isLoggedIn())
+          return _materialPageRoute(SplashPage(), settings);
+        return _materialPageRoute(PhoneInputPage(), settings);
     }
   }
 
-  static _materialPageRoute(Widget screen) {
-    return MaterialPageRoute(builder: (context) => screen);
+  static _materialPageRoute(Widget screen, settings) {
+    return MaterialPageRoute(builder: (context) => screen, settings: settings);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class PayMtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     var boldFont = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600);
     return Scaffold(
         appBar: AppBar(

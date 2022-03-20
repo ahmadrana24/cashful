@@ -5,8 +5,8 @@ import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:provider/provider.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
-  final Widget Function(BuildContext context, T value, Widget? child) builder;
-  final Function(T)? onModelReady;
+  final Widget Function(BuildContext context, T model, Widget? child) builder;
+  final Function(T model)? onModelReady;
 
   BaseView({required this.builder, this.onModelReady});
 
@@ -28,9 +28,6 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<T>(
-      create: (context) => viewModel,
-      child: Consumer<T>(builder: widget.builder,),
-      );
+    return Consumer<T>(builder: widget.builder,);
   }
 }

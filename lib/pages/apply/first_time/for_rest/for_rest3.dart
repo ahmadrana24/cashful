@@ -1,45 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
+import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
+import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
 
 import 'for_rest4.dart';
 
 class ApplyForRest3 extends StatefulWidget {
+  static const pageName = "applyForRest3";
+
   const ApplyForRest3({Key? key}) : super(key: key);
 
   @override
   _ApplyForRest3State createState() => _ApplyForRest3State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyForRest3State extends State<ApplyForRest3> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
-  String education = '';
-  String monthlySavings = '';
+  var viewModel = locator<ApplyViewModel>();
+
+  String? education;
+  String? monthlySavings;
 
   var myFont = (TextStyle(
       color: Colors.black,
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-
-  void uploadBackgroundInfo() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Profile')
-        .doc('Background information')
-        .update({
-      'map3': {
-        'Highest level of education': education,
-        'Monthly savings': monthlySavings,
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -248,17 +240,102 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
     );
   }
 
+  bool uploadBusy = false;
+  bool result = false;
+  StateSetter? _setState;
   _onNext() async {
-    // uploadBackgroundInfo();
-    // await collectionReference
-    //     .doc(collectionReference.doc('Applicant particulars').id)
-    //     .update({
-    //   'map4': {
-    //     'Highest level of education': education,
-    //     'Monthly savings': monthlySavings,
-    //   }
-    // });
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ApplyForRest4()));
+    if (education == null || monthlySavings == null) {
+      AppHelper.showSnackBar("Please select all required fields", context);
+    } else {
+      viewModel.backgroundInformation.highestLevelOfEducation = education;
+      viewModel.backgroundInformation.savingMonthly = monthlySavings;
+      Navigator.of(context).pushNamed(LoanApplicationInfoPage.pageName);
+      // TODO: send data to server
+      print(viewModel.backgroundInformation.toJson());
+      var dialog = AlertDialog(
+        content: StatefulBuilder(builder: (context, StateSetter setState) {
+          _setState = setState;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (uploadBusy) ...[
+                        CircularProgressIndicator(
+                          color: kPrimaryBlue,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextH3(
+                          title: "Please wait",
+                          color: Colors.black,
+                        )
+                      ] else if (!uploadBusy && result) ...[
+                        Icon(
+                          Icons.check_circle,
+                          size: 50,
+                          color: kPrimaryBlue,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Successfully uploaded information",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                LoanApplicationInfoPage.pageName,
+                                ModalRoute.withName(
+                                    HomeWithBottomNavBar.pageName));
+                          },
+                          color: kPrimaryBlue,
+                          child: TextH4(
+                            title: "Continue",
+                            color: Colors.white,
+                          ),
+                        )
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        }),
+      );
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => dialog,
+      );
+      result = await viewModel.addBackgroundInfo();
+      print(result);
+      _setState!(() {
+        uploadBusy = false;
+      });
+      if (!result) {
+        Navigator.of(context).pop();
+        AppHelper.showSnackBar("Something went wrong try again", context);
+      } else {
+        AppHelper.setRecurringFalse();
+      }
+    }
   }
 }

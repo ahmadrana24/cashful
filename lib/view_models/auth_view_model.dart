@@ -50,6 +50,7 @@ class AuthViewModel extends ChangeNotifier {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId!, smsCode: OTP);
     authState = AuthState.Busy;
+    notifyListeners();
     UserCredential _userCredential =
         await _auth.signInWithCredential(credential);
     _userCredential.user!.uid;

@@ -1,23 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
 import 'for_rest3.dart';
 
 class ApplyForRest2 extends StatefulWidget {
+  static const pageName = "applyForRest2";
+
   const ApplyForRest2({Key? key}) : super(key: key);
 
   @override
   _ApplyForRest3State createState() => _ApplyForRest3State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyForRest3State extends State<ApplyForRest2> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
-  String stokvelValue = '';
+  var viewModel = locator<ApplyViewModel>();
+
+  String? stokvelValue;
   final TextEditingController stokvelContribution = TextEditingController();
 
   var myFont = (TextStyle(
@@ -25,20 +27,6 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-
-  void uploadBackgroundInfo() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Profile')
-        .doc('Background information')
-        .update({
-      'map2': {
-        'Stokvel participation': stokvelValue,
-        'Stokvel contribution': stokvelContribution.text,
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,17 +132,15 @@ class _ApplyForRest3State extends State<ApplyForRest2> {
   }
 
   _onNext() async {
-    // uploadBackgroundInfo();
-
-    // await collectionReference
-    //     .doc(collectionReference.doc('Applicant particulars').id)
-    //     .update({
-    //   'map3': {
-    //     'Stokvel participation': stokvelValue,
-    //     'Stokvel contribution': stokvelContribution.text,
-    //   }
-    // });
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ApplyForRest3()));
+    if (stokvelValue == null) {
+      AppHelper.showSnackBar("Please select all required fields", context);
+    } else if (stokvelValue == "Yes" && stokvelContribution.text == "") {
+      AppHelper.showSnackBar("Enter your stokvel contribution", context);
+    } else {
+      viewModel.backgroundInformation.isPartOfStockvel = stokvelValue == "Yes";
+      viewModel.backgroundInformation.stockvelContribution =
+          stokvelContribution.text;
+      Navigator.of(context).pushNamed(ApplyForRest3.pageName);
+    }
   }
 }

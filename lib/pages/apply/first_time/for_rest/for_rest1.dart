@@ -1,24 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
 
 import 'for_rest2.dart';
 
 class ApplyForRest1 extends StatefulWidget {
+  static const pageName = "applyForRest1";
+
   const ApplyForRest1({Key? key}) : super(key: key);
 
   @override
   _ApplyForRest1State createState() => _ApplyForRest1State();
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-final uid = _auth.currentUser!.uid;
-
 class _ApplyForRest1State extends State<ApplyForRest1> {
-  final CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
-  String incomeSourceValue = '';
+  var viewModel = locator<ApplyViewModel>();
+  String? incomeSourceValue;
   final TextEditingController monthlyIncome = TextEditingController();
   final TextEditingController monthlyExpenses = TextEditingController();
 
@@ -27,22 +28,6 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-
-  void uploadBackgroundInfo() async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('Profile')
-        .doc('Background information')
-        .update({
-      'map1': {
-        'Income source': incomeSourceValue,
-        'Monthly income': monthlyIncome.text,
-        'Monthly expenses': monthlyExpenses.text
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ApplyStepsCommon(
@@ -207,17 +192,15 @@ class _ApplyForRest1State extends State<ApplyForRest1> {
   }
 
   _onNext() async {
-    // uploadBackgroundInfo();
-    // await collectionReference
-    //     .doc(collectionReference.doc('Applicant particulars').id)
-    //     .update({
-    //   'map2': {
-    //     'Income source': incomeSourceValue,
-    //     'Monthly income': monthlyIncome.text,
-    //     'Monthly expenses': monthlyExpenses.text
-    //   }
-    // });
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ApplyForRest2()));
+    if (incomeSourceValue == null ||
+        monthlyIncome.text == "" ||
+        monthlyExpenses.text == "") {
+      AppHelper.showSnackBar("Select required fields", context);
+    } else {
+      viewModel.backgroundInformation.monthlyIncome = monthlyIncome.text;
+      viewModel.backgroundInformation.monthlyExpense = monthlyExpenses.text;
+      viewModel.backgroundInformation.sourceOfIncome = incomeSourceValue;
+      Navigator.of(context).pushNamed(ApplyForRest2.pageName);
+    }
   }
 }

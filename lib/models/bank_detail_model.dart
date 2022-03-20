@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BankDetail {
-  String id;
+  String? id;
   String hodlerName;
   String accountNumber;
   String accountType;
   String bankName;
   String bankCode;
   BankDetail({
-    required this.id,
+    this.id,
     required this.hodlerName,
     required this.accountNumber,
     required this.accountType,

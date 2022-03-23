@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_application_1/configs/colors.dart';
@@ -10,18 +9,16 @@ import 'package:flutter_application_1/view_models/verification_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'verification2.dart';
-
-class VerificationPage extends StatefulWidget {
-  static const pageName = "/verificationOne";
+class ReuploadIDPage extends StatefulWidget {
+  static const pageName = "/reuploadID";
   @override
-  _VerificationPageState createState() => _VerificationPageState();
+  _ReuploadIDPageState createState() => _ReuploadIDPageState();
 }
 
 // FirebaseAuth _auth = FirebaseAuth.instance;
 // final uid = _auth.currentUser!.uid;
 
-class _VerificationPageState extends State<VerificationPage> {
+class _ReuploadIDPageState extends State<ReuploadIDPage> {
   final imagePicker = ImagePicker();
   String url = '';
 
@@ -259,7 +256,9 @@ class _VerificationPageState extends State<VerificationPage> {
               }
               bool result = await viewModel.uploadIdentification(file!);
               if (result) {
-                Navigator.pushNamed(context, VerificationPage2.pageName);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Color(0xFF1B561D),
+                    content: Text("Upload successful")));
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(

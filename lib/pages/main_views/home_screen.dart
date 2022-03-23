@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/apply/first_time/apply_splash.dart';
 import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_application_1/pages/main_views/pay.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'status.dart';
 
@@ -75,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     // SharedPreferences prefs =
                                     //     await SharedPreferences.getInstance();
                                     // print(prefs.getBool("first-time"));
+                                    print(model.user!.backgroundInformation);
                                     if (model.user!.backgroundInformation ==
                                         null) {
                                       Navigator.pushNamed(

@@ -59,7 +59,8 @@ void setupLocator() {
 
   locator.registerLazySingleton<ApplyViewModel>(() => ApplyViewModel(
       locator.get<UserRepository>(), locator.get<FirebaseHelper>()));
-  locator.registerLazySingleton<UserViewModel>(() => UserViewModel());
+  locator.registerLazySingleton<UserViewModel>(
+      () => UserViewModel(locator.get<FirebaseFirestore>()));
   locator.registerLazySingleton<PaymentMethodViewModel>(() =>
       PaymentMethodViewModel(
           locator.get<UserRepository>(), locator.get<FirebaseHelper>()));
@@ -69,3 +70,4 @@ void setupLocator() {
       NotificationViewModel(locator.get<NotificationRepository>(),
           locator.get<FirebaseHelper>()));
 }
+ 

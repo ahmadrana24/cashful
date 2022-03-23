@@ -6,8 +6,14 @@ class ApplyStepsCommon extends StatelessWidget {
   final Widget internalWidget;
   final Function? onNext;
   final String? bgImgUrl;
+  bool showBack = true;
 
-  const ApplyStepsCommon({Key? key, required this.internalWidget, this.onNext, this.bgImgUrl})
+  ApplyStepsCommon(
+      {Key? key,
+      required this.internalWidget,
+      this.onNext,
+      this.bgImgUrl,
+      this.showBack = true})
       : super(key: key);
 
   @override
@@ -22,15 +28,16 @@ class ApplyStepsCommon extends StatelessWidget {
               fit: BoxFit.fill,
               width: kScreenWidth(context),
             ),
-            Positioned(
-                left: 20,
-                top: 50,
-                child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child:
-                        Icon(Icons.arrow_back, size: 40, color: Colors.white))),
+            if (showBack)
+              Positioned(
+                  left: 20,
+                  top: 50,
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back,
+                          size: 40, color: Colors.white))),
             internalWidget
           ],
         ),

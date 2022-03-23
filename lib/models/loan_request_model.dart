@@ -12,17 +12,16 @@ class LoanRequest {
   String? loanStatus = "pending";
   String paymentTime;
   String? loanDate;
-  LoanRequest({
-    this.id,
-    this.userId,
-    required this.loanType,
-    required this.loanAmount,
-    required this.loanDetail,
-    required this.totalRepayable,
-    this.loanStatus,
-    required this.paymentTime,
-    this.loanDate
-  });
+  LoanRequest(
+      {this.id,
+      this.userId,
+      required this.loanType,
+      required this.loanAmount,
+      required this.loanDetail,
+      required this.totalRepayable,
+      this.loanStatus,
+      required this.paymentTime,
+      this.loanDate});
 
   Map<String, dynamic> toMap() {
     return {
@@ -61,5 +60,19 @@ class LoanRequest {
     var data = snapshot.data() as Map<String, dynamic>;
     data['id'] = snapshot.id;
     return LoanRequest.fromMap(data);
+  }
+
+  factory LoanRequest.mock() {
+    return LoanRequest(
+      id: "",
+      loanDate: "2022-03-19 13:24:41.748406",
+      loanAmount: "100.00",
+      loanDetail: "frt ",
+      loanStatus: "pending",
+      loanType: "Personal",
+      paymentTime: "7",
+      totalRepayable: "112.00",
+      userId: "",
+    );
   }
 }

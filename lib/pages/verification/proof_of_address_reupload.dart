@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:ui';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/locator.dart';
@@ -10,36 +12,64 @@ import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/verification_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'verification3.dart';
-
-class VerificationPage2 extends StatefulWidget {
-  static const pageName = "/verificationPage2";
+class ReuploadProofOfAddressPage extends StatefulWidget {
+  static const pageName = "/ReuploadProofOfAddressPage";
   @override
-  _VerificationPageState createState() => _VerificationPageState();
+  _ReuploadProofOfAddressPageState createState() =>
+      _ReuploadProofOfAddressPageState();
 }
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final uid = _auth.currentUser!.uid;
 
-class _VerificationPageState extends State<VerificationPage2> {
+class _ReuploadProofOfAddressPageState
+    extends State<ReuploadProofOfAddressPage> {
   final imagePicker = ImagePicker();
   String url = '';
 
   File? file;
+  void imageSelectFromGallery() async {
+    final image = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+      preferredCameraDevice: CameraDevice.rear,
+      imageQuality: 100,
+      maxWidth: 5000,
+      maxHeight: 5000,
+    );
+
+    setState(() {
+      file = File(image!.path);
+    });
+  }
 
   void imageSelectFromCamera() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
+    final image = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+      imageQuality: 100,
+      maxWidth: 5000,
+      maxHeight: 5000,
     );
-    if (result != null) {
-      setState(() {
-        file = File(result.files.single.path!);
-      });
-    }
+    setState(() {
+      file = File(image!.path);
+    });
+  }
+
+  void uploadFile() async {
+    var imageFile =
+        FirebaseStorage.instance.ref().child('path').child('/.jpeg');
+    UploadTask task = imageFile.putFile(file!);
+    TaskSnapshot snapshot = await task;
+    // for downloading
+    url = await snapshot.ref.getDownloadURL();
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('Verification')
+        .doc('Proof of address')
+        .set({'Image URL': url});
   }
 
   @override
@@ -51,9 +81,8 @@ class _VerificationPageState extends State<VerificationPage2> {
           backgroundColor: kPrimaryBlue,
           body: SafeArea(
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 SizedBox(height: 80),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -70,10 +99,10 @@ class _VerificationPageState extends State<VerificationPage2> {
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
-                          children: <Widget>[
+                          children: [
                             Container(
                               child: Text(
-                                'Upload your latest 3 months bank statement',
+                                'Upload your proof of address to verify your residency',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 18),
                               ),
@@ -82,13 +111,10 @@ class _VerificationPageState extends State<VerificationPage2> {
                               height: 30,
                             ),
                             Container(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Uploading clear documents can make the approval process faster',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(),
-                                ),
+                              child: Text(
+                                'Uploading clear documents can make the approval process faster',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(),
                               ),
                               constraints: BoxConstraints(
                                   minHeight: 80,
@@ -106,7 +132,7 @@ class _VerificationPageState extends State<VerificationPage2> {
                             Center(
                               child: Container(
                                 child: Text(
-                                  'Accepted formats: PDF only',
+                                  'Accepted documents include bank statements, leases, and utility bills such as water, electricity and telephone',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 14),
                                 ),
@@ -127,12 +153,8 @@ class _VerificationPageState extends State<VerificationPage2> {
                                       Container(
                                           child: file == null
                                               ? Icon(Icons.upload)
-                                              : Flexible(
-                                                  child: PDFView(
-                                                    filePath: file!.path,
-                                                    pageFling: false,
-                                                  ),
-                                                )),
+                                              : Image.file(file!,
+                                                  width: 260, height: 180)),
                                     ],
                                   ),
                                   color: Colors.grey[300],
@@ -163,12 +185,43 @@ class _VerificationPageState extends State<VerificationPage2> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Icon(
-                                          Icons.document_scanner,
+                                          Icons.camera,
                                           color: Colors.grey[500],
                                         ),
                                       ),
                                       Text(
-                                        'Upload',
+                                        'Camera',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 40,
+                                ),
+                                ElevatedButton(
+                                  onPressed: imageSelectFromGallery,
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20))),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            Icons.folder_open,
+                                            color: Colors.grey[500],
+                                          )),
+                                      Text(
+                                        'Gallery',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             color: Colors.black),
@@ -183,7 +236,7 @@ class _VerificationPageState extends State<VerificationPage2> {
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -204,9 +257,11 @@ class _VerificationPageState extends State<VerificationPage2> {
                     content: Text("Please upload your document to continue")));
                 return;
               }
-              bool result = await viewModel.uploadBankStatement(file!);
+              bool result = await viewModel.uploadProofOfAddress(file!);
               if (result) {
-                Navigator.pushNamed(context, VerificationPage3.pageName);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Color(0xFF1B561D),
+                    content: Text("Upload successful")));
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(

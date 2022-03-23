@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/configs/firebase_helper.dart';
+import 'package:flutter_application_1/configs/helper.dart';
 import 'package:flutter_application_1/configs/locator.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/phone_input_page.dart';
+import 'package:flutter_application_1/pages/main_views/permissions_page.dart';
+import 'package:flutter_application_1/pages/verification/pending_verification.dart';
 import 'package:flutter_application_1/pages/registration/get_started.dart';
 import 'package:flutter_application_1/pages/registration/verification.dart';
 import 'package:flutter_application_1/pages/registration/verification2.dart';
@@ -40,31 +41,54 @@ class SplashPage extends StatelessWidget {
           } else if (model.state == ViewState.Idle) {
             // get user from model
             WidgetsBinding.instance!.addPostFrameCallback((_) {
-              var user = model.user;
+              user = model.user;
               if (user == null) {
                 // user is new user so register
                 Navigator.pushReplacementNamed(
                     context, GetStartedPage.pageName);
                 return;
               }
-              print(user.toMap());
-              if (user.verificationDocuments != null) {
-                if (user.verificationDocuments!.idCard == null) {
+              print(user!.toMap());
+              if (user!.verificationDocuments != null) {
+                if (user!.verificationDocuments!.idCard == null) {
                   Navigator.pushReplacementNamed(
                       context, VerificationPage.pageName);
-                } else if (user.verificationDocuments!.bankStatement == null) {
+                } else if (user!.verificationDocuments!.bankStatement == null) {
                   Navigator.pushReplacementNamed(
                       context, VerificationPage2.pageName);
-                } else if (user.verificationDocuments!.proofOfAddress == null) {
+                } else if (user!.verificationDocuments!.proofOfAddress ==
+                    null) {
                   Navigator.pushReplacementNamed(
                       context, VerificationPage3.pageName);
-                } else if (user.bankDetail == null && user.mtnDetail == null) {
+                } else if (user!.bankDetail == null &&
+                    user!.mtnDetail == null) {
                   Navigator.pushReplacementNamed(
                       context, VerificationPage4.pageName);
                 } else {
-                  locator<UserViewModel>().user = user;
-                  Navigator.pushReplacementNamed(
-                      context, HomeWithBottomNavBar.pageName);
+                  locator<UserViewModel>().setUser(user!);
+                  // check if user is verified
+                  // print(user!.verificationDocuments!.toMap());
+                  var status = user!.verificationDocuments!
+                              .bankStatement!['status'] !=
+                          'approved' ||
+                      user!.verificationDocuments!.idCard!['status'] !=
+                          'approved' ||
+                      user!.verificationDocuments!.proofOfAddress!['status'] !=
+                          'approved';
+
+                  print("Status $status");
+                  if (status) {
+                    Navigator.pushReplacementNamed(
+                        context, PendingVerificationPage.pageName);
+                  } else {
+                    AppHelper.permissionsAllowed().then((value) {
+                      if (!value)
+                        Navigator.pushNamed(context, PermissionsPage.pageName);
+                      else
+                        Navigator.pushReplacementNamed(
+                            context, HomeWithBottomNavBar.pageName);
+                    });
+                  }
                 }
               }
             });

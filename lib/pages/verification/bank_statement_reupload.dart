@@ -13,18 +13,17 @@ import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'verification3.dart';
-
-class VerificationPage2 extends StatefulWidget {
-  static const pageName = "/verificationPage2";
+class ReuploadBankStatementPage extends StatefulWidget {
+  static const pageName = "/ReuploadBankStatementPage";
   @override
-  _VerificationPageState createState() => _VerificationPageState();
+  _ReuploadBankStatementPageState createState() =>
+      _ReuploadBankStatementPageState();
 }
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final uid = _auth.currentUser!.uid;
 
-class _VerificationPageState extends State<VerificationPage2> {
+class _ReuploadBankStatementPageState extends State<ReuploadBankStatementPage> {
   final imagePicker = ImagePicker();
   String url = '';
 
@@ -206,7 +205,9 @@ class _VerificationPageState extends State<VerificationPage2> {
               }
               bool result = await viewModel.uploadBankStatement(file!);
               if (result) {
-                Navigator.pushNamed(context, VerificationPage3.pageName);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Color(0xFF1B561D),
+                    content: Text("Upload successful")));
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(

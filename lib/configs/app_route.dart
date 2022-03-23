@@ -16,6 +16,12 @@ import 'package:flutter_application_1/pages/apply/recurring/loan_application_inf
 import 'package:flutter_application_1/pages/main_views/account_method.dart';
 import 'package:flutter_application_1/pages/main_views/bank_account_method.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/pages/main_views/permissions_page.dart';
+import 'package:flutter_application_1/pages/verification/bank_statement_reupload.dart';
+import 'package:flutter_application_1/pages/verification/id_reupload.dart';
+import 'package:flutter_application_1/pages/verification/pending_verification.dart';
+import 'package:flutter_application_1/pages/verification/proof_of_address_reupload.dart';
+import 'package:flutter_application_1/pages/verification/verification_reupload.dart';
 import 'package:flutter_application_1/pages/otp_ver_page.dart';
 import 'package:flutter_application_1/pages/phone_input_page.dart';
 import 'package:flutter_application_1/pages/registration/get_started.dart';
@@ -74,9 +80,22 @@ class AppRoute {
         return _materialPageRoute(ApplyForRest4(), settings);
       case AccountMethod.pageName:
         return _materialPageRoute(AccountMethod(), settings);
+      case PendingVerificationPage.pageName:
+        return _materialPageRoute(PendingVerificationPage(), settings);
+      case VerificationReuploadPage.pageName:
+        return _materialPageRoute(VerificationReuploadPage(), settings);
+      case ReuploadIDPage.pageName:
+        return _materialPageRoute(ReuploadIDPage(), settings);
+      case ReuploadBankStatementPage.pageName:
+        return _materialPageRoute(ReuploadBankStatementPage(), settings);
+      case ReuploadProofOfAddressPage.pageName:
+        return _materialPageRoute(ReuploadProofOfAddressPage(), settings);
+      case PermissionsPage.pageName:
+        return _materialPageRoute(PermissionsPage(), settings);
       case UpdateBankAccountScreen.pageName:
         BankDetail bankDetail = settings.arguments as BankDetail;
-        return _materialPageRoute(UpdateBankAccountScreen(bankDetail), settings);
+        return _materialPageRoute(
+            UpdateBankAccountScreen(bankDetail), settings);
       case LoanApplicationInfoPage.pageName:
         return _materialPageRoute(LoanApplicationInfoPage(), settings);
       default:

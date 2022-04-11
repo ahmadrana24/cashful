@@ -97,7 +97,12 @@ class AppRoute {
         return _materialPageRoute(
             UpdateBankAccountScreen(bankDetail), settings);
       case LoanApplicationInfoPage.pageName:
-        return _materialPageRoute(LoanApplicationInfoPage(), settings);
+        var firstTime = settings.arguments ?? false;
+        return _materialPageRoute(
+            LoanApplicationInfoPage(
+              firstTime: firstTime as bool,
+            ),
+            settings);
       default:
         if (AuthHelper.isLoggedIn())
           return _materialPageRoute(SplashPage(), settings);

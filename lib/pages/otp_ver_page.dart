@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/helper.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/pages/splash_page.dart';
 import 'package:flutter_application_1/view_models/auth_view_model.dart';
@@ -23,12 +24,14 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
     return Consumer<AuthViewModel>(builder: (context, authVM, _) {
       if (authVM.authState == AuthState.Success) {
         WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, SplashPage.pageName, (_) => false);
+          AppHelper.checkUserStatAndNavigate(context, authVM.user);
         });
       } else if (authVM.authState == AuthState.Failed) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Invalid code try again")));
+        WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Invalid code try again")));
+          authVM.authState = AuthState.Idle;
+        });
       }
       return Scaffold(
         body: SingleChildScrollView(
@@ -99,6 +102,9 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               width: MediaQuery.of(context).size.width,
                               child: PinCodeTextField(
                                 cursorColor: kPrimaryBlue,
+                                onCompleted: (value) {
+                                  authViewModel.verifyOTP(_otpCode);
+                                },
                                 pinTheme: PinTheme(
                                     activeColor: kPrimaryBlue,
                                     inactiveColor: Colors.black38),
@@ -133,36 +139,18 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                               child: authVM.authState == AuthState.Busy
                                   ? CircularProgressIndicator(
                                       color: Colors.white)
-                                  : Text(
-                                      "Validate",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20.0),
-                                    ),
+                                  : authVM.authState == AuthState.Success
+                                      ? Icon(Icons.check, color: Colors.white)
+                                      : Text(
+                                          "Validate",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20.0),
+                                        ),
                             ),
                             SizedBox(
                               height: 15.0,
                             ),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //           builder: (context) => MyHomePage()),
-                            //     );
-                            //   },
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     children: [
-                            //       Text("Don't have an account?"),
-                            //       SizedBox(width: 5),
-                            //       Text(
-                            //         "Sign up",
-                            //         style: TextStyle(fontWeight: FontWeight.w900),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // )
                           ],
                         ),
                       ),

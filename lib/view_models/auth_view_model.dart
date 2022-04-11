@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_application_1/configs/locator.dart';
+import 'package:flutter_application_1/view_models/splash_view_model.dart';
+import 'package:flutter_application_1/models/user_model.dart' as um;
 
 enum AuthState { Idle, CodeSent, Failed, Success, Busy }
 
@@ -7,6 +10,7 @@ class AuthViewModel extends ChangeNotifier {
   late FirebaseAuth _auth;
   AuthState authState = AuthState.Idle;
   String? _verificationId;
+  um.User? user;
 
   AuthViewModel() {
     _auth = FirebaseAuth.instance;
@@ -45,16 +49,22 @@ class AuthViewModel extends ChangeNotifier {
   void _codeAutoRetrievalTimeout(String verificationId) async {}
 
   void verifyOTP(String OTP) async {
-    assert(_verificationId != null);
-    print("Verifiying OTP");
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!, smsCode: OTP);
-    authState = AuthState.Busy;
-    notifyListeners();
-    UserCredential _userCredential =
-        await _auth.signInWithCredential(credential);
-    _userCredential.user!.uid;
-    authState = AuthState.Success;
-    notifyListeners();
+    try {
+      assert(_verificationId != null);
+      print("Verifiying OTP");
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: _verificationId!, smsCode: OTP);
+      authState = AuthState.Busy;
+      notifyListeners();
+      UserCredential _userCredential =
+          await _auth.signInWithCredential(credential);
+      _userCredential.user!.uid;
+      user = await locator<SplashViewModel>().getUser();
+      authState = AuthState.Success;
+      notifyListeners();
+    } catch (e) {
+      authState = AuthState.Failed;
+      notifyListeners();
+    }
   }
 }

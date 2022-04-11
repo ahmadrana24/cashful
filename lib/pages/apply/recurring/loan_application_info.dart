@@ -8,8 +8,9 @@ import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.d
 
 class LoanApplicationInfoPage extends StatefulWidget {
   static const pageName = "loanApplicationInfoPage";
+  final bool firstTime;
 
-  const LoanApplicationInfoPage({Key? key}) : super(key: key);
+  LoanApplicationInfoPage({Key? key, this.firstTime = false}) : super(key: key);
 
   @override
   _LoanApplicationInfoPageState createState() =>
@@ -132,7 +133,9 @@ class _LoanApplicationInfoPageState extends State<LoanApplicationInfoPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(margin: EdgeInsets.only(right: 75), child: Text('5/5')),
+              if (widget.firstTime)
+                Container(
+                    margin: EdgeInsets.only(right: 75), child: Text('5/5')),
               Container(
                 margin: EdgeInsets.only(right: 40),
                 width: 100,

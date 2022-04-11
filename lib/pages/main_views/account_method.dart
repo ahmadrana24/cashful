@@ -3,6 +3,7 @@ import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/helper.dart';
 import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/configs/size_const.dart';
+import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 import 'package:flutter_application_1/models/payment_info_model.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
@@ -60,26 +61,31 @@ class AccountMethodState extends State<AccountMethod> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  if (model.user!.mtnDetail != null) ...[
+                                  ...[
                                     InkWell(
                                       onTap: () {
+                                        MtnDetail mtnDetail =
+                                            model.user!.mtnDetail ??
+                                                MtnDetail(
+                                                    fullName: "",
+                                                    accountNumber: "");
                                         showDialog(
                                             context: context,
-                                            builder: (context) => _updateDialog(
-                                                model.user!.mtnDetail!));
+                                            builder: (context) =>
+                                                _updateDialog(mtnDetail));
                                       },
                                       child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            if (model.user!.mtnDetail !=
-                                                null) ...[
-                                              Image.asset(
-                                                "assets/images/check_star.png",
-                                                width: 20,
-                                                height: 20,
-                                                fit: BoxFit.cover,
-                                              ),
+                                            ...[
+                                              if (model.user!.mtnDetail != null)
+                                                Image.asset(
+                                                  "assets/images/check_star.png",
+                                                  width: 20,
+                                                  height: 20,
+                                                  fit: BoxFit.cover,
+                                                ),
                                               SizedBox(
                                                 width: 10,
                                               )
@@ -99,12 +105,23 @@ class AccountMethodState extends State<AccountMethod> {
                                           ]),
                                     ),
                                   ],
-                                  if (model.user!.bankDetail != null) ...[
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  ...[
                                     InkWell(
                                       onTap: () {
+                                        BankDetail bankDetail =
+                                            model.user!.bankDetail ??
+                                                BankDetail(
+                                                    hodlerName: "",
+                                                    accountNumber: "",
+                                                    accountType: "",
+                                                    bankName: "",
+                                                    bankCode: "");
                                         Navigator.of(context).pushNamed(
                                             UpdateBankAccountScreen.pageName,
-                                            arguments: model.user!.bankDetail);
+                                            arguments: bankDetail);
                                       },
                                       child: Row(
                                           mainAxisAlignment:
@@ -112,12 +129,13 @@ class AccountMethodState extends State<AccountMethod> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Image.asset(
-                                              "assets/images/check_star.png",
-                                              width: 20,
-                                              height: 20,
-                                              fit: BoxFit.cover,
-                                            ),
+                                            if (model.user!.bankDetail != null)
+                                              Image.asset(
+                                                "assets/images/check_star.png",
+                                                width: 20,
+                                                height: 20,
+                                                fit: BoxFit.cover,
+                                              ),
                                             SizedBox(
                                               width: 10,
                                             ),
@@ -152,7 +170,7 @@ class AccountMethodState extends State<AccountMethod> {
                   padding: EdgeInsets.all(40.0),
                   child: Container(
                       child: Text(
-                    'Please note that we do not accept cash deposits or cheques.',
+                    'Note: you can have one payment method at a time, updating one removes the other',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 14),
                   )),

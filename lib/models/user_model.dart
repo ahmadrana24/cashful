@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/models/background_info_model.dart';
 import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/models/documents_model.dart';
+import 'package:flutter_application_1/models/level_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 
 class User {
@@ -19,6 +20,8 @@ class User {
   BankDetail? bankDetail;
   MtnDetail? mtnDetail;
   BackgroundInformation? backgroundInformation;
+  String? levelId;
+  Level? level;
 
   User({
     required this.firstName,
@@ -32,6 +35,8 @@ class User {
     this.bankDetail,
     this.mtnDetail,
     this.backgroundInformation,
+    this.levelId,
+    this.level,
   });
 
   Map<String, dynamic> toMap() {
@@ -47,6 +52,8 @@ class User {
       'bankDetail': bankDetail?.toMap(),
       'mtnDetail': mtnDetail?.toMap(),
       'backgroundInformation': backgroundInformation?.toMap(),
+      'levelId': levelId,
+      'level': level?.toMap(),
     };
   }
 
@@ -63,6 +70,8 @@ class User {
       bankDetail: map['bankDetail'] != null ? BankDetail.fromMap(map['bankDetail']) : null,
       mtnDetail: map['mtnDetail'] != null ? MtnDetail.fromMap(map['mtnDetail']) : null,
       backgroundInformation: map['backgroundInformation'] != null ? BackgroundInformation.fromMap(map['backgroundInformation']) : null,
+      levelId: map['levelId'],
+      level: map['level'] != null ? Level.fromMap(map['level']) : null,
     );
   }
 

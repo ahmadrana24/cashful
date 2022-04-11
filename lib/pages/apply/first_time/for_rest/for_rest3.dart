@@ -303,7 +303,7 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 LoanApplicationInfoPage.pageName,
                                 ModalRoute.withName(
-                                    HomeWithBottomNavBar.pageName));
+                                    HomeWithBottomNavBar.pageName), arguments: true);
                           },
                           color: kPrimaryBlue,
                           child: TextH4(

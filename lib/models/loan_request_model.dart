@@ -33,7 +33,7 @@ class LoanRequest {
       'totalRepayable': totalRepayable,
       'loanStatus': loanStatus,
       'paymentTime': paymentTime,
-      'laonDate': loanDate,
+      'loanDate': loanDate,
     };
   }
 
@@ -47,7 +47,7 @@ class LoanRequest {
       totalRepayable: map['totalRepayable'] ?? '',
       loanStatus: map['loanStatus'],
       paymentTime: map['paymentTime'] ?? '',
-      loanDate: map['laonDate'],
+      loanDate: map['loanDate'],
     );
   }
 

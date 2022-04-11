@@ -7,6 +7,7 @@ class LoanRequestViewModel extends BaseViewModel {
   LoanRequestRepository _loanRequestRepository;
   FirebaseHelper _firebaseHelper;
   LoanRequestViewModel(this._loanRequestRepository, this._firebaseHelper);
+  String? getError;
 
   Future<bool> requestLoan(LoanRequest loanRequest) async {
     try {
@@ -19,6 +20,21 @@ class LoanRequestViewModel extends BaseViewModel {
       return false;
     } finally {
       setState(ViewState.Idle);
+    }
+  }
+
+  Future<List<LoanRequest>> getLoanRequests() async {
+    try {
+      getError = null;
+      setState(ViewState.Busy);
+      List<LoanRequest> loanRequests = await _loanRequestRepository
+          .getUserLoans(_firebaseHelper.getUserId());
+      setState(ViewState.Idle);
+      return loanRequests;
+    } catch (e) {
+      getError = "something error";
+      setState(ViewState.Idle);
+      return [];
     }
   }
 }

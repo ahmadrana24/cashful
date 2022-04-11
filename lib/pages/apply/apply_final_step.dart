@@ -8,7 +8,9 @@ import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
+import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
+import 'package:provider/provider.dart';
 
 class ApplyFinalStep extends StatefulWidget {
   static const pageName = "/applyFinalStep";
@@ -25,189 +27,210 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
   var _max = 100;
   var _loanValue = 100.0;
   var _returnDateIndex = 0;
-  var _showSlider = false;
+  // var _showSlider = false;
 
-  var _paymentDays = [7, 14, 21, 31];
-  var _interest = 0.12;
+  var _paymentDays = [];
+  var _interest = 0.15;
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<LoanRequestViewModel>(builder: (context, model, child) {
-      return Scaffold(
-        body: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: TextH1(
-                title: "Apply",
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-                child: Container(
-              padding: EdgeInsets.all(30.0),
-              width: kScreenWidth(context),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(40))),
+    return Consumer<UserViewModel>(builder: (context, userVM, child) {
+      var user = userVM.user!;
+      WidgetsBinding.instance!.addPostFrameCallback(
+        (_) {
+          setState(() {
+            _paymentDays = user.level!.repayDates;
+          });
+        },
+      );
+      return BaseView<LoanRequestViewModel>(builder: (context, model, child) {
+        return Scaffold(
+          body: SafeArea(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextH3(
-                    title: "Select loan amount",
-                    color: Colors.black,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    // "You qualify for an advance maximum of up to R600, please move the slider to select an amount",
-                    "As a first time borrower, you qualify for an advance maximum of up to R100.",
-                    style: TextStyle(
-                        color: Colors.black.withOpacity(0.6),
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(width: 1, color: Colors.black26)),
-                    child: TextH2(
-                      title: "R${_loanValue.toStringAsFixed(0)}",
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 40,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextH1(
+                  title: "Apply",
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: Container(
+                padding: EdgeInsets.all(30.0),
+                width: kScreenWidth(context),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(40))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextH3(
+                      title: "Select loan amount",
                       color: Colors.black,
                     ),
-                  ),
-                  SizedBox(height: 40),
-                  if (_showSlider)
-                    Row(
-                      children: [
-                        Text(
-                          "R$_min",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(
-                          child: Slider(
-                            value: _loanValue / _max,
-                            onChanged: (value) {
-                              setState(() {
-                                _loanValue = value * _max;
-                              });
-                            },
-                            thumbColor: Colors.white,
-                            inactiveColor: kBgLight,
-                            activeColor: kPrimaryBlue,
+                    SizedBox(height: 20),
+                    Text(
+                      // "You qualify for an advance maximum of up to R600, please move the slider to select an amount",
+                      user.level!.name == 'level1'
+                          ? "As a first time borrower, you qualify for an advance maximum of R100."
+                          : "You qualify for an advance maximum of up to R${user.level!.max}, please move the slider to select an amount",
+                      style: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          border: Border.all(width: 1, color: Colors.black26)),
+                      child: TextH2(
+                        title: "R${_loanValue.toStringAsFixed(0)}",
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    if (user.level!.min != user.level!.max)
+                      Row(
+                        children: [
+                          Text(
+                            "R${user.level!.min}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                        ),
+                          Expanded(
+                            child: Slider(
+                              min: user.level!.min.toDouble() /
+                                  user.level!.max.toDouble(),
+                              max: user.level!.max.toDouble() /
+                                  user.level!.max.toDouble(),
+                              divisions: 10,
+                              value: _loanValue / user.level!.max.toDouble(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _loanValue = value * user.level!.max;
+                                });
+                              },
+                              thumbColor: Colors.white,
+                              inactiveColor: kBgLight,
+                              activeColor: kPrimaryBlue,
+                            ),
+                          ),
+                          Text(
+                            "R${user.level!.max}",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      height: 100,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: _paymentDays
+                            .map<Widget>((
+                              e,
+                            ) =>
+                                _daysWidget("$e days", _paymentDays.indexOf(e)))
+                            .toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Interest",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         Text(
-                          "R$_max",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                            "(${user.level!.interest * 100}%) R${(user.level!.interest * _loanValue).toStringAsFixed(2)}")
                       ],
                     ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 10.0,
-                    runSpacing: 10.0,
-                    children: _paymentDays
-                        .map<Widget>((
-                          e,
-                        ) =>
-                            _daysWidget("$e days", _paymentDays.indexOf(e)))
-                        .toList(),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Interest",
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text("(${_interest * 100}%) R${_interest * _loanValue}")
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Total repayable",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
-                      Text("R${_loanValue + _interest * _loanValue}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 150,
-                      height: 50,
-                      child: TextButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(kPrimaryBlue),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40))),
-                          ),
-                          child: model.state == ViewState.Busy
-                              ? CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  'Submit',
-                                  style: TextStyle(
-                                      fontSize: 16.0, color: Colors.white),
-                                ),
-                          onPressed: () {
-                            _submit();
-                          }),
+                    SizedBox(
+                      height: 30,
                     ),
-                  )
-                ],
-              ),
-            ))
-          ],
-        )),
-      );
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Total repayable",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18)),
+                        Text(
+                            "R${(_loanValue + user.level!.interest * _loanValue).toStringAsFixed(2)}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18))
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        width: 150,
+                        height: 50,
+                        child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(kPrimaryBlue),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40))),
+                            ),
+                            child: model.state == ViewState.Busy
+                                ? CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        fontSize: 16.0, color: Colors.white),
+                                  ),
+                            onPressed: () {
+                              _submit();
+                            }),
+                      ),
+                    )
+                  ],
+                ),
+              ))
+            ],
+          )),
+        );
+      });
     });
   }
 
   _daysWidget(String text, index) {
     bool active = index == _returnDateIndex;
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _returnDateIndex = index;
-        });
-      },
-      child: Container(
-        width: 80,
-        height: 80,
-        decoration: BoxDecoration(
-            color: active ? kPrimaryBlue : Colors.white,
-            border: Border.all(
-                color: active ? kPrimaryBlue : Colors.black26, width: 1),
-            borderRadius: BorderRadius.circular(10)),
+    return Container(
+      width: 80,
+      height: 80,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+          color: active ? kPrimaryBlue : Colors.white,
+          border: Border.all(
+              color: active ? kPrimaryBlue : Colors.black26, width: 1),
+          borderRadius: BorderRadius.circular(10)),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _returnDateIndex = index;
+          });
+        },
         child: Center(
           child: Text(text,
               style: TextStyle(
@@ -251,7 +274,7 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
                   SizedBox(
                     height: 10,
                   ),
-                  TextH4(title: "Your loan is on its way", color: Colors.black),
+                  TextH4(title: "Request submitted", color: Colors.black),
                   SizedBox(
                     height: 10,
                   ),

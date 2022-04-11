@@ -5,6 +5,7 @@ import 'package:flutter_application_1/configs/size_const.dart';
 import 'package:flutter_application_1/models/documents_model.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
+import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/pages/verification/verification_reupload.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
@@ -29,40 +30,43 @@ class _PendingVerificationPageState extends State<PendingVerificationPage> {
           children: [
             SizedBox(height: 60),
             TextH1(title: "Verification"),
-            Expanded(
-                child: Container(
-              width: kScreenWidth(context),
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
-              margin: EdgeInsets.only(
-                left: 20,
-                top: 20,
-                right: 20,
-                bottom: 20,
+            Card(
+              margin: EdgeInsets.all(20),
+              child: Container(
+                width: kScreenWidth(context),
+                padding:
+                    EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  top: 20,
+                  right: 20,
+                  bottom: 20,
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                        'Your information is being verified.\nWe\'ll notify you when verification has\nbeen completed',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Consumer<UserViewModel>(builder: (context, model, child) {
+                      return _stepperWidget(model.user!);
+                    }),
+                  ],
+                ),
               ),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                      'Your information is being verified.\nWe\'ll notify you when verification has\nbeen completed',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Consumer<UserViewModel>(builder: (context, model, child) {
-                    return _stepperWidget(model.user!);
-                  }),
-                ],
-              ),
-            )),
+            ),
           ],
         ));
   }
@@ -128,13 +132,34 @@ class _PendingVerificationPageState extends State<PendingVerificationPage> {
                 ? "Your account is under review"
                 : _getStatus(user) == "rejected"
                     ? "You have some rejected documents, click verification above and reupload"
-                    : "",
+                    : "Account verified",
             style: TextStyle(
                 color: Colors.black45,
                 fontSize: 16,
                 fontWeight: FontWeight.w500),
           ),
-        )
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        if (_getStatus(user) != "pending" && _getStatus(user) != "rejected")
+          SizedBox(
+            width: kScreenWidth(context),
+            height: 50,
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomeWithBottomNavBar.pageName, (route) => false);
+              },
+              color: kPrimaryBlue,
+              child: Text(
+                "Continue",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
       ],
     );
   }

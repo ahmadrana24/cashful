@@ -27,4 +27,12 @@ class LoanRequestService extends ILoanRequestService {
         .get();
     return requestSnapshot;
   }
+
+  Future<QuerySnapshot> getUserLoans(String s) async{
+    QuerySnapshot requestSnapshot = await _loanRequestCollRef
+        .where('userId', isEqualTo: s)
+        .where('loanStatus')
+        .get();
+    return requestSnapshot;
+  }
 }

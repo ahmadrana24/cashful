@@ -18,4 +18,14 @@ class LoanRequestRepository {
       return LoanRequest.fromFirebase(loanSnapshot.docs[0]);
     }
   }
+
+  Future<List<LoanRequest>> getUserLoans(String? userId) async {
+    QuerySnapshot loanSnapshot =
+        await _loanRequestService.getUserLoans(userId!);
+    List<LoanRequest> loanRequests = loanSnapshot.docs.map<LoanRequest>((e){
+      return LoanRequest.fromFirebase(e);
+    }).toList();
+
+    return loanRequests;
+  }
 }

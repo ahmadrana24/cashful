@@ -24,57 +24,64 @@ class _HelpScreenState extends State<HelpScreen> {
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child: Container(
-                height: 220,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(40)),
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    Container(
-                        child: Text("Have a question? We're here to help",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await launch("https://www.whatsup.com");
-                      },
-                      child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 30),
-                                child: Image(
-                                    image: AssetImage(
-                                        'assets/images/whatsapp.png'))),
-                            SizedBox(width: 20),
-                            Container(child: Text('Whatsapp support'))
-                          ]),
-                    ),
-                    SizedBox(height: 40),
-                    InkWell(
-                      onTap: () async {
-                        await launch('http://www.cashful.me/');
-                      },
-                      child: Row(
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 30),
-                                child: Image(
-                                    image:
-                                        AssetImage('assets/images/globe.png'))),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Container(child: Text('Frequently asked questions'))
-                          ]),
-                    ),
-                  ],
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Container(
+                  padding: EdgeInsets.all(40),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 0),
+                      Container(
+                          child: Text("Have a question? We're here to help",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await launch("tel://+27 60 706 9587");
+                        },
+                        child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                image: AssetImage('assets/images/whatsapp.png'),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(width: 20),
+                              Container(child: Text('Whatsapp support'))
+                            ]),
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () async {
+                          await launch('https://www.cashful.me/faq');
+                        },
+                        child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                image: AssetImage('assets/images/globe.png'),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                  child: Text('Frequently asked questions'))
+                            ]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -97,17 +104,31 @@ class _HelpScreenState extends State<HelpScreen> {
                     onTap: () async {
                       await launch('http://www.facebook.com/cashful.me');
                     },
-                    child:
-                        Image(image: AssetImage('assets/images/facebook.png'))),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image(
+                        image: AssetImage('assets/images/facebook.png'),
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
                 SizedBox(
-                  width: 30,
+                  width: 40,
                 ),
                 InkWell(
                     onTap: () async {
                       await launch('http://www.linkedin.com/company/cashful');
                     },
-                    child:
-                        Image(image: AssetImage('assets/images/linkedin.png')))
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image(
+                        image: AssetImage('assets/images/linkedin.png'),
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      ),
+                    ))
               ],
             )
           ],

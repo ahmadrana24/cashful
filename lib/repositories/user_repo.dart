@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/models/background_info_model.dart';
 import 'package:flutter_application_1/models/documents_model.dart';
+import 'package:flutter_application_1/models/level_model.dart';
 import 'package:flutter_application_1/models/payment_info_model.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/services/payment_service.dart';
@@ -35,10 +36,23 @@ class UserRepository {
 
     DocumentSnapshot bgInfoSnapshot =
         await _userService.getBackgroundInformation(uid);
-    print(bgInfoSnapshot.data());
+    // print(bgInfoSnapshot.data());
     user.backgroundInformation = bgInfoSnapshot.data() != null
         ? BackgroundInformation.fromFirebase(bgInfoSnapshot)
         : null;
+
+    QuerySnapshot levelSnapshot = await _userService.getLevels();
+    List<Level> levels = levelSnapshot.docChanges.map((e) {
+      var level = Level.fromFirebase(e.doc);
+      return level;
+    }).toList();
+
+    print(user.levelId);
+
+    user.level = user.levelId != null
+        ? levels.firstWhere((level) => level.id == user.levelId!)
+        : levels.firstWhere((level) => level.name == 'level1');
+
     return user;
   }
 

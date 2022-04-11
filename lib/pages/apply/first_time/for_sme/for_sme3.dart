@@ -379,7 +379,7 @@ class _ApplyForSME3State extends State<ApplyForSME3> {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 LoanApplicationInfoPage.pageName,
                                 ModalRoute.withName(
-                                    HomeWithBottomNavBar.pageName));
+                                    HomeWithBottomNavBar.pageName,),arguments: true);
                           },
                           color: kPrimaryBlue,
                           child: TextH4(

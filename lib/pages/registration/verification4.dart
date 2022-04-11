@@ -10,8 +10,10 @@ import 'package:flutter_application_1/models/mtn_detail.dart';
 import 'package:flutter_application_1/models/payment_info_model.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/pages/main_views/messages.dart';
 import 'package:flutter_application_1/pages/registration/add_bank_account.dart';
 import 'package:flutter_application_1/pages/splash_page.dart';
+import 'package:flutter_application_1/pages/verification/pending_verification.dart';
 import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/verification_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
@@ -40,18 +42,6 @@ class _VerificationPage4State extends State<VerificationPage4> {
   void initState() {
     super.initState();
   }
-
-  // void uploadMTNAccountDetails() async {
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(uid)
-  //       .collection('Profile')
-  //       .doc('MTN account details')
-  //       .set({
-  //     'Savings p/m': registeredNames.text,
-  //     'Stokvel participation?': mobileNumber.text,
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +127,10 @@ class _VerificationPage4State extends State<VerificationPage4> {
                                           width: 10,
                                         ),
                                         Container(
-                                            child: Text('MTN Mobile Money'))
+                                            child: Text(
+                                          'MTN Mobile Money',
+                                          style: boldFont,
+                                        ))
                                       ]),
                                 ),
                                 SizedBox(height: 30),
@@ -185,7 +178,10 @@ class _VerificationPage4State extends State<VerificationPage4> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text('EFT Transfer'),
+                                        Text(
+                                          'EFT Transfer',
+                                          style: boldFont,
+                                        ),
                                       ]),
                                 ),
                               ]),
@@ -254,8 +250,8 @@ class _VerificationPage4State extends State<VerificationPage4> {
                                         setState(() {
                                           _buttonWidth = 200;
                                         });
-                                        Navigator.pushReplacementNamed(
-                                            context, SplashPage.pageName);
+                                        Navigator.pushReplacementNamed(context,
+                                            PendingVerificationPage.pageName);
                                       } else {
                                         setState(() {
                                           _buttonWidth = 200;

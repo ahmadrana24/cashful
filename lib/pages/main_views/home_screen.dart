@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/helper.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/first_time/apply_splash.dart';
 import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/help.dart';
 import 'package:flutter_application_1/pages/main_views/pay.dart';
+import 'package:flutter_application_1/view_models/base_view_model.dart';
+import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,8 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // style
-    Future.delayed(Duration(milliseconds: 200), () {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 200), () {
         setState(() {
           dx = 1;
         });
@@ -70,10 +74,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                   borderRadius: BorderRadius.circular(25)),
                               child: InkWell(
                                   onTap: () async {
-                                    // SharedPreferences prefs =
-                                    //     await SharedPreferences.getInstance();
-                                    // print(prefs.getBool("first-time"));
-                                    print(model.user!.backgroundInformation);
+                                    var lrVM = locator<LoanRequestViewModel>();
+                                    var loanReqeusts =
+                                        await lrVM.getLoanRequests();
+                                    if (lrVM.errorMessage == null) {
+                                      var pendingOrapprovedLR =
+                                          loanReqeusts.indexWhere(
+                                        (element) =>
+                                            element.loanStatus == 'pending' ||
+                                            element.loanStatus == 'approved',
+                                      );
+                                      print(pendingOrapprovedLR);
+                                      if (pendingOrapprovedLR != -1) {
+                                        WidgetsBinding.instance!
+                                            .addPostFrameCallback((timeStamp) {
+                                          AppHelper.showSnackBar(
+                                              "You have already applied for a loan.",
+                                              context);
+                                        });
+                                        return;
+                                      }
+                                    } else {
+                                      WidgetsBinding.instance!
+                                          .addPostFrameCallback((timeStamp) {
+                                        AppHelper.showSnackBar(
+                                            "Something went wrong try again.",
+                                            context);
+                                      });
+                                      return;
+                                    }
                                     if (model.user!.backgroundInformation ==
                                         null) {
                                       Navigator.pushNamed(
@@ -82,15 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Navigator.pushNamed(context,
                                           LoanApplicationInfoPage.pageName);
                                     }
-                                    // if (prefs.getBool("first-time") != null) {
-                                    //   if (prefs.getBool("first-time")!) {
-                                    //     Navigator.pushNamed(
-                                    //         context, ApplySplash.pageName);
-                                    //   }
-                                    // } else {
-                                    //   Navigator.pushNamed(
-                                    //       context, ApplySplash.pageName);
-                                    // }
                                   },
                                   child: _floatingHomeCard(
                                       'assets/images/apply.svg', 'Apply')),

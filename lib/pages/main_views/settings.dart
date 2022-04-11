@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/account_method.dart';
 import 'package:flutter_application_1/pages/main_views/password_reset_screen.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -117,11 +119,24 @@ class _SettingsPageState extends State<SettingsPage> {
                                     Text("Verified", style: boldFont)),
                                 SizedBox(height: 30),
                                 InkWell(
-                                    onTap: () async {},
+                                    onTap: () async {
+                                      await launch(
+                                          "https://www.cashful.me/terms-and-condition");
+                                    },
                                     child: Text("Terms and Conditions",
                                         style:
-                                            boldFont.copyWith(fontSize: 18))),
-                                SizedBox(height: 20),
+                                            boldFont.copyWith(fontSize: 16))),
+                                SizedBox(height: 5),
+                                InkWell(
+                                    onTap: () async {
+                                      await launch(
+                                          "https://www.cashful.me/privacy-policy");
+                                    },
+                                    child: Text("Privacy policy",
+                                        style:
+                                            boldFont.copyWith(fontSize: 16))),
+                                SizedBox(height: 10),
+
                                 InkWell(
                                     onTap: () async {
                                       try {
@@ -135,8 +150,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                       setState(() {});
                                     },
                                     child: Text("Sign out",
-                                        style:
-                                            boldFont.copyWith(fontSize: 18))),
+                                        style: boldFont.copyWith(
+                                            fontSize: 18,
+                                            color: kPrimaryBlue))),
                                 // ElevatedButton(
                                 //     // style: ButtonStyle(
                                 //     //   backgroundColor: MaterialStateProperty.all(

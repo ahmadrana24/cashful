@@ -98,7 +98,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: TextH4(
                       title:
-                          "You need to grant the following permissions to start using the app",
+                          "Cashful uses your data for lending decisions. In order to start using the app, you need to grant the following permissions:",
                       color: kPrimaryBlue,
                     ),
                   ),
@@ -212,6 +212,14 @@ class _PermissionsPageState extends State<PermissionsPage> {
                                   await _grantContactsPermission();
                                 },
                                 child: Text("Allow")),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                        "For more information, visit our privacy policy on our website"),
                   ),
                   SizedBox(
                     height: 20,

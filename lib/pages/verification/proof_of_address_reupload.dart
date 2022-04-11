@@ -111,6 +111,7 @@ class _ReuploadProofOfAddressPageState
                               height: 30,
                             ),
                             Container(
+                              alignment: Alignment.center,
                               child: Text(
                                 'Uploading clear documents can make the approval process faster',
                                 textAlign: TextAlign.center,

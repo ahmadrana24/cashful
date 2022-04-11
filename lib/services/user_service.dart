@@ -22,10 +22,12 @@ class UserService implements IUserService {
   late CollectionReference _usersRef;
   late CollectionReference _userDocsRef;
   late CollectionReference _userBgInfoRef;
+  late CollectionReference _levelInfoRef;
   UserService(this._firestore) {
     _usersRef = _firestore.collection("users_n");
     _userDocsRef = _firestore.collection("user_documents");
     _userBgInfoRef = _firestore.collection("background_informations");
+    _levelInfoRef = _firestore.collection("levels");
   }
 
   @override
@@ -131,5 +133,9 @@ class UserService implements IUserService {
 
   Future<DocumentSnapshot<Object?>> getBackgroundInformation(String uid) async {
     return await _userBgInfoRef.doc(uid).get();
+  }
+
+  Future<QuerySnapshot<Object?>> getLevels() async {
+    return await _levelInfoRef.get();
   }
 }

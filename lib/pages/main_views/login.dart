@@ -147,19 +147,17 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
                         print(newUser.toString());
 
-                        if (newUser != null) {
-                          Fluttertoast.showToast(
-                              msg: "Login Successful",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.grey,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
-                          setState(() {
-                            showProgress = false;
-                          });
-                        }
+                        Fluttertoast.showToast(
+                            msg: "Login Successful",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        setState(() {
+                          showProgress = false;
+                        });
                       } catch (e) {}
                     },
                     minWidth: 200.0,
@@ -178,7 +176,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CreateAccountPage()),
+                      MaterialPageRoute(
+                          builder: (context) => CreateAccountPage()),
                     );
                   },
                   child: Text(

@@ -48,6 +48,7 @@ class AuthViewModel extends ChangeNotifier {
 
   void _codeAutoRetrievalTimeout(String verificationId) async {}
 
+  // ignore: non_constant_identifier_names
   void verifyOTP(String OTP) async {
     try {
       assert(_verificationId != null);

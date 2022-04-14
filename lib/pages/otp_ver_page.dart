@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/helper.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/splash_page.dart';
 import 'package:flutter_application_1/view_models/auth_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';

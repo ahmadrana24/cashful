@@ -5,8 +5,8 @@ import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 
 class PaymentInfo {
-  BankDetail? bankDetail;
-  MtnDetail? mtnDetail;
+  late final BankDetail? bankDetail;
+  late final MtnDetail? mtnDetail;
   PaymentInfo({
     this.bankDetail,
     this.mtnDetail,
@@ -41,7 +41,11 @@ class PaymentInfo {
 
     var data = snapshot.data() as Map<String, dynamic>;
     return PaymentInfo(
-        bankDetail: data['bankDetail'] != null ? BankDetail.fromMap(data['bankDetail']) : null,
-        mtnDetail: data['mtnDetail'] != null ? MtnDetail.fromMap(data['mtnDetail']) : null);
+        bankDetail: data['bankDetail'] != null
+            ? BankDetail.fromMap(data['bankDetail'])
+            : null,
+        mtnDetail: data['mtnDetail'] != null
+            ? MtnDetail.fromMap(data['mtnDetail'])
+            : null);
   }
 }

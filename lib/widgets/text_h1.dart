@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextH1 extends StatelessWidget {
   final String title;
-  Color? color;
+  final Color? color;
 
   TextH1({required this.title, this.color});
 
@@ -18,7 +18,7 @@ class TextH1 extends StatelessWidget {
 
 class TextH2 extends StatelessWidget {
   final String title;
-  Color? color;
+  final Color? color;
 
   TextH2({required this.title, this.color});
 
@@ -34,7 +34,7 @@ class TextH2 extends StatelessWidget {
 
 class TextH3 extends StatelessWidget {
   final String title;
-  Color? color;
+  final Color? color;
 
   TextH3({required this.title, this.color});
 
@@ -50,7 +50,7 @@ class TextH3 extends StatelessWidget {
 
 class TextH4 extends StatelessWidget {
   final String title;
-  Color? color;
+  final Color? color;
 
   TextH4({required this.title, this.color});
 

@@ -22,12 +22,12 @@ class UpdateBankAccountScreen extends StatefulWidget {
 }
 
 class _UpdateBankAccountScreenState extends State<UpdateBankAccountScreen> {
-  final TextEditingController bankName = TextEditingController();
-  final TextEditingController accountHolder = TextEditingController();
-  final TextEditingController accountType = TextEditingController();
-  final TextEditingController branchCode = TextEditingController();
-  final TextEditingController accountNumber = TextEditingController();
-  BankDetail? bankDetail;
+  late final TextEditingController bankName = TextEditingController();
+  late final TextEditingController accountHolder = TextEditingController();
+  late final TextEditingController accountType = TextEditingController();
+  late final TextEditingController branchCode = TextEditingController();
+  late final TextEditingController accountNumber = TextEditingController();
+  late final BankDetail? bankDetail;
   var _formKey = GlobalKey<FormState>();
 
   var viewModel = locator<PaymentMethodViewModel>();

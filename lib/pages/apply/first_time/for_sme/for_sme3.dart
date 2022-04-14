@@ -1,17 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/helper.dart';
 import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
-import 'package:flutter_application_1/pages/apply/first_time/for_rest/for_rest4.dart';
 import 'package:flutter_application_1/pages/apply/recurring/loan_application_info.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/view_models/apply_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
-
-import 'for_sme4.dart';
 
 class ApplyForSME3 extends StatefulWidget {
   static const pageName = "applyForSME3";
@@ -379,7 +374,9 @@ class _ApplyForSME3State extends State<ApplyForSME3> {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 LoanApplicationInfoPage.pageName,
                                 ModalRoute.withName(
-                                    HomeWithBottomNavBar.pageName,),arguments: true);
+                                  HomeWithBottomNavBar.pageName,
+                                ),
+                                arguments: true);
                           },
                           color: kPrimaryBlue,
                           child: TextH4(

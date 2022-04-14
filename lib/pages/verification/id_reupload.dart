@@ -19,7 +19,7 @@ class ReuploadIDPage extends StatefulWidget {
 // final uid = _auth.currentUser!.uid;
 
 class _ReuploadIDPageState extends State<ReuploadIDPage> {
-  final imagePicker = ImagePicker();
+  late final imagePicker = ImagePicker();
   String url = '';
 
   File? file;

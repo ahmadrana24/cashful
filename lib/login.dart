@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'main.dart';
-import 'pages/main_views/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const pageName = '/login';
@@ -77,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 40.0,
                           ),
-                          
                           Text(
                             'Email address',
                             style: TextStyle(

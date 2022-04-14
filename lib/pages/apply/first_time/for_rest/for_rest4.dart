@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/pages/apply/apply_final_step.dart';
 import 'package:flutter_application_1/pages/apply/apply_steps_common.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/view_models/apply_view_model.dart';
 
 class ApplyForRest4 extends StatefulWidget {
@@ -29,7 +26,6 @@ class _ApplyForRest4State extends State<ApplyForRest4> {
       fontFamily: 'Poppins',
       fontSize: 16,
       fontWeight: FontWeight.bold));
-
 
   @override
   Widget build(BuildContext context) {

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/account_method.dart';
-import 'package:flutter_application_1/pages/main_views/password_reset_screen.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {

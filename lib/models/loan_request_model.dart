@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoanRequest {
-  String? id;
-  String? userId;
-  String loanType;
-  String loanAmount;
-  String loanDetail;
-  String totalRepayable;
-  String? loanStatus = "pending";
-  String paymentTime;
-  String? loanDate;
+  late final String? id;
+  late final String? userId;
+  late final String loanType;
+  late final String loanAmount;
+  late final String loanDetail;
+  late final String totalRepayable;
+  late final String? loanStatus;
+  late final String paymentTime;
+  late final String? loanDate;
   LoanRequest(
       {this.id,
       this.userId,
@@ -19,7 +19,7 @@ class LoanRequest {
       required this.loanAmount,
       required this.loanDetail,
       required this.totalRepayable,
-      this.loanStatus,
+      this.loanStatus = "pending",
       required this.paymentTime,
       this.loanDate});
 

@@ -5,7 +5,6 @@ import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/configs/size_const.dart';
 import 'package:flutter_application_1/models/loan_request_model.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
@@ -23,8 +22,6 @@ class ApplyFinalStep extends StatefulWidget {
 class _ApplyFinalStepState extends State<ApplyFinalStep> {
   var viewModel = locator<LoanRequestViewModel>();
 
-  var _min = 0;
-  var _max = 100;
   var _loanValue = 100.0;
   var _returnDateIndex = 0;
   // var _showSlider = false;
@@ -66,6 +63,7 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
                   child: Container(
                 padding: EdgeInsets.all(30.0),
                 width: kScreenWidth(context),
+                height: kScreenHeight(context),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius:

@@ -6,7 +6,7 @@ class ApplyStepsCommon extends StatelessWidget {
   final Widget internalWidget;
   final Function? onNext;
   final String? bgImgUrl;
-  bool showBack = true;
+  final bool showBack;
 
   ApplyStepsCommon(
       {Key? key,

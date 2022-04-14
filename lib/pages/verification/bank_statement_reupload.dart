@@ -72,7 +72,7 @@ class _ReuploadBankStatementPageState extends State<ReuploadBankStatementPage> {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                'Upload your latest 3 months bank statement',
+                                'Upload your latest 3 months bank statement.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 18),
                               ),
@@ -84,7 +84,7 @@ class _ReuploadBankStatementPageState extends State<ReuploadBankStatementPage> {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Uploading clear documents can make the approval process faster',
+                                  'Uploading clear documents can make the approval process faster.',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(),
                                 ),

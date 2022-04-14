@@ -7,7 +7,7 @@ import 'package:flutter_application_1/view_models/splash_view_model.dart';
 
 class SplashPage extends StatelessWidget {
   static const pageName = '/splash';
-  User? user;
+  late final User? user;
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -49,5 +49,4 @@ class SplashPage extends StatelessWidget {
       );
     });
   }
-
 }

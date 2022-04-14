@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/main_views/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoanApplicationScreen extends StatefulWidget {
   const LoanApplicationScreen({Key? key}) : super(key: key);
@@ -314,17 +312,6 @@ class LoanApplicationScreenState extends State<LoanApplicationScreen> {
                                         child: Text('Finish'),
                                         onPressed: () async {
                                           uploadLoanApplication();
-
-                                          //  await collectionReference
-                                          //       .doc(collectionReference
-                                          //           .doc('Loan applications')
-                                          //           .id)
-                                          //           .collection('Loan details')
-                                          //       .add({
-                                          //     'Loan type': loanType,
-                                          //     'Loan details': loanDetails.text,
-                                          //     'Amount requested': loanAmount.text,
-                                          //   });
 
                                           Navigator.push(
                                               context,

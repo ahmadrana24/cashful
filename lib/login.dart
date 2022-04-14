@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
 import 'main.dart';
-import 'pages/main_views/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const pageName = '/login';
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -45,17 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
               height: MediaQuery.of(context).size.height,
             ),
             Positioned(
-              top: 50,
+              top: 100,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: TextH1(
+                      title: "Login",
                     ),
                   ),
                   SizedBox(
@@ -72,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Form(
                       key: _key,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(
                             height: 40.0,
@@ -175,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   setState(() {});
                                 }
                               },
-                              minWidth: 200.0,
+                              minWidth: double.infinity,
                               height: 45.0,
                               child: Text(
                                 "Login",
@@ -193,14 +191,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyHomePage()),
+                                    builder: (context) => CreateAccountPage()),
                               );
                             },
-                            child: Text(
-                              "Don't have an account? Register now",
-                              style: TextStyle(
-                                  color: Colors.grey[700],
-                                  fontWeight: FontWeight.w900),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Don't have an account?"),
+                                SizedBox(width: 5),
+                                Text(
+                                  "Sign up",
+                                  style: TextStyle(fontWeight: FontWeight.w900),
+                                ),
+                              ],
                             ),
                           )
                         ],

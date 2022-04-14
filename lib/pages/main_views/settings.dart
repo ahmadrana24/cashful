@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/account_method.dart';
-import 'package:flutter_application_1/pages/main_views/password_reset_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_application_1/view_models/user_view_model.dart';
+import 'package:flutter_application_1/widgets/text_h1.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -33,169 +36,171 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 30,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-        title: new Text(
-          'Settings',
-          style: TextStyle(
-              color: Color.fromRGBO(255, 255, 255, 1),
-              fontFamily: 'Poppins',
-              fontSize: 25,
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.bold,
-              height: 1),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          color: Color.fromRGBO(246, 246, 246, 1),
-          child: Column(children: [
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-                padding: EdgeInsets.only(left: 30, right: 30),
-                decoration: BoxDecoration(),
-                child: Text('Account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Inter'))),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('First name'),
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: db,
-// stream: db,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            if (snapshot.hasError)
-                              return Text('Something went wrong');
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting)
-                              return CircularProgressIndicator();
+    return BaseView<UserViewModel>(builder: (context, model, child) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            Image.asset("assets/images/notification_wave_bg.png",
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: double.infinity,
+                fit: BoxFit.cover),
+            Center(
+              child: SingleChildScrollView(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40)),
+                  margin:
+                      const EdgeInsets.only(left: 30.0, right: 30, top: 100),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(40)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text('Account',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Inter'))),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _settingsListItem(
+                                    'First name',
+                                    Text(model.user!.firstName,
+                                        style: boldFont),
+                                    action: () => {}),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _settingsListItem('Last name',
+                                    Text(model.user!.lastName, style: boldFont),
+                                    action: () => {}),
+                                SizedBox(
+                                  height: 20,
+                                ),
 
-                            dynamic data = snapshot.data!.data();
-                            return Text(data['First name'], style: boldFont);
-                          },
-                        ),
-                      ]),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Last name'),
-                      SizedBox(width: 40),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: db,
-// stream: db,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return Text('Something went wrong');
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
+                                _settingsListItem(
+                                  "Phone number",
+                                  Text(model.user!.mobileNumber,
+                                      style: boldFont),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _settingsListItem(
+                                  'Accounts',
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.black,
+                                    size: 19.0,
+                                  ),
+                                  action: () => Navigator.pushNamed(
+                                      context, AccountMethod.pageName),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _settingsListItem("Status",
+                                    Text("Verified", style: boldFont)),
+                                SizedBox(height: 30),
+                                InkWell(
+                                    onTap: () async {
+                                      await launch(
+                                          "https://www.cashful.me/terms-and-condition");
+                                    },
+                                    child: Text("Terms and Conditions",
+                                        style:
+                                            boldFont.copyWith(fontSize: 16))),
+                                SizedBox(height: 5),
+                                InkWell(
+                                    onTap: () async {
+                                      await launch(
+                                          "https://www.cashful.me/privacy-policy");
+                                    },
+                                    child: Text("Privacy policy",
+                                        style:
+                                            boldFont.copyWith(fontSize: 16))),
+                                SizedBox(height: 10),
 
-                          dynamic data = snapshot.data!.data();
-                          return Text(data['Last name'], style: boldFont);
-                        },
-                      ),
-                    ],
+                                InkWell(
+                                    onTap: () async {
+                                      try {
+                                        await FirebaseAuth.instance.signOut();
+                                        errorMessage = '';
+                                      } on FirebaseAuthException catch (error) {
+                                        errorMessage = error.message!;
+                                      }
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('/signIn');
+                                      setState(() {});
+                                    },
+                                    child: Text("Sign out",
+                                        style: boldFont.copyWith(
+                                            fontSize: 18,
+                                            color: kPrimaryBlue))),
+                                // ElevatedButton(
+                                //     // style: ButtonStyle(
+                                //     //   backgroundColor: MaterialStateProperty.all(
+                                //     //       Color.fromRGBO(1, 67, 55, 1)),
+                                //     //   shape: MaterialStateProperty.all<
+                                //     //           RoundedRectangleBorder>(
+                                //     //       RoundedRectangleBorder(
+                                //     //           borderRadius:
+                                //     //               BorderRadius.circular(20))),
+                                //     // ),
+                                //     child: Text('Log out'),
+                                //     onPressed: () async {
+                                //       try {
+                                //         await FirebaseAuth.instance.signOut();
+                                //         errorMessage = '';
+                                //       } on FirebaseAuthException catch (error) {
+                                //         errorMessage = error.message!;
+                                //       }
+                                //       Navigator.of(context)
+                                //           .pushReplacementNamed('/signIn');
+                                //       setState(() {});
+                                //     }),
+                                SizedBox(height: 20),
+                              ],
+                            ),
+                          )
+                        ]),
                   ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PasswordResetScreen(),
-                          ));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Change password'),
-                        SizedBox(width: 40),
-                        Icon(Icons.arrow_forward, size: 18, color: Colors.black)
-                      ],
-                    ),
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AccountMethod()),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Accounts'),
-                        SizedBox(width: 40),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.black,
-                          size: 19.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(color: Colors.black),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(1, 67, 55, 1)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                      ),
-                      child: Text('Log out'),
-                      onPressed: () async {
-                        try {
-                          await FirebaseAuth.instance.signOut();
-                          errorMessage = '';
-                        } on FirebaseAuthException catch (error) {
-                          errorMessage = error.message!;
-                        }
-                        Navigator.of(context).pushReplacementNamed('/signIn');
-                        setState(() {});
-                      }),
-                  SizedBox(height: 15),
-                ],
+                ),
               ),
-            )
-          ]),
+            ),
+            Positioned(top: 50, left: 20, child: TextH1(title: "Settings"))
+          ],
         ),
-      ),
+      );
+    });
+  }
+
+  Widget _settingsListItem(title, Widget trailing, {action}) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () => action(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text(title), SizedBox(width: 40), trailing],
+          ),
+        ),
+        Divider(color: Colors.black26)
+      ],
     );
   }
 }

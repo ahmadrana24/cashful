@@ -1,21 +1,25 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/configs/app_route.dart';
+import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/configs/locator.dart';
 import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/pages/main_views/account_method.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
-import 'package:flutter_application_1/pages/main_views/no_connection_screen.dart';
 import 'package:flutter_application_1/pages/registration/get_started.dart';
-import 'package:flutter_application_1/view_models/connectivity_view_model.dart';
+import 'package:flutter_application_1/view_models/apply_view_model.dart';
+import 'package:flutter_application_1/view_models/auth_view_model.dart';
+import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
+import 'package:flutter_application_1/view_models/notifications_view_model.dart';
+import 'package:flutter_application_1/view_models/payment_methods_view_model.dart';
+import 'package:flutter_application_1/view_models/registration/get_started_view_model.dart';
+import 'package:flutter_application_1/view_models/splash_view_model.dart';
+import 'package:flutter_application_1/view_models/status_view_model.dart';
+import 'package:flutter_application_1/view_models/user_view_model.dart';
+import 'package:flutter_application_1/view_models/verification_view_model.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
-import 'pages/main_views/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +27,7 @@ void main() async {
   FirebaseMessaging messageing = FirebaseMessaging.instance;
   String? token = await messageing.getToken();
   print("FCM token: $token");
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -32,65 +37,76 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //initialRoute: '/home',
-      title: 'Cashful',
-      theme: ThemeData(
-          primaryColor: Color.fromRGBO(1, 67, 55, 1),
-          appBarTheme: AppBarTheme(
-            backgroundColor: Color.fromRGBO(1, 67, 55, 1),
-          ),
-          textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Color.fromRGBO(1, 67, 55, 1),
-              selectionColor: Color.fromRGBO(1, 67, 55, 1),
-              selectionHandleColor: Color.fromRGBO(1, 67, 55, 1)),
-          inputDecorationTheme: InputDecorationTheme(
-              floatingLabelStyle: TextStyle(
-                color: Color.fromRGBO(1, 67, 55, 1),
-                fontWeight: FontWeight.bold,
-              ),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Color.fromRGBO(1, 67, 55, 1),
-              )))),
-      home: ChangeNotifierProvider(
-          create: (_) => ConnectivityViewModel(),
-          child: Consumer<ConnectivityViewModel>(
-            builder: (context, viewModel, child) {
-              print(viewModel.result);
-              if (viewModel.result == ConnectivityResult.none) {
-                return NoConnectionScreen();
-              } else
-                return StreamBuilder<User?>(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data == null) {
-                        return LoginScreen();
-                      } else {
-                        return MyHomePage();
-                      }
-                    } else {
-                      return LoginScreen();
-                    }
-                  },
-                );
-            },
-          )),
-
-      routes: {
-        '/home': (context) => HomeWithBottomNavBar(),
-        '/signIn': (context) => LoginScreen(),
-        '/settings': (context) => SettingsPage(),
-        '/accountMethod': (context) => AccountMethod(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => locator<AuthViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<GetStartedViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<VerificationViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<SplashViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<ApplyViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<LoanRequestViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<UserViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<StatusViewModel>()),
+        ChangeNotifierProvider(
+            create: (_) => locator<PaymentMethodViewModel>()),
+        ChangeNotifierProvider(create: (_) => locator<NotificationViewModel>())
+      ],
+      child: MaterialApp(
+        //initialRoute: '/home',
+        debugShowCheckedModeBanner: false,
+        title: 'Cashful',
+        theme: ThemeData(
+            primaryColor: kPrimaryBlue,
+            appBarTheme: AppBarTheme(
+              backgroundColor: kPrimaryBlue,
+            ),
+            scaffoldBackgroundColor: Color(0xFFF6F6F6),
+            textSelectionTheme: TextSelectionThemeData(
+                cursorColor: kPrimaryBlue,
+                selectionColor: kPrimaryBlue,
+                selectionHandleColor: kPrimaryBlue),
+            inputDecorationTheme: InputDecorationTheme(
+                floatingLabelStyle: TextStyle(
+                  color: kPrimaryBlue,
+                  fontWeight: FontWeight.bold,
+                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: kPrimaryBlue,
+                )))),
+        // home: ChangeNotifierProvider(
+        //     create: (_) => ConnectivityViewModel(),
+        //     child: Consumer<ConnectivityViewModel>(
+        //       builder: (context, viewModel, child) {
+        //         print(viewModel.result);
+        //         if (viewModel.result == ConnectivityResult.none) {
+        //           return NoConnectionScreen();
+        //         } else
+        //           return StreamBuilder<User?>(
+        //             stream: FirebaseAuth.instance.authStateChanges(),
+        //             builder: (BuildContext context, snapshot) {
+        //               if (snapshot.hasData) {
+        //                 if (snapshot.data == null) {
+        //                   return LoginScreen();
+        //                 } else {
+        //                   return MyHomePage();
+        //                 }
+        //               } else {
+        //                 return LoginScreen();
+        //               }
+        //             },
+        //           );
+        //       },
+        //     )),
+        onGenerateRoute: (settings) => AppRoute.onGenerateRoute(settings),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class CreateAccountPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CreateAccountPageState createState() => _CreateAccountPageState();
 }
 
 String? validateEmail(String? formEmail) {
@@ -120,7 +136,7 @@ String? validatePassword(String? formPassword) {
 FirebaseAuth _auth = FirebaseAuth.instance;
 final uid = _auth.currentUser!.uid;
 
-class _MyHomePageState extends State<MyHomePage> {
+class _CreateAccountPageState extends State<CreateAccountPage> {
   void createUID() async {
     FirebaseMessaging messageing = FirebaseMessaging.instance;
     String? token = await messageing.getToken();
@@ -150,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(1, 67, 55, 1),
+        backgroundColor: kPrimaryBlue,
         centerTitle: true,
         title: new Text(
           'Create account',
@@ -283,7 +299,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             errorMessage = error.message!;
                           }
                         }
-                        setState(() {});
                       },
                       minWidth: 200.0,
                       height: 50.0,

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Notification {
-  String? id;
-  String title;
-  String body;
-  int? createdAt;
+  late final String? id;
+  late final String title;
+  late final String body;
+  late final int? createdAt;
   Notification({
     this.id,
     required this.title,

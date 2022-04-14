@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MtnDetail {
-  String fullName;
-  String accountNumber;
+  late final String fullName;
+  late final String accountNumber;
   MtnDetail({
     required this.fullName,
     required this.accountNumber,

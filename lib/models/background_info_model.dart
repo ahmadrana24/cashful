@@ -3,30 +3,30 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BackgroundInformation {
-  String? id;
-  String? creditScoreValue;
-  String? employmentStatus;
-  bool? isCreditScorePresent = false;
-  bool? isSmallBusinessOwner = false;
-  String? businessOffering;
-  String? lengthOfOperation;
-  String? sourceOfFinancing;
-  String? businessExpenceMonthly;
-  String? businessrevenueMonthly;
-  String? investmentToDate;
-  String? savingMonthly;
-  String? stockvelContribution;
-  bool? isPartOfStockvel = false;
-  String? highestLevelOfEducation;
-  String? sourceOfIncome;
-  String? monthlyIncome;
-  String? monthlyExpense;
+  final String? id;
+  late final String? creditScoreValue;
+  late final String? employmentStatus;
+  late final bool? isCreditScorePresent;
+  late final bool? isSmallBusinessOwner;
+  late final String? businessOffering;
+  late final String? lengthOfOperation;
+  late final String? sourceOfFinancing;
+  late final String? businessExpenceMonthly;
+  late final String? businessrevenueMonthly;
+  late final String? investmentToDate;
+  late final String? savingMonthly;
+  late final String? stockvelContribution;
+  late final bool? isPartOfStockvel;
+  late final String? highestLevelOfEducation;
+  late final String? sourceOfIncome;
+  late final String? monthlyIncome;
+  late final String? monthlyExpense;
   BackgroundInformation({
     this.id,
     this.creditScoreValue,
     this.employmentStatus,
-    this.isCreditScorePresent,
-    this.isSmallBusinessOwner,
+    this.isCreditScorePresent = false,
+    this.isSmallBusinessOwner = false,
     this.businessOffering,
     this.lengthOfOperation,
     this.sourceOfFinancing,
@@ -35,7 +35,7 @@ class BackgroundInformation {
     this.investmentToDate,
     this.savingMonthly,
     this.stockvelContribution,
-    this.isPartOfStockvel,
+    this.isPartOfStockvel = false,
     this.highestLevelOfEducation,
     this.sourceOfIncome,
     this.monthlyIncome,

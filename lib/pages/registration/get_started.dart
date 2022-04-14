@@ -22,13 +22,13 @@ class GetStartedPage extends StatefulWidget {
 // final uid = _auth.currentUser!.uid;
 
 class _GetStartedPageState extends State<GetStartedPage> {
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
-  final TextEditingController dateOfBirth = TextEditingController();
-  final TextEditingController gender = TextEditingController();
-  final TextEditingController id = TextEditingController();
-  final TextEditingController address = TextEditingController();
-  final TextEditingController mobileNumber = TextEditingController();
+  late final TextEditingController firstName = TextEditingController();
+  late final TextEditingController lastName = TextEditingController();
+  late final TextEditingController dateOfBirth = TextEditingController();
+  late final TextEditingController gender = TextEditingController();
+  late final TextEditingController id = TextEditingController();
+  late final TextEditingController address = TextEditingController();
+  late final TextEditingController mobileNumber = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

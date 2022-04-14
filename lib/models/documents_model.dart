@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VerificationDocuments {
-  String? id;
-  Map<String, dynamic>? bankStatement;
-  Map<String, dynamic>? idCard;
-  Map<String, dynamic>? proofOfAddress;
+  late final String? id;
+  late final Map<String, dynamic>? bankStatement;
+  late final Map<String, dynamic>? idCard;
+  late final Map<String, dynamic>? proofOfAddress;
   VerificationDocuments({
     this.id,
     this.bankStatement,
@@ -26,9 +26,15 @@ class VerificationDocuments {
   factory VerificationDocuments.fromMap(Map<String, dynamic> map) {
     return VerificationDocuments(
       id: map['id'],
-      idCard:  map['idCard'] != null ? Map<String, dynamic>.from(map['idCard']) : null,
-      bankStatement: map['bankStatement'] != null ? Map<String, dynamic>.from(map['bankStatement']) : null,
-      proofOfAddress: map['proofOfAddress'] != null ? Map<String, dynamic>.from(map['proofOfAddress']) :null,
+      idCard: map['idCard'] != null
+          ? Map<String, dynamic>.from(map['idCard'])
+          : null,
+      bankStatement: map['bankStatement'] != null
+          ? Map<String, dynamic>.from(map['bankStatement'])
+          : null,
+      proofOfAddress: map['proofOfAddress'] != null
+          ? Map<String, dynamic>.from(map['proofOfAddress'])
+          : null,
     );
   }
 

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/helper.dart';
@@ -9,8 +7,6 @@ import 'package:flutter_application_1/pages/apply/recurring/loan_application_inf
 import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/view_models/apply_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';
-
-import 'for_rest4.dart';
 
 class ApplyForRest3 extends StatefulWidget {
   static const pageName = "applyForRest3";
@@ -303,7 +299,8 @@ class _ApplyForRest3State extends State<ApplyForRest3> {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 LoanApplicationInfoPage.pageName,
                                 ModalRoute.withName(
-                                    HomeWithBottomNavBar.pageName), arguments: true);
+                                    HomeWithBottomNavBar.pageName),
+                                arguments: true);
                           },
                           color: kPrimaryBlue,
                           child: TextH4(

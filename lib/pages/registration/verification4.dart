@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
@@ -9,10 +8,8 @@ import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 import 'package:flutter_application_1/models/payment_info_model.dart';
 import 'package:flutter_application_1/pages/base_view.dart';
-import 'package:flutter_application_1/pages/main_views/home_with_bottom_navbar.dart';
 import 'package:flutter_application_1/pages/main_views/messages.dart';
 import 'package:flutter_application_1/pages/registration/add_bank_account.dart';
-import 'package:flutter_application_1/pages/splash_page.dart';
 import 'package:flutter_application_1/pages/verification/pending_verification.dart';
 import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/verification_view_model.dart';

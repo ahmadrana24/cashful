@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 class ConnectivityViewModel extends ChangeNotifier {
   ConnectivityResult? result;
+  // ignore: cancel_subscriptions, unused_field
   StreamSubscription<ConnectivityResult>? _connectivitySubsciption;
 
   ConnectivityViewModel() {

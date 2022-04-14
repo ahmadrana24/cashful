@@ -6,7 +6,6 @@ import 'package:flutter_application_1/pages/apply/recurring/loan_application_inf
 import 'package:flutter_application_1/pages/base_view.dart';
 import 'package:flutter_application_1/pages/main_views/help.dart';
 import 'package:flutter_application_1/pages/main_views/pay.dart';
-import 'package:flutter_application_1/view_models/base_view_model.dart';
 import 'package:flutter_application_1/view_models/loan_request_view_model.dart';
 import 'package:flutter_application_1/view_models/user_view_model.dart';
 import 'package:flutter_application_1/widgets/text_h1.dart';

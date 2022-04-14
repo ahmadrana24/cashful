@@ -9,19 +9,19 @@ import 'package:flutter_application_1/models/level_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 
 class User {
-  String firstName;
-  String lastName;
-  String id;
-  String address;
-  String mobileNumber;
-  String dob;
-  String fcmToken;
-  VerificationDocuments? verificationDocuments;
-  BankDetail? bankDetail;
-  MtnDetail? mtnDetail;
-  BackgroundInformation? backgroundInformation;
-  String? levelId;
-  Level? level;
+  late final String firstName;
+  late final String lastName;
+  late final String id;
+  late final String address;
+  late final String mobileNumber;
+  late final String dob;
+  late final String fcmToken;
+  late VerificationDocuments? verificationDocuments;
+  late BankDetail? bankDetail;
+  late MtnDetail? mtnDetail;
+  late BackgroundInformation? backgroundInformation;
+  late final String? levelId;
+  late Level? level;
 
   User({
     required this.firstName,
@@ -66,10 +66,17 @@ class User {
       mobileNumber: map['mobileNumber'] ?? '',
       dob: map['dob'] ?? '',
       fcmToken: map['fcmToken'] ?? '',
-      verificationDocuments: map['verificationDocuments'] != null ? VerificationDocuments.fromMap(map['verificationDocuments']) : null,
-      bankDetail: map['bankDetail'] != null ? BankDetail.fromMap(map['bankDetail']) : null,
-      mtnDetail: map['mtnDetail'] != null ? MtnDetail.fromMap(map['mtnDetail']) : null,
-      backgroundInformation: map['backgroundInformation'] != null ? BackgroundInformation.fromMap(map['backgroundInformation']) : null,
+      verificationDocuments: map['verificationDocuments'] != null
+          ? VerificationDocuments.fromMap(map['verificationDocuments'])
+          : null,
+      bankDetail: map['bankDetail'] != null
+          ? BankDetail.fromMap(map['bankDetail'])
+          : null,
+      mtnDetail:
+          map['mtnDetail'] != null ? MtnDetail.fromMap(map['mtnDetail']) : null,
+      backgroundInformation: map['backgroundInformation'] != null
+          ? BackgroundInformation.fromMap(map['backgroundInformation'])
+          : null,
       levelId: map['levelId'],
       level: map['level'] != null ? Level.fromMap(map['level']) : null,
     );

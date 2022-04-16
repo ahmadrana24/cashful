@@ -265,10 +265,6 @@ class _ApplyFinalStepState extends State<ApplyFinalStep> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    "Request submitted",
-                    style: TextStyle(color: Colors.black45),
-                  ),
                   SizedBox(
                     height: 10,
                   ),

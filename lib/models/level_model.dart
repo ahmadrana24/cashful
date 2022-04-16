@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Level {
-  late final String? id;
-  late final String name;
-  late final num min;
-  late final num max;
-  late final num interest;
-  late final List<String> repayDates;
+  late String? id;
+  late String name;
+  late num min;
+  late num max;
+  late num interest;
+  late List<String> repayDates;
   Level({
     this.id,
     required this.name,

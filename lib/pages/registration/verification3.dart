@@ -110,10 +110,13 @@ class _VerificationPageState extends State<VerificationPage3> {
                               height: 30,
                             ),
                             Container(
-                              child: Text(
-                                'Uploading clear documents can make the approval process faster',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Uploading clear documents can make the approval process faster',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(),
+                                ),
                               ),
                               constraints: BoxConstraints(
                                   minHeight: 80,

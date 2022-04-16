@@ -9,18 +9,18 @@ import 'package:flutter_application_1/models/level_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 
 class User {
-  late final String firstName;
-  late final String lastName;
-  late final String id;
-  late final String address;
-  late final String mobileNumber;
-  late final String dob;
-  late final String fcmToken;
+  late String firstName;
+  late String lastName;
+  late String id;
+  late String address;
+  late String mobileNumber;
+  late String dob;
+  late String fcmToken;
   late VerificationDocuments? verificationDocuments;
   late BankDetail? bankDetail;
   late MtnDetail? mtnDetail;
   late BackgroundInformation? backgroundInformation;
-  late final String? levelId;
+  late String? levelId;
   late Level? level;
 
   User({

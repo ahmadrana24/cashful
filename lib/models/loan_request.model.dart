@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoanRequest {
-  late final String loanType;
-  late final String loanDetail;
-  late final String loanAmount;
+  late String loanType;
+  late String loanDetail;
+  late String loanAmount;
   LoanRequest({
     required this.loanType,
     required this.loanDetail,

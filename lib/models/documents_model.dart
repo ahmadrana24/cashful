@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VerificationDocuments {
-  late final String? id;
-  late final Map<String, dynamic>? bankStatement;
-  late final Map<String, dynamic>? idCard;
-  late final Map<String, dynamic>? proofOfAddress;
+  late String? id;
+  late Map<String, dynamic>? bankStatement;
+  late Map<String, dynamic>? idCard;
+  late Map<String, dynamic>? proofOfAddress;
   VerificationDocuments({
     this.id,
     this.bankStatement,

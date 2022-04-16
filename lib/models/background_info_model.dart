@@ -4,23 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BackgroundInformation {
   final String? id;
-  late final String? creditScoreValue;
-  late final String? employmentStatus;
-  late final bool? isCreditScorePresent;
-  late final bool? isSmallBusinessOwner;
-  late final String? businessOffering;
-  late final String? lengthOfOperation;
-  late final String? sourceOfFinancing;
-  late final String? businessExpenceMonthly;
-  late final String? businessrevenueMonthly;
-  late final String? investmentToDate;
-  late final String? savingMonthly;
-  late final String? stockvelContribution;
-  late final bool? isPartOfStockvel;
-  late final String? highestLevelOfEducation;
-  late final String? sourceOfIncome;
-  late final String? monthlyIncome;
-  late final String? monthlyExpense;
+  late String? creditScoreValue;
+  late String? employmentStatus;
+  late bool? isCreditScorePresent;
+  late bool? isSmallBusinessOwner;
+  late String? businessOffering;
+  late String? lengthOfOperation;
+  late String? sourceOfFinancing;
+  late String? businessExpenceMonthly;
+  late String? businessrevenueMonthly;
+  late String? investmentToDate;
+  late String? savingMonthly;
+  late String? stockvelContribution;
+  late bool? isPartOfStockvel;
+  late String? highestLevelOfEducation;
+  late String? sourceOfIncome;
+  late String? monthlyIncome;
+  late String? monthlyExpense;
   BackgroundInformation({
     this.id,
     this.creditScoreValue,

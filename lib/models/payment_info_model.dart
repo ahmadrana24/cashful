@@ -5,8 +5,8 @@ import 'package:flutter_application_1/models/bank_detail_model.dart';
 import 'package:flutter_application_1/models/mtn_detail.dart';
 
 class PaymentInfo {
-  late final BankDetail? bankDetail;
-  late final MtnDetail? mtnDetail;
+  late BankDetail? bankDetail;
+  late MtnDetail? mtnDetail;
   PaymentInfo({
     this.bankDetail,
     this.mtnDetail,

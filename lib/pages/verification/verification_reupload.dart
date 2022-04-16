@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/locator.dart';
@@ -26,33 +28,27 @@ class VerificationReuploadPage extends StatelessWidget {
             Expanded(
                 child: Container(
               width: kScreenWidth(context),
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+              padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
               margin: EdgeInsets.only(
                 left: 20,
                 top: 20,
                 right: 20,
                 bottom: 20,
               ),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Column(
                 children: [
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                      'Your information is being verified.\nwe\'ll notify you when verification has\nbeen completed',
+                  Text('Your information is being verified.\nwe\'ll notify you when verification has\nbeen completed',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold)),
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(
                     height: 60,
                   ),
                   Consumer<UserViewModel>(builder: (context, model, child) {
-                    return _stepperWidget(context, model.user!);
+                    return _stepperWidget(context, model.user ?? null);
                   })
                 ],
               ),
@@ -61,26 +57,22 @@ class VerificationReuploadPage extends StatelessWidget {
         ));
   }
 
-  Widget _stepperWidget(context, User user) {
+  Widget _stepperWidget(context, User? user) {
     Function? onTap;
-    VerificationDocuments verificationDocuments = user.verificationDocuments!;
+    log(user?.firstName ?? 'null');
+    VerificationDocuments? verificationDocuments = user?.verificationDocuments ?? null;
 
-    var bankStatus = verificationDocuments.bankStatement!['status'];
-    var idStatus = verificationDocuments.idCard!['status'];
-    var addressStatus = verificationDocuments.proofOfAddress!['status'];
+    var bankStatus = verificationDocuments?.bankStatement?['status'] ?? 'rejected';
+    var idStatus = verificationDocuments?.idCard?['status'] ?? 'rejected';
+    var addressStatus = verificationDocuments?.proofOfAddress?['status'] ?? 'rejected';
 
     return Column(
       children: [
         _stepWidget(Icons.file_present, 'Identity document', idStatus,
             idStatus == "rejected" ? () => _onTapId(context) : onTap),
         SizedBox(height: 40),
-        _stepWidget(
-            Icons.file_present,
-            'Bank statement',
-            bankStatus,
-            bankStatus == "rejected"
-                ? () => _onTapBankStatement(context)
-                : onTap),
+        _stepWidget(Icons.file_present, 'Bank statement', bankStatus,
+            bankStatus == "rejected" ? () => _onTapBankStatement(context) : onTap),
         SizedBox(height: 40),
         _stepWidget(Icons.file_present, 'Proof of address', addressStatus,
             addressStatus == "rejected" ? () => _onTapaddress(context) : onTap),

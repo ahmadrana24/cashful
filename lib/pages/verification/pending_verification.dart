@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/configs/colors.dart';
 import 'package:flutter_application_1/configs/locator.dart';
@@ -53,6 +55,7 @@ class _PendingVerificationPageState extends State<PendingVerificationPage> {
                       height: 60,
                     ),
                     Consumer<UserViewModel>(builder: (context, model, child) {
+                      log(model.user?.toJson() ?? 'null');
                       return _stepperWidget(model.user ??
                           User(
                               firstName: 'firstName',

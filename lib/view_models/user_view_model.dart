@@ -14,21 +14,16 @@ class UserViewModel extends BaseViewModel {
 
   void setUser(User user) {
     this.user = user;
-    Stream<DocumentSnapshot> _bgInfoStream = _firestore
-        .collection("background_informations")
-        .doc(this.user!.id)
-        .snapshots();
-    Stream<DocumentSnapshot> _paymentInfoStream =
-        _firestore.collection("payment_infos").doc(this.user!.id).snapshots();
+    Stream<DocumentSnapshot> _bgInfoStream =
+        _firestore.collection("background_informations").doc(this.user!.id).snapshots();
+    Stream<DocumentSnapshot> _paymentInfoStream = _firestore.collection("payment_infos").doc(this.user!.id).snapshots();
 
-    Stream<DocumentSnapshot> _userDocsStream =
-        _firestore.collection("user_documents").doc(this.user!.id).snapshots();
+    Stream<DocumentSnapshot> _userDocsStream = _firestore.collection("user_documents").doc(this.user!.id).snapshots();
 
     _bgInfoStream.listen((snapshot) {
       if (snapshot.data() != null) {
         print(snapshot.data());
-        this.user!.backgroundInformation =
-            BackgroundInformation.fromFirebase(snapshot);
+        this.user!.backgroundInformation = BackgroundInformation.fromFirebase(snapshot);
       }
     });
 
@@ -49,7 +44,5 @@ class UserViewModel extends BaseViewModel {
         notifyListeners();
       }
     });
-
-    
   }
 }

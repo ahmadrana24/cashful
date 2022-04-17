@@ -18,15 +18,13 @@ import 'package:image_picker/image_picker.dart';
 class ReuploadProofOfAddressPage extends StatefulWidget {
   static const pageName = "/ReuploadProofOfAddressPage";
   @override
-  _ReuploadProofOfAddressPageState createState() =>
-      _ReuploadProofOfAddressPageState();
+  _ReuploadProofOfAddressPageState createState() => _ReuploadProofOfAddressPageState();
 }
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 final uid = _auth.currentUser!.uid;
 
-class _ReuploadProofOfAddressPageState
-    extends State<ReuploadProofOfAddressPage> {
+class _ReuploadProofOfAddressPageState extends State<ReuploadProofOfAddressPage> {
   final imagePicker = ImagePicker();
   String url = '';
 
@@ -59,8 +57,7 @@ class _ReuploadProofOfAddressPageState
   }
 
   void uploadFile() async {
-    var imageFile =
-        FirebaseStorage.instance.ref().child('path').child('/.jpeg');
+    var imageFile = FirebaseStorage.instance.ref().child('path').child('/.jpeg');
     UploadTask task = imageFile.putFile(file!);
     TaskSnapshot snapshot = await task;
     // for downloading
@@ -93,9 +90,7 @@ class _ReuploadProofOfAddressPageState
                   child: Container(
                     margin: EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20.0))),
+                        color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
                     child: SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -118,14 +113,9 @@ class _ReuploadProofOfAddressPageState
                                 textAlign: TextAlign.center,
                                 style: TextStyle(),
                               ),
-                              constraints: BoxConstraints(
-                                  minHeight: 80,
-                                  maxHeight: 100,
-                                  maxWidth: 360,
-                                  minWidth: 80),
+                              constraints: BoxConstraints(minHeight: 80, maxHeight: 100, maxWidth: 360, minWidth: 80),
                               decoration: BoxDecoration(
-                                  color: Color.fromRGBO(254, 255, 224, 1),
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Color.fromRGBO(254, 255, 224, 1), borderRadius: BorderRadius.circular(20)),
                               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                             ),
                             SizedBox(
@@ -148,15 +138,13 @@ class _ReuploadProofOfAddressPageState
                                 strokeWidth: 1,
                                 child: Container(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
                                           child: file == null
                                               ? Icon(Icons.upload)
-                                              : Image.file(file!,
-                                                  width: 260, height: 180)),
+                                              : Image.file(file!, width: 260, height: 180)),
                                     ],
                                   ),
                                   color: Colors.grey[300],
@@ -174,13 +162,9 @@ class _ReuploadProofOfAddressPageState
                                 ElevatedButton(
                                   onPressed: imageSelectFromCamera,
                                   style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20))),
+                                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                                   ),
                                   child: Row(
                                     children: [
@@ -193,9 +177,7 @@ class _ReuploadProofOfAddressPageState
                                       ),
                                       Text(
                                         'Camera',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
+                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
                                       )
                                     ],
                                   ),
@@ -206,13 +188,9 @@ class _ReuploadProofOfAddressPageState
                                 ElevatedButton(
                                   onPressed: imageSelectFromGallery,
                                   style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20))),
+                                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
                                   ),
                                   child: Row(
                                     children: [
@@ -224,9 +202,7 @@ class _ReuploadProofOfAddressPageState
                                           )),
                                       Text(
                                         'Gallery',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black),
+                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
                                       )
                                     ],
                                   ),
@@ -255,19 +231,17 @@ class _ReuploadProofOfAddressPageState
                   ),
             onPressed: () async {
               if (file == null) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Please upload your document to continue")));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Please upload your document to continue")));
                 return;
               }
               bool result = await viewModel.uploadProofOfAddress(file!);
               if (result) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Color(0xFF1B561D),
-                    content: Text("Upload successful")));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(backgroundColor: Color(0xFF1B561D), content: Text("Upload successful")));
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                        "Something went wrong while uploading try again")));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Something went wrong while uploading try again")));
               }
             },
           ));

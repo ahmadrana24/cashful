@@ -13,8 +13,7 @@ class VerificationViewModel extends BaseViewModel {
   Future<bool> uploadIdentification(File file) async {
     setState(ViewState.Busy);
     try {
-      var result = await _userRepository.uploadIdentification(
-          file, _firebaseHelper.getUserId()!);
+      var result = await _userRepository.uploadIdentification(file, _firebaseHelper.getUserId()!);
       setState(ViewState.Idle);
       return result;
     } catch (e) {
@@ -26,8 +25,7 @@ class VerificationViewModel extends BaseViewModel {
   Future<bool> uploadBankStatement(File file) async {
     setState(ViewState.Busy);
     try {
-      var result = await _userRepository.uploadBankStatement(
-          file, _firebaseHelper.getUserId()!);
+      var result = await _userRepository.uploadBankStatement(file, _firebaseHelper.getUserId()!);
       setState(ViewState.Idle);
       return result;
     } catch (e) {
@@ -39,8 +37,7 @@ class VerificationViewModel extends BaseViewModel {
   Future<bool> uploadProofOfAddress(File file) async {
     setState(ViewState.Busy);
     try {
-      var result = await _userRepository.uploadProofOfAddress(
-          file, _firebaseHelper.getUserId()!);
+      var result = await _userRepository.uploadProofOfAddress(file, _firebaseHelper.getUserId()!);
       setState(ViewState.Idle);
       return result;
     } catch (e) {
@@ -52,8 +49,7 @@ class VerificationViewModel extends BaseViewModel {
   Future<bool> addPaymentInfo(PaymentInfo paymentInfo) async {
     setState(ViewState.Busy);
     try {
-      // var result = await _userRepository.addPaymentInfo(
-      //     paymentInfo, _firebaseHelper.getUserId()!);
+      var result = await _userRepository.addPaymentInfo(paymentInfo, _firebaseHelper.getUserId()!);
       setState(ViewState.Idle);
       return true;
     } catch (e) {
